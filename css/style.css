@@ -1,0 +1,148 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: #f8f8f8;
+    color: #2c2c2c;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Layout */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 60px 80px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.site-title {
+    font-size: 1rem;
+    font-weight: normal;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+.main-title {
+    font-size: 3rem;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 40px;
+    color: #1a1a1a;
+}
+
+/* Article List Styles */
+.article-list {
+    margin-top: 60px;
+}
+
+.article-item {
+    margin-bottom: 60px;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.article-item:hover {
+    background-color: #fafafa;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.article-item:last-child {
+    border-bottom: none;
+}
+
+/* Article Content Styles */
+.article-content {
+    flex: 1;
+}
+
+.article-date {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.article-title {
+    font-size: 2rem;
+    font-weight: normal;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.article-item:hover .article-title {
+    color: #333;
+}
+
+.article-excerpt {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Math Preview Styles */
+.math-preview {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-left: 3px solid #ddd;
+    font-style: italic;
+}
+
+/* Loading States */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 30px;
+    }
+    
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .article-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+    }
+    
+    .site-title {
+        letter-spacing: 2px;
+    }
+} 
