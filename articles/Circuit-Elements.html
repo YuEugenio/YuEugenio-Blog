@@ -33,6 +33,18 @@
     figure figcaption { color: #666; font-size: 0.9rem; margin-top: 0.4rem; }
     .math-block { margin: 0.75rem 0; padding: 0.6rem 0.9rem; background: #fafafa; border-left: 3px solid #e1e1e1; overflow-x: auto; font-family: Menlo, Consolas, Monaco, 'Liberation Mono', monospace; font-size: 0.98rem; }
     .note { color: #555; font-style: italic; }
+    .example-card { margin: 1.2rem 0 1.4rem; padding: 1rem 1rem 1.1rem; border: 1px solid #e8e8e8; border-radius: 10px; background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%); }
+    .example-grid { display: grid; grid-template-columns: 1fr; gap: 1rem 1.25rem; align-items: start; }
+    .example-body { padding: 0.25rem 0.25rem; }
+    .example-title { margin: 0.25rem 0 0.4rem; color: #b22222; font-weight: 700; letter-spacing: 0.2px; }
+    .solution-title { margin: 0.6rem 0 0.3rem; color: #0b63d1; font-weight: 700; letter-spacing: 0.2px; }
+    .section-card { margin: 1.4rem 0 1.6rem; padding: 1rem 1.2rem; border: 1px solid #ececec; border-radius: 12px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .section-card h2, .section-card h3 { margin-top: 0.2rem; }
+    .two-col { display: grid; grid-template-columns: 1fr; gap: 0.75rem 1rem; }
+    @media (min-width: 900px) {
+      .example-grid { grid-template-columns: 1.2fr 1fr; }
+      .two-col { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -48,6 +60,7 @@
       </header>
 
       <main>
+        <div class="section-card">
         <h2>1. Voltage and Current Sources.</h2>
         <p>Ideal Source : Maintains a prescribed voltage/current value across its terminals regardless of the current/voltage across those terminals.</p>
         <p>-> Independent Ideal Source.</p>
@@ -64,23 +77,29 @@
           <figcaption>Figure 2.2 ▲ The circuit symbols for (a) an ideal dependent voltage-controlled voltage source, (b) an ideal dependent current-controlled voltage source, (c) an ideal dependent voltage-controlled current source, and (d) an ideal dependent current-controlled current source.</figcaption>
         </figure>
         <p>These Ideal sources shown are all active elements , which is capable of generating electric energy . passive elements are contrarily not capable , such as resistors.</p>
+        </div>
 
+        <div class="section-card">
         <h2>2- Electrical Resistance ( Ohm's Law ) -</h2>
-        <figure>
-          <img src="../Assets/Circuit%20Elements/fig%202.5.png" alt="Figure 2.5 ▲ The circuit symbol for a resistor having a resistance R." />
-          <figcaption>Figure 2.5 ▲ The circuit symbol for a resistor having a resistance R.</figcaption>
-        </figure>
-        <figure>
-          <img src="../Assets/Circuit%20Elements/fig%202.6.png" alt="Figure 2.6 ▲ Two possible reference choices for the current and voltage at the terminals of a resistor, and the resulting equations." />
-          <figcaption>Figure 2.6 ▲ Two possible reference choices for the current and voltage at the terminals of a resistor, and the resulting equations.</figcaption>
-        </figure>
+        <div class="two-col">
+          <figure>
+            <img src="../Assets/Circuit%20Elements/fig%202.5.png" alt="Figure 2.5 ▲ The circuit symbol for a resistor having a resistance R." />
+            <figcaption>Figure 2.5 ▲ The circuit symbol for a resistor having a resistance R.</figcaption>
+          </figure>
+          <figure>
+            <img src="../Assets/Circuit%20Elements/fig%202.6.png" alt="Figure 2.6 ▲ Two possible reference choices for the current and voltage at the terminals of a resistor, and the resulting equations." />
+            <figcaption>Figure 2.6 ▲ Two possible reference choices for the current and voltage at the terminals of a resistor, and the resulting equations.</figcaption>
+          </figure>
+        </div>
         <p class="note">Be careful with the sign of v !!!</p>
         <p>Ohm's Law : $v = iR$ .</p>
         <p>The reciprocal of the resistance is conductance ;</p>
         <p>$G = 1 / R$ ( S ) .</p>
         <p>Also : $G = 1 / R$ mho ( Ω^-1 )</p>
         <p>Power in a resistor : $p = i^2 R$ ; $p = v^2 / R$ .</p>
+        </div>
 
+        <div class="section-card">
         <h2>3. Kirchhoff's Laws.</h2>
         <figure>
           <img src="../Assets/Circuit%20Elements/fig%202.15.png" alt="Figure 2.15 ▲ Circuit model of the flashlight with assigned voltage and current variables." />
@@ -98,16 +117,55 @@
         <p>Kirchhoff's voltage law (KVL) : The algebraic sum of all the voltages around any closed path in a circuit equals 0.</p>
         <p>We now apply Kirchhoff's voltage law to the circuit shown in Fig. 2.15. We elect to trace the closed path clockwise, assigning a positive algebraic sign to voltage drops. Starting at node d leads to the expression</p>
         <div class="math-block">$v_l - v_c + v_1 - v_s = 0$ , &nbsp; (2.20)</div>
+        </div>
 
+        <div class="section-card">
         <h3>More examples:</h3>
-        <figure>
-          <img src="../Assets/Circuit%20Elements/fig%202.16.png" alt="Figure 2.16 ▲ The circuit for Example 2.6." />
-          <figcaption>Figure 2.16 ▲ The circuit for Example 2.6.</figcaption>
-        </figure>
-        <figure>
-          <img src="../Assets/Circuit%20Elements/fig%202.17.png" alt="Figure 2.17 ▲ The circuit for Example 2.7." />
-          <figcaption>Figure 2.17 ▲ The circuit for Example 2.7.</figcaption>
-        </figure>
+        <div class="example-card">
+          <div class="example-grid">
+            <div>
+              <figure>
+                <img src="../Assets/Circuit%20Elements/fig%202.16.png" alt="Figure 2.16 ▲ The circuit for Example 2.6." />
+                <figcaption>Figure 2.16 ▲ The circuit for Example 2.6.</figcaption>
+              </figure>
+            </div>
+            <div class="example-body">
+              <h4 class="example-title">Example 2.6  Using Kirchhoff's Current Law</h4>
+              <p>Sum the currents at each node in the circuit shown in Fig. 2.16. Note that there is no connection dot (•) in the center of the diagram, where the 4 Ω branch crosses the branch containing the ideal current source i_a.</p>
+              <h5 class="solution-title">Solution</h5>
+              <p>In writing the equations, we use a positive sign for a current leaving a node. The four equations are</p>
+              <div class="math-block">
+                node a &nbsp;&nbsp; $i_1 + i_4 - i_2 - i_5 = 0$ ,<br>
+                node b &nbsp;&nbsp; $i_2 + i_3 - i_1 - i_b - i_a = 0$ ,<br>
+                node c &nbsp;&nbsp; $i_b - i_3 - i_4 - i_c = 0$ ,<br>
+                node d &nbsp;&nbsp; $i_5 + i_a + i_c = 0$ .
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-grid">
+            <div>
+              <figure>
+                <img src="../Assets/Circuit%20Elements/fig%202.17.png" alt="Figure 2.17 ▲ The circuit for Example 2.7." />
+                <figcaption>Figure 2.17 ▲ The circuit for Example 2.7.</figcaption>
+              </figure>
+            </div>
+            <div class="example-body">
+              <h4 class="example-title">Example 2.7  Using Kirchhoff's Voltage Law</h4>
+              <p>Sum the voltages around each designated path in the circuit shown in Fig. 2.17.</p>
+              <h5 class="solution-title">Solution</h5>
+              <p>In writing the equations, we use a positive sign for a voltage drop. The four equations are</p>
+              <div class="math-block">
+                path a &nbsp;&nbsp; $- v_1 + v_2 + v_4 - v_b - v_3 = 0$ ,<br>
+                path b &nbsp;&nbsp; $- v_a + v_3 + v_5 = 0$ ,<br>
+                path c &nbsp;&nbsp; $v_b - v_4 - v_c - v_6 = 0$ ,<br>
+                path d &nbsp;&nbsp; $- v_a - v_1 + v_2 - v_c + v_7 - v_d = 0$ .
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </main>
     </div>
   </div>
