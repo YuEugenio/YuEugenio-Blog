@@ -33,6 +33,8 @@
     figure figcaption { color: #666; font-size: 0.9rem; margin-top: 0.4rem; }
     .math-block { margin: 0.75rem 0; padding: 0.6rem 0.9rem; background: #fafafa; border-left: 3px solid #e1e1e1; overflow-x: auto; font-family: Menlo, Consolas, Monaco, 'Liberation Mono', monospace; font-size: 0.98rem; }
     .note { color: #555; font-style: italic; }
+    .equation-callout { margin: 0.75rem 0; padding: 0.7rem 0.95rem; background: #fffbe6; border: 1px solid #f3e7a6; border-left: 4px solid #f2c037; border-radius: 8px; }
+    .equation-callout p { margin: 0; }
     .example-card { margin: 1.2rem 0 1.4rem; padding: 1rem 1rem 1.1rem; border: 1px solid #e8e8e8; border-radius: 10px; background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%); }
     .example-grid { display: grid; grid-template-columns: 1fr; gap: 1rem 1.25rem; align-items: start; }
     .example-body { padding: 0.25rem 0.25rem; }
@@ -63,14 +65,14 @@
         <div class="section-card">
         <h2>1. Voltage and Current Sources.</h2>
         <p>Ideal Source : Maintains a prescribed voltage/current value across its terminals regardless of the current/voltage across those terminals.</p>
-        <p>-> Independent Ideal Source.</p>
+        <h3>Independent Ideal Source.</h3>
         <p>the voltage/current supplied is specified by the value of independent source itself alone , without relying on anything else in the circuit , the symbols are :</p>
         <figure>
           <img src="../Assets/Circuit%20Elements/fig%202.1.png" alt="Figure 2.1 ▲ The circuit symbols for (a) an ideal independent voltage source and (b) an ideal independent current source." />
           <figcaption>Figure 2.1 ▲ The circuit symbols for (a) an ideal independent voltage source and (b) an ideal independent current source.</figcaption>
         </figure>
         
-        <h3>-> Dependent Ideal Sources (Controlled sources).</h3>
+        <h3>Dependent Ideal Sources (Controlled sources).</h3>
         <p>whose voltage/current relies on either a voltage or current else where in the circuit , there're 4 cases and symbols shown as below :</p>
         <figure>
           <img src="../Assets/Circuit%20Elements/fig%202.2.png" alt="Figure 2.2 ▲ The circuit symbols for (a) an ideal dependent voltage-controlled voltage source, (b) an ideal dependent current-controlled voltage source, (c) an ideal dependent voltage-controlled current source, and (d) an ideal dependent current-controlled current source." />
@@ -92,11 +94,11 @@
           </figure>
         </div>
         <p class="note">Be careful with the sign of v !!!</p>
-        <p>Ohm's Law : $v = iR$ .</p>
+        <div class="equation-callout"><p>Ohm's Law : $v = iR$ .</p></div>
         <p>The reciprocal of the resistance is conductance ;</p>
-        <p>$G = 1 / R$ ( S ) .</p>
-        <p>Also : $G = 1 / R$ mho ( Ω^-1 )</p>
-        <p>Power in a resistor : $p = i^2 R$ ; $p = v^2 / R$ .</p>
+        <div class="equation-callout"><p>$G = 1 / R$ ( S ) .</p></div>
+        <div class="equation-callout"><p>Also : $G = 1 / R$ mho ( Ω^-1 )</p></div>
+        <div class="equation-callout"><p>Power in a resistor : $p = i^2 R$ ; $p = v^2 / R$ .</p></div>
         </div>
 
         <div class="section-card">
