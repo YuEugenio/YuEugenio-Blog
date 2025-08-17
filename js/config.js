@@ -16,6 +16,15 @@ const SITE_CONFIG = {
         dateFormat: "MMM DD, YYYY",
         excerptLength: 150,
         showMathPreview: true
+    },
+
+    // 仓库设置（可选）：用于动态扫描文章目录
+    // 如果不配置，将使用默认值 euphoriaYu/YuEugenio-Blog 和 main/master 自动探测
+    repo: {
+        owner: "YuEugenio",
+        name: "YuEugenio-Blog",
+        // 留空表示自动探测 main/master；也可显式指定，如 "main" 或 "master"
+        branch: ""
     }
 };
 

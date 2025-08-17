@@ -1,7 +1,8 @@
 // 主应用类
 class BlogApp {
     constructor() {
-        this.articles = ARTICLES_DATA;
+        this.articles = [];
+        this.allArticles = [];
         this.isInitialized = false;
     }
     
@@ -11,6 +12,26 @@ class BlogApp {
         
         try {
             this.renderHeader();
+
+            // 显示加载状态
+            const articleList = document.querySelector('.article-list');
+            if (articleList) {
+                articleList.innerHTML = '<div class="loading">Loading articles...</div>';
+            }
+
+            // 动态加载文章（失败则回退到静态数据）
+            let loaded = [];
+            try {
+                if (typeof ArticleLoader !== 'undefined' && ArticleLoader.load) {
+                    loaded = await ArticleLoader.load();
+                }
+            } catch (e) {
+                console.warn('ArticleLoader failed, fallback to static:', e);
+            }
+
+            this.allArticles = Array.isArray(loaded) && loaded.length ? loaded : ARTICLES_DATA;
+            this.articles = this.allArticles;
+
             this.renderArticles();
             this.setupEventListeners();
             this.isInitialized = true;
@@ -23,6 +44,8 @@ class BlogApp {
             
         } catch (error) {
             console.error('Failed to initialize blog app:', error);
+            this.allArticles = ARTICLES_DATA;
+            this.articles = this.allArticles;
             this.renderHeader();
             this.renderArticles();
             this.setupEventListeners();
@@ -68,9 +91,13 @@ class BlogApp {
         articleElement.className = 'article-item';
         articleElement.setAttribute('data-article-id', article.id);
         
+        // 调试日期格式化
+        const formattedDate = article.date ? ArticleUtils.formatDate(article.date) : '';
+        console.log(`Formatting date for ${article.id}: ${article.date} -> ${formattedDate}`);
+        
         articleElement.innerHTML = `
             <div class="article-content">
-                <div class="article-date">${ArticleUtils.formatDate(article.date)}</div>
+                <div class="article-date">${formattedDate || ''}</div>
                 <h2 class="article-title">${article.title}</h2>
                 <p class="article-excerpt">${article.excerpt}</p>
             </div>
@@ -92,7 +119,8 @@ class BlogApp {
     
     // 打开文章
     openArticle(articleId) {
-        const article = ArticleUtils.getById(articleId);
+        const list = this.allArticles && this.allArticles.length ? this.allArticles : ARTICLES_DATA;
+        const article = (list || []).find(a => a.id === articleId);
         if (!article) {
             console.error('Article not found:', articleId);
             return;
@@ -105,20 +133,25 @@ class BlogApp {
     
     // 搜索功能
     search(query) {
-        const results = ArticleUtils.search(query);
+        const q = (query || '').toLowerCase();
+        const results = (this.allArticles || []).filter(article =>
+            (article.title || '').toLowerCase().includes(q) ||
+            (article.excerpt || '').toLowerCase().includes(q) ||
+            (Array.isArray(article.tags) && article.tags.some(tag => (tag || '').toLowerCase().includes(q)))
+        );
         this.articles = results;
         this.renderArticles();
     }
     
     // 重置文章列表
     resetArticles() {
-        this.articles = ARTICLES_DATA;
+        this.articles = this.allArticles;
         this.renderArticles();
     }
     
     // 按分类过滤
     filterByCategory(category) {
-        this.articles = ArticleUtils.getByCategory(category);
+        this.articles = (this.allArticles || []).filter(article => article.category === category);
         this.renderArticles();
     }
 }

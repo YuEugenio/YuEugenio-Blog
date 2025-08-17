@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Variables Fundamentals - YuEugenio's Blog</title>
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    
+    <style>
+        .article-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+        
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 2rem;
+        }
+        
+        .article-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+        
+        .article-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            color: #1a1a1a;
+        }
+        
+        h2 {
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            color: #444;
+        }
+        
+        .math-block {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ddd;
+            overflow-x: auto;
+        }
+        
+        code {
+            background-color: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 2rem;
+            background-color: #f9f9f9;
+            border-left: 4px solid #ddd;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="article-content">
+            <a href="../index.html" class="back-link">← Back to Home</a>
+            
+            <header class="article-header">
+                <h1 class="article-title">Circuit Variables Fundamentals</h1>
+                <div class="article-meta">
+                    <span>July 4, 2025</span> · 
+                    <span>Circuit Analysis</span> · 
+                    <span>Electrical Engineering</span> · 
+                    <span>Mathematics</span>
+                </div>
+            </header>
+            
+            <main>
+                <p>Circuit analysis is the foundation of electrical engineering. Understanding the basic variables in circuits and their interrelationships is crucial for mastering circuit theory. This article will explore the four fundamental variables in circuits: voltage, current, resistance, and power, along with their mathematical relationships.</p>
+                
+                <h2>Basic Circuit Variables</h2>
+                
+                <p>In circuit analysis, we primarily focus on four fundamental physical quantities. These variables form the foundation of all circuit analysis:</p>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+                    <thead>
+                        <tr style="background-color: #f9f9f9;">
+                            <th style="border: 1px solid #ddd; padding: 0.75rem; text-align: left;">Variable</th>
+                            <th style="border: 1px solid #ddd; padding: 0.75rem; text-align: left;">Symbol</th>
+                            <th style="border: 1px solid #ddd; padding: 0.75rem; text-align: left;">Unit</th>
+                            <th style="border: 1px solid #ddd; padding: 0.75rem; text-align: left;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Voltage</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">$v$ or $V$</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Volts (V)</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Electric potential difference between two points</td>
+                        </tr>
+                        <tr style="background-color: #f9f9f9;">
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Current</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">$i$ or $I$</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Amperes (A)</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Amount of electric charge passing through a cross-section per unit time</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Resistance</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">$R$</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Ohms (Ω)</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Opposition to the flow of electric current</td>
+                        </tr>
+                        <tr style="background-color: #f9f9f9;">
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Power</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">$p$ or $P$</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Watts (W)</td>
+                            <td style="border: 1px solid #ddd; padding: 0.75rem;">Rate of energy consumption or generation per unit time</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h2>Ohm's Law</h2>
+                
+                <p>Ohm's Law is one of the most fundamental and important laws in circuit analysis. It describes the linear relationship between voltage, current, and resistance:</p>
+                
+                <div class="math-block">
+                    $$v = iR$$
+                </div>
+                
+                <p>where $v$ is voltage (in volts), $i$ is current (in amperes), and $R$ is resistance (in ohms).</p>
+                
+                <p>From Ohm's Law, we can derive two other equivalent forms:</p>
+                
+                <div class="math-block">
+                    $$i = \frac{v}{R}$$
+                </div>
+                
+                <div class="math-block">
+                    $$R = \frac{v}{i}$$
+                </div>
+                
+                <h2>Power Calculations</h2>
+                
+                <h3>Basic Power Formula</h3>
+                
+                <p>Electric power is defined as the rate of energy consumption or generation per unit time. The basic power formula is:</p>
+                
+                <div class="math-block">
+                    $$p = vi$$
+                </div>
+                
+                <p>This formula shows that power equals the product of voltage and current.</p>
+                
+                <h3>Alternative Power Expressions</h3>
+                
+                <p>By combining with Ohm's Law, we can derive other expressions for power:</p>
+                
+                <p>When voltage and resistance are known:</p>
+                <div class="math-block">
+                    $$p = vi = v \cdot \frac{v}{R} = \frac{v^2}{R}$$
+                </div>
+                
+                <p>When current and resistance are known:</p>
+                <div class="math-block">
+                    $$p = vi = (iR) \cdot i = i^2R$$
+                </div>
+                
+                <p>Therefore, the three expressions for power are:</p>
+                <div class="math-block">
+                    $$p = vi = \frac{v^2}{R} = i^2R$$
+                </div>
+                
+                <h2>Conductance</h2>
+                
+                <p>Conductance is the reciprocal of resistance, denoted by symbol $G$ with units of siemens (S):</p>
+                
+                <div class="math-block">
+                    $$G = \frac{1}{R}$$
+                </div>
+                
+                <p>Using conductance, Ohm's Law can be expressed as:</p>
+                
+                <div class="math-block">
+                    $$i = Gv$$
+                </div>
+                
+                <h2>Kirchhoff's Laws</h2>
+                
+                <h3>Kirchhoff's Current Law (KCL)</h3>
+                
+                <p>Kirchhoff's Current Law, also known as the nodal current law, states that at any instant, the sum of currents flowing into a node equals the sum of currents flowing out of that node.</p>
+                
+                <div class="math-block">
+                    $$\sum_{k=1}^{n} i_k = 0$$
+                </div>
+                
+                <p>where currents flowing into the node are considered positive and currents flowing out are considered negative.</p>
+                
+                <h3>Kirchhoff's Voltage Law (KVL)</h3>
+                
+                <p>Kirchhoff's Voltage Law, also known as the loop voltage law, states that in any closed loop, the algebraic sum of all voltages is zero.</p>
+                
+                <div class="math-block">
+                    $$\sum_{k=1}^{n} v_k = 0$$
+                </div>
+                
+                <h2>Series and Parallel Resistors</h2>
+                
+                <h3>Series Resistors</h3>
+                
+                <p>When resistor elements are connected in series, the total resistance equals the sum of individual resistances:</p>
+                
+                <div class="math-block">
+                    $$R_{total} = R_1 + R_2 + R_3 + \ldots + R_n = \sum_{k=1}^{n} R_k$$
+                </div>
+                
+                <h3>Parallel Resistors</h3>
+                
+                <p>When resistor elements are connected in parallel, the reciprocal of the total resistance equals the sum of the reciprocals of individual resistances:</p>
+                
+                <div class="math-block">
+                    $$\frac{1}{R_{total}} = \frac{1}{R_1} + \frac{1}{R_2} + \frac{1}{R_3} + \ldots + \frac{1}{R_n} = \sum_{k=1}^{n} \frac{1}{R_k}$$
+                </div>
+                
+                <p>For the special case of two parallel resistors:</p>
+                
+                <div class="math-block">
+                    $$R_{total} = \frac{R_1 R_2}{R_1 + R_2}$$
+                </div>
+                
+                <h2>Practical Application Examples</h2>
+                
+                <h3>Example 1: Simple Resistor Circuit</h3>
+                
+                <p>Given a $12V$ voltage source connected to a $4Ω$ resistor, calculate:</p>
+                
+                <ol>
+                    <li>The current through the resistor</li>
+                    <li>The power consumed by the resistor</li>
+                </ol>
+                
+                <p><strong>Solution:</strong></p>
+                
+                <p>1. Using Ohm's Law:</p>
+                <div class="math-block">
+                    $$i = \frac{v}{R} = \frac{12V}{4Ω} = 3A$$
+                </div>
+                
+                <p>2. Power calculation:</p>
+                <div class="math-block">
+                    $$p = vi = 12V \times 3A = 36W$$
+                </div>
+                
+                <p>Alternatively, using another power formula for verification:</p>
+                <div class="math-block">
+                    $$p = i^2R = (3A)^2 \times 4Ω = 36W$$
+                </div>
+                
+                <h3>Example 2: Parallel Resistors</h3>
+                
+                <p>Two resistors $R_1 = 6Ω$ and $R_2 = 3Ω$ are connected in parallel. Calculate the equivalent resistance.</p>
+                
+                <p><strong>Solution:</strong></p>
+                
+                <div class="math-block">
+                    $$R_{eq} = \frac{R_1 R_2}{R_1 + R_2} = \frac{6Ω \times 3Ω}{6Ω + 3Ω} = \frac{18}{9} = 2Ω$$
+                </div>
+                
+                <blockquote>
+                    "The essence of circuit analysis lies in understanding the interrelationships between these fundamental variables. Mastering the mathematical relationships between voltage, current, resistance, and power provides the key to circuit analysis." — Circuit Analysis Fundamentals
+                </blockquote>
+                
+                <h2>Conclusion</h2>
+                
+                <p>Understanding circuit variables is the foundation of circuit analysis. By mastering the mathematical relationships between voltage, current, resistance, and power, we can:</p>
+                
+                <ul>
+                    <li>Analyze both simple and complex circuits</li>
+                    <li>Calculate various circuit parameters</li>
+                    <li>Design circuits that meet specific requirements</li>
+                    <li>Understand energy transfer and conversion in circuits</li>
+                </ul>
+                
+                <p>These fundamental concepts are not only applicable to DC circuits but are equally important in AC circuits, digital circuits, and complex electronic systems. As technology advances and circuits become increasingly complex, these basic mathematical relationships remain the core tools for understanding and analyzing circuit behavior.</p>
+            </main>
+        </div>
+    </div>
+</body>
+</html> 
