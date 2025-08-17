@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Resistive Circuits</title>
+  <meta name="description" content="Simple Resistive Circuits — consolidated notes" />
+  <meta name="date" content="2025-08-17" />
+  <meta name="article:date" content="2025-08-17" />
+  <meta name="keywords" content="Simple Resistive Circuits, Resistors in Series, Resistors in Parallel, Voltage Divider, Current Divider" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <style>
+    body { line-height: 1.85; }
+    .page-container { max-width: 900px; margin: 0 auto; background: #fff; padding: 32px 24px; box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+    header.article-header { margin-bottom: 28px; }
+    header.article-header h1 { font-weight: 600; font-size: 2rem; margin-bottom: 6px; }
+    header.article-header .meta { color: #666; font-size: .95rem; }
+
+    .section-card { background: #fff; border: 1px solid #eee; border-radius: 10px; box-shadow: 0 6px 14px rgba(0,0,0,.04); padding: 18px 18px; margin: 18px 0; }
+    .section-card h2 { font-size: 1.35rem; margin: 4px 0 12px; }
+    .section-card h3 { font-size: 1.1rem; margin: 10px 0 8px; }
+
+    .two-col { display: grid; gap: 14px; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+    .example-card { border: 1px solid #eee; border-radius: 10px; padding: 12px; background: #fafafa; }
+    .example-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .example-grid { grid-template-columns: 1fr 1fr; } }
+    .example-body h4 { margin: 0 0 6px; font-size: 1rem; }
+
+    .math-block { background: #f7f7f9; border-left: 4px solid #c9d4ff; padding: 10px 12px; margin: 10px 0; text-align: center; }
+
+    .note { font-style: italic; color: #444; }
+
+    figure { margin: 10px 0; }
+    img { max-width: 100%; height: auto; display: block; }
+    figcaption { color: #666; font-size: .9rem; margin-top: 6px; }
+    p { margin: 8px 0; }
+  </style>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']],
+        tags: 'none'
+      },
+      options: { renderActions: { addMenu: [] } }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <main class="page-container">
+    <header class="article-header">
+      <h1 class="article-title">Simple Resistive Circuits</h1>
+      <div class="meta">Date: 2025-08-17</div>
+    </header>
+
+    <div class="section-card">
+      <h2>1. Resistors in Series</h2>
+      <p>Equivalent:</p>
+      <div class="math-block">$$ R_{eq}=\sum_{i=1}^{k} R_i \;=\; R_1 + R_2 + \cdots + R_k $$</div>
+
+      <figure>
+        <img src="../Assets/Simple Resistive Circuits/fig 3.4.png" alt="Black-box equivalent for a resistive network in series" />
+        <figcaption>Figure 3.4 The black box equivalent of the circuit</figcaption>
+      </figure>
+    </div>
+
+    <div class="section-card">
+      <h2>2. Resistors in Parallel</h2>
+      <p> </p>
+      <div class="math-block" style="text-align: left;">
+        $$ \frac{1}{R_{eq}} = \sum_{i=1}^{k} \frac{1}{R_i} = \frac{1}{R_1} + \frac{1}{R_2} + \cdots + \frac{1}{R_k} $$
+      </div>
+      <div class="math-block">$$ G_{eq} = \sum G_i $$</div>
+
+      <div class="two-col">
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.5.png" alt="Resistors in parallel network" />
+          <figcaption>Figure 3.5 Resistors in parallel</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.7.png" alt="Parallel resistors replaced by a single equivalent resistor" />
+          <figcaption>Figure 3.7 Replacing the parallel network with a single equivalent resistor</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>3. Voltage and Current Divider</h2>
+
+      <h3>Voltage divider</h3>
+      <p> </p>
+      <div class="math-block" style="text-align: left;">
+        $$ v_1 = v_s \\frac{R_1}{R_1 + R_2} \\
+        v_2 = v_s \\frac{R_2}{R_1 + R_2} $$
+      </div>
+
+      <figure>
+        <img src="../Assets/Simple Resistive Circuits/fig 3.12.png" alt="Voltage divider circuit and indicated currents/voltages" />
+        <figcaption>Figure 3.12 Voltage-divider circuit</figcaption>
+      </figure>
+
+      <h3>Current divider</h3>
+      <p> </p>
+      <div class="math-block" style="text-align: left;">
+        $$ i_1 = i_s \\frac{R_2}{R_1 + R_2} \\
+        i_2 = i_s \\frac{R_1}{R_1 + R_2} $$
+      </div>
+
+      <figure>
+        <img src="../Assets/Simple Resistive Circuits/fig 3.15.png" alt="Current divider circuit" />
+        <figcaption>Figure 3.15 The current-divider circuit</figcaption>
+      </figure>
+    </div>
+
+    <div class="section-card">
+      <h2>4. Voltage and Current Division Equations</h2>
+
+      <h3>Voltage Division Equation</h3>
+      <p> </p>
+      <div class="math-block" style="text-align: left;">
+        $$
+        v_j = \frac{R_j}{R_{eq}} \, v \\
+        R_{eq} = R_1 + R_2 + \cdots + R_n = \sum_{i=1}^{n} R_i
+        $$
+      </div>
+
+      <div class="two-col">
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.18.png" alt="Circuit used to illustrate voltage division" />
+          <figcaption>Figure 3.18 A circuit used to illustrate voltage division</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.19.png" alt="Circuit used to illustrate current division" />
+          <figcaption>Figure 3.19 A circuit used to illustrate current division</figcaption>
+        </figure>
+      </div>
+
+      <h3>Current Division Equation</h3>
+      <p> </p>
+      <div class="math-block" style="text-align: left;">
+        $$
+        i_j = \frac{R_{eq}}{R_j} \, i \\
+        R_{eq} = R_1 \\parallel R_2 \\parallel \cdots \\parallel R_n = \left( \sum_{i=1}^{n} \frac{1}{R_i} \right)^{-1}
+        $$
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>5. Measuring Voltage and Current</h2>
+      <p>Ideal ammeter -> 0 Ω</p>
+      <p>Ideal voltmeter -> ∞ Ω</p>
+      <p>meters Digital -> Discrete Time, less Resistance, precision</p>
+      <p>Analog -> directional meter movement</p>
+
+      <div class="two-col">
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.21.png" alt="Ammeter and voltmeter connection for measuring current in R1 and voltage across R2" />
+          <figcaption>Figure 3.21 An ammeter connected to measure the current in R1 and a voltmeter connected to measure the voltage across R2</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/fig 3.22.png" alt="Short-circuit model for ideal ammeter and open-circuit model for ideal voltmeter" />
+          <figcaption>Figure 3.22 A short-circuit model for the ideal ammeter, and an open-circuit model for the ideal voltmeter</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="section-card">
+      <h2>6. Measuring Resistance - The Wheatstone Bridge</h2>
+
+      <div class="two-col">
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/3.26.png" alt="The Wheatstone bridge circuit with R1, R2, R3, and unknown Rx" />
+          <figcaption>Figure 3.26 The Wheatstone bridge circuit</figcaption>
+        </figure>
+        <div>
+          <p>We use this structure to determine the unknown resistor Rx, using 2 known resistors R1, R2, and a variable resistor R3, if the meter is 0 after adjusting R3, that means</p>
+          <p> </p>
+          <div class="math-block">$$ \frac{R_1}{R_3} = \frac{R_2}{R_x} $$</div>
+          <p>thus</p>
+          <div class="math-block">$$ R_x = \frac{R_2}{R_1} \, R_3 $$</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-card">
+      <h2>7. Delta-to-Wye (pi - to - Tee) Equivalent Circuits</h2>
+      <p class="note">Δ - Y are equivalent, no matter it's Δ or Y, the resistance between 2 nodes must be equal</p>
+
+      <div class="two-col">
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/3.29.png" alt="A Δ configuration viewed as a π configuration" />
+          <figcaption>Figure 3.29 A Δ configuration viewed as a π configuration</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Simple Resistive Circuits/3.30.png" alt="A Y structure viewed as a T structure" />
+          <figcaption>Figure 3.30 A Y structure viewed as a T structure</figcaption>
+        </figure>
+      </div>
+
+      <figure>
+        <img src="../Assets/Simple Resistive Circuits/3.31.png" alt="The Δ-to-Y transformation" />
+        <figcaption>Figure 3.31 The Δ-to-Y transformation</figcaption>
+      </figure>
+
+      <p>Thus we can derive:</p>
+      <div class="math-block" style="text-align: left;">
+        $$
+        R_{ab} = \frac{R_c\,(R_a + R_b)}{R_a + R_b + R_c} = R_1 + R_2 \\
+        R_{bc} = \frac{R_a\,(R_b + R_c)}{R_a + R_b + R_c} = R_2 + R_3 \\
+        R_{ca} = \frac{R_b\,(R_c + R_a)}{R_a + R_b + R_c} = R_1 + R_3
+        $$
+      </div>
+
+      <div class="math-block" style="text-align: left;">
+        $$
+        R_1 = \frac{R_b R_c}{R_a + R_b + R_c} \\
+        R_2 = \frac{R_a R_c}{R_a + R_b + R_c} \\
+        R_3 = \frac{R_a R_b}{R_a + R_b + R_c}
+        $$
+      </div>
+
+      <div class="math-block" style="text-align: left;">
+        $$
+        R_a = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_1} \\
+        R_b = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_2} \\
+        R_c = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_3}
+        $$
+      </div>
+
+      <p>Take this for example, look at fig 3.29</p>
+      <div class="math-block" style="text-align: left;">
+        $$
+        R_{eq} = R_c \,\parallel\, (R_a + R_b) = \frac{R_c (R_a + R_b)}{R_a + R_b + R_c}
+        $$
+      </div>
+    </div>
+  </main>
+</body>
+</html>
