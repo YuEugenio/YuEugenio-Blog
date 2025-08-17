@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Elements: Sources, Resistance, and Kirchhoff's Laws - YuEugenio's Blog</title>
+  <meta name="article:date" content="2025-08-17">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']]
+      }
+    };
+  </script>
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.85; }
+    .article-header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.25rem; }
+    .article-title { font-size: 2.1rem; margin-bottom: 0.6rem; color: #1a1a1a; }
+    .article-meta { color: #666; font-size: 0.9rem; }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    h2 { margin-top: 2rem; margin-bottom: 0.8rem; color: #1a1a1a; font-size: 1.45rem; }
+    h3 { margin-top: 1.2rem; margin-bottom: 0.5rem; color: #333; font-size: 1.15rem; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 0.4rem 0; }
+    figure { margin: 1rem auto; text-align: center; }
+    figure img { max-width: 100%; height: auto; border: 1px solid #e9e9e9; background: #fff; }
+    figure figcaption { color: #666; font-size: 0.9rem; margin-top: 0.4rem; }
+    .math-block { margin: 0.75rem 0; padding: 0.6rem 0.9rem; background: #fafafa; border-left: 3px solid #e1e1e1; overflow-x: auto; }
+    .note { color: #555; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="article-content">
+      <a href="../index.html" class="back-link">← Back to Home</a>
+
+      <header class="article-header">
+        <h1 class="article-title">Circuit Elements: Sources, Resistance, and Kirchhoff's Laws</h1>
+        <div class="article-meta">
+          <span>Aug 17, 2025</span> · <span>Notes</span> · <span>Circuit Elements</span>
+        </div>
+      </header>
+
+      <main>
+        <p>
+          Notes for Chapter 2 on circuit elements: ideal sources (independent and dependent), electrical resistance and Ohm's law,
+          and Kirchhoff's laws (KCL/KVL). Equations are formatted with LaTeX and figures are embedded from the course materials.
+        </p>
+
+        <h2>1. Voltage and Current Sources</h2>
+        <p>
+          An <strong>ideal source</strong> maintains a prescribed voltage or current across its terminals, regardless of the current/voltage across those terminals.
+        </p>
+
+        <h3>1.1 Independent Ideal Sources</h3>
+        <p>The source value is specified by itself alone (independent of the rest of the circuit).</p>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.1.png" alt="Independent ideal voltage source and current source" />
+          <figcaption>Fig. 2.1 — Independent ideal voltage source (a) and current source (b).</figcaption>
+        </figure>
+
+        <h3>1.2 Dependent (Controlled) Ideal Sources</h3>
+        <p>
+          Source value depends on some other voltage or current in the circuit. The four ideal controlled-source types are:
+        </p>
+        <ul>
+          <li>Voltage-controlled voltage source (VCVS): $v_s = \mu v_x$</li>
+          <li>Current-controlled voltage source (CCVS): $v_s = \rho i_x$</li>
+          <li>Voltage-controlled current source (VCCS): $i_s = \alpha v_x$</li>
+          <li>Current-controlled current source (CCCS): $i_s = \beta i_x$</li>
+        </ul>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.2.png" alt="Dependent source symbols: VCVS, CCVS, VCCS, CCCS" />
+          <figcaption>Fig. 2.2 — Symbols for the four dependent sources.</figcaption>
+        </figure>
+        <p class="note">These ideal sources are <em>active</em> elements (capable of delivering energy). Passive elements (e.g., resistors) cannot deliver energy.</p>
+
+        <h2>2. Electrical Resistance (Ohm's Law)</h2>
+        <p>Ohm's law: $v = iR$. The reciprocal of resistance is conductance $G$.</p>
+        <div class="math-block">$$G = \frac{1}{R}\;\text{(siemens, S)} = \frac{1}{R}\;\text{(mho, \u2127^{-1})}$$</div>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.5.png" alt="Resistor symbol" />
+          <figcaption>Fig. 2.5 — Circuit symbol for a resistor of resistance $R$.</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.6.png" alt="Reference directions for v and i at a resistor's terminals" />
+          <figcaption>Fig. 2.6 — Two possible reference choices for $v$ and $i$ at a resistor's terminals.</figcaption>
+        </figure>
+        <p><strong>Power in a resistor</strong> (always absorbed for passive sign convention):</p>
+        <div class="math-block">$$p = vi = i^2 R = \frac{v^2}{R}$$</div>
+
+        <h2>3. Kirchhoff's Laws</h2>
+        <h3>3.1 Kirchhoff's Current Law (KCL)</h3>
+        <p>The algebraic sum of currents at any node is zero.</p>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.15.png" alt="Circuit model example for KCL/KVL annotations" />
+          <figcaption>Fig. 2.15 — Example circuit with assigned current and voltage variables.</figcaption>
+        </figure>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.16.png" alt="Example 2.6 circuit for applying KCL" />
+          <figcaption>Fig. 2.16 — Circuit for Example 2.6 (applying KCL).</figcaption>
+        </figure>
+
+        <h3>3.2 Kirchhoff's Voltage Law (KVL)</h3>
+        <p>The algebraic sum of voltages around any closed path is zero.</p>
+        <figure>
+          <img src="../Assets/Circuit%20Elements/fig%202.17.png" alt="Example 2.7 circuit for applying KVL" />
+          <figcaption>Fig. 2.17 — Circuit for Example 2.7 (applying KVL).</figcaption>
+        </figure>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
