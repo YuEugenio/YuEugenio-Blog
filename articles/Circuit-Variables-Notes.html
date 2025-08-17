@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Circuit Variables: Core Concepts (Notes) - YuEugenio's Blog</title>
+  <title>Circuit Variables: Core Concepts - YuEugenio's Blog</title>
   <meta name="article:date" content="2025-08-17">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,57 +37,38 @@
       <a href="../index.html" class="back-link">← Back to Home</a>
 
       <header class="article-header">
-        <h1 class="article-title">Circuit Variables: Core Concepts (Notes)</h1>
+        <h1 class="article-title">Circuit Variables: Core Concepts</h1>
         <div class="article-meta">
           <span>Aug 17, 2025</span> · <span>Notes</span> · <span>Circuit Analysis</span>
         </div>
       </header>
 
       <main>
-        <p>
-          Consolidated notes for Chapter 1: Circuit Variables, covering definitions of
-          voltage, current, power/energy, and the passive sign convention (PSC). Equations are formatted with LaTeX.
-        </p>
 
         <h2>A. Core Concepts</h2>
 
-        <h3>1) Voltage (Potential Difference)</h3>
+        <h3>(1) Voltage (Potential Difference)</h3>
         <p>Energy required to move a unit charge through an element, measured in volts (V).</p>
         <div class="math-block">$$v = \frac{\mathrm{d}w}{\mathrm{d}q}$$</div>
 
-        <h3>2) Current</h3>
+        <h3>(2) Current</h3>
         <p>Rate of flow of electric charge, measured in amperes (A).</p>
         <div class="math-block">$$i = \frac{\mathrm{d}q}{\mathrm{d}t}$$</div>
 
-        <h3>3) Power and Energy</h3>
+        <h3>(3) Power and Energy</h3>
         <p>Power $p$ is the rate at which energy $w$ is generated or absorbed over time, measured in watts (W).</p>
         <div class="math-block">$$p = \frac{\mathrm{d}w}{\mathrm{d}t} = \frac{\mathrm{d}w}{\mathrm{d}q}\,\frac{\mathrm{d}q}{\mathrm{d}t} = v\,i$$</div>
 
-        <h3>4) Passive Sign Convention (PSC)</h3>
+        <h3>(4) Passive Sign Convention (PSC)</h3>
         <p>
-          A standard to determine whether power is absorbed or supplied by an element.
-          Mark one terminal "+" and the other "-". If the reference current enters the terminal marked "+":
+          A standard convention to determine whether power is absorbed or supplied by an element.
+          Mark one terminal "+" and the other "-". 
         </p>
         <ul>
-          <li><strong>Absorbing power</strong>: $p = +v i > 0$ (element consumes power).</li>
-          <li><strong>Supplying power</strong>: $p = +v i < 0$ (element delivers power).</li>
-        </ul>
-        <p class="note">If the reference current is defined entering the "-" terminal, then $p = -v i$ for PSC consistency.</p>
-
-        <h2>B. Quick Relationships</h2>
-        <ul>
-          <li>From $v = iR$: $i = \dfrac{v}{R}$, $R = \dfrac{v}{i}$.</li>
-          <li>Power forms: $p = vi = \dfrac{v^2}{R} = i^2 R$.</li>
+          <li>If the reference current enters the terminal marked "+" : <strong>Absorbing power</strong> : $p > 0$ (element consumes power).</li>
+          <li>If the reference current leaves the terminal marked "+" : <strong>Supplying power</strong> : $p < 0$ (element delivers power).</li>
         </ul>
 
-        <h2>C. Units</h2>
-        <ul>
-          <li>Voltage: volt (V)</li>
-          <li>Current: ampere (A)</li>
-          <li>Resistance: ohm ($\Omega$)</li>
-          <li>Power: watt (W)</li>
-          <li>Energy: joule (J)</li>
-        </ul>
       </main>
     </div>
   </div>
