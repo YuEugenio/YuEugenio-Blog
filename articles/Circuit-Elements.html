@@ -31,10 +31,8 @@
     figure { margin: 1rem auto; text-align: center; }
     figure img { max-width: 100%; height: auto; border: 1px solid #e9e9e9; background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     figure figcaption { color: #666; font-size: 0.9rem; margin-top: 0.4rem; }
-    .math-block { margin: 0.75rem 0; padding: 0.6rem 0.9rem; background: #fafafa; border-left: 3px solid #e1e1e1; overflow-x: auto; font-family: Menlo, Consolas, Monaco, 'Liberation Mono', monospace; font-size: 0.98rem; }
+    .math-block { margin: 1rem 0; padding: 0.9rem 1rem; background: #f9f9f9; border-left: 3px solid #ddd; overflow-x: auto; text-align: center; }
     .note { color: #555; font-style: italic; }
-    .equation-callout { margin: 0.75rem 0; padding: 0.7rem 0.95rem; background: #fffbe6; border: 1px solid #f3e7a6; border-left: 4px solid #f2c037; border-radius: 8px; }
-    .equation-callout p { margin: 0; }
     .example-card { margin: 1.2rem 0 1.4rem; padding: 1rem 1rem 1.1rem; border: 1px solid #e8e8e8; border-radius: 10px; background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%); }
     .example-grid { display: grid; grid-template-columns: 1fr; gap: 1rem 1.25rem; align-items: start; }
     .example-body { padding: 0.25rem 0.25rem; }
@@ -94,11 +92,15 @@
           </figure>
         </div>
         <p class="note">Be careful with the sign of v !!!</p>
-        <div class="equation-callout"><p>Ohm's Law : $v = iR$ .</p></div>
+        <p>Ohm's Law :</p>
+        <div class="math-block">$$v = iR$$ .</div>
         <p>The reciprocal of the resistance is conductance ;</p>
-        <div class="equation-callout"><p>$G = 1 / R$ ( S ) .</p></div>
-        <div class="equation-callout"><p>Also : $G = 1 / R$ mho ( Ω^-1 )</p></div>
-        <div class="equation-callout"><p>Power in a resistor : $p = i^2 R$ ; $p = v^2 / R$ .</p></div>
+        <div class="math-block">$$G = 1 / R$$ ( S ) .</div>
+        <p>Also :</p>
+        <div class="math-block">$$G = 1 / R$$ mho ( Ω^-1 )</div>
+        <p>Power in a resistor :</p>
+        <div class="math-block">$$p = i^2 R$$ ;</div>
+        <div class="math-block">$$p = v^2 / R$$ .</div>
         </div>
 
         <div class="section-card">
@@ -110,15 +112,15 @@
         <p>Kirchhoff's current law (KCL) : The algebraic sum of all the currents at any node in a circuit equals zero</p>
         <p>Applying Kirchhoff's current law to the four nodes in the circuit shown in Fig. 2.15, using the convention that currents leaving a node are considered positive, yields four equations:</p>
         <div class="math-block">
-          node a &nbsp;&nbsp; $i_s - i_1 = 0$ , &nbsp;&nbsp; (2.16)<br>
-          node b &nbsp;&nbsp; $i_1 + i_c = 0$ , &nbsp;&nbsp; (2.17)<br>
-          node c &nbsp;&nbsp; $- i_c - i_l = 0$ , &nbsp;&nbsp; (2.18)<br>
-          node d &nbsp;&nbsp; $i_l - i_s = 0$ . &nbsp;&nbsp; (2.19)
+          node a &nbsp;&nbsp; $i_s - i_1$ &nbsp;&nbsp;<br>
+          node b &nbsp;&nbsp; $i_1 + i_c$ &nbsp;&nbsp;<br>
+          node c &nbsp;&nbsp; $- i_c - i_l$ &nbsp;&nbsp;<br>
+          node d &nbsp;&nbsp; $i_l - i_s$ &nbsp;&nbsp;<br>
         </div>
 
         <p>Kirchhoff's voltage law (KVL) : The algebraic sum of all the voltages around any closed path in a circuit equals 0.</p>
         <p>We now apply Kirchhoff's voltage law to the circuit shown in Fig. 2.15. We elect to trace the closed path clockwise, assigning a positive algebraic sign to voltage drops. Starting at node d leads to the expression</p>
-        <div class="math-block">$v_l - v_c + v_1 - v_s = 0$ , &nbsp; (2.20)</div>
+        <div class="math-block">$v_l - v_c + v_1 - v_s = 0$ &nbsp;<br></div>
         </div>
 
         <div class="section-card">
@@ -137,10 +139,10 @@
               <h5 class="solution-title">Solution</h5>
               <p>In writing the equations, we use a positive sign for a current leaving a node. The four equations are</p>
               <div class="math-block">
-                node a &nbsp;&nbsp; $i_1 + i_4 - i_2 - i_5 = 0$ ,<br>
-                node b &nbsp;&nbsp; $i_2 + i_3 - i_1 - i_b - i_a = 0$ ,<br>
-                node c &nbsp;&nbsp; $i_b - i_3 - i_4 - i_c = 0$ ,<br>
-                node d &nbsp;&nbsp; $i_5 + i_a + i_c = 0$ .
+                node a &nbsp;&nbsp; $i_1 + i_4 - i_2 - i_5 = 0$ &nbsp;<br>
+                node b &nbsp;&nbsp; $i_2 + i_3 - i_1 - i_b - i_a = 0$ &nbsp;<br>
+                node c &nbsp;&nbsp; $i_b - i_3 - i_4 - i_c = 0$ &nbsp;<br>
+                node d &nbsp;&nbsp; $i_5 + i_a + i_c = 0$ &nbsp;<br>
               </div>
             </div>
           </div>
@@ -159,10 +161,10 @@
               <h5 class="solution-title">Solution</h5>
               <p>In writing the equations, we use a positive sign for a voltage drop. The four equations are</p>
               <div class="math-block">
-                path a &nbsp;&nbsp; $- v_1 + v_2 + v_4 - v_b - v_3 = 0$ ,<br>
-                path b &nbsp;&nbsp; $- v_a + v_3 + v_5 = 0$ ,<br>
-                path c &nbsp;&nbsp; $v_b - v_4 - v_c - v_6 = 0$ ,<br>
-                path d &nbsp;&nbsp; $- v_a - v_1 + v_2 - v_c + v_7 - v_d = 0$ .
+                path a &nbsp;&nbsp; $- v_1 + v_2 + v_4 - v_b - v_3 = 0$ &nbsp;<br>
+                path b &nbsp;&nbsp; $- v_a + v_3 + v_5 = 0$ &nbsp;<br>
+                path c &nbsp;&nbsp; $v_b - v_4 - v_c - v_6 = 0$ &nbsp;<br>
+                path d &nbsp;&nbsp; $- v_a - v_1 + v_2 - v_c + v_7 - v_d = 0$ &nbsp;<br>
               </div>
             </div>
           </div>
