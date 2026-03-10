@@ -23,7 +23,6 @@ const MATH_CONFIG = {
     
     // CDN 链接
     cdn: {
-        polyfill: 'https://polyfill.io/v3/polyfill.min.js?features=es6',
         mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
     }
 };
@@ -71,32 +70,22 @@ const loadMathJax = () => {
             reject(new Error('MathJax loading timeout'));
         }, 10000); // 10秒超时
         
-        // 加载 polyfill
-        const polyfillScript = document.createElement('script');
-        polyfillScript.src = MATH_CONFIG.cdn.polyfill;
-        polyfillScript.onload = () => {
-            // 设置 MathJax 配置
-            window.MathJax = MATH_CONFIG.config;
-            
-            // 加载 MathJax
-            const mathjaxScript = document.createElement('script');
-            mathjaxScript.src = MATH_CONFIG.cdn.mathjax;
-            mathjaxScript.async = true;
-            mathjaxScript.onload = () => {
-                clearTimeout(timeout);
-                resolve();
-            };
-            mathjaxScript.onerror = () => {
-                clearTimeout(timeout);
-                reject(new Error('Failed to load MathJax script'));
-            };
-            document.head.appendChild(mathjaxScript);
-        };
-        polyfillScript.onerror = () => {
+        // 设置 MathJax 配置
+        window.MathJax = MATH_CONFIG.config;
+
+        // 加载 MathJax
+        const mathjaxScript = document.createElement('script');
+        mathjaxScript.src = MATH_CONFIG.cdn.mathjax;
+        mathjaxScript.async = true;
+        mathjaxScript.onload = () => {
             clearTimeout(timeout);
-            reject(new Error('Failed to load polyfill script'));
+            resolve();
         };
-        document.head.appendChild(polyfillScript);
+        mathjaxScript.onerror = () => {
+            clearTimeout(timeout);
+            reject(new Error('Failed to load MathJax script'));
+        };
+        document.head.appendChild(mathjaxScript);
     });
 };
 
