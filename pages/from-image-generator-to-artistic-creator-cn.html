@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIGC：如何从“图像生成器”走向“艺术创作家”？ - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-10">
+  <meta name="article:section" content="tech-insights">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.9;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.6rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2.08rem;
+      line-height: 1.32;
+      margin-bottom: 0.8rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .article-subtitle {
+      max-width: 690px;
+      margin: 0 auto 0.85rem;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .article-meta {
+      color: #666;
+      font-size: 0.9rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .paper-body {
+      color: #2f2f2f;
+      font-size: 1rem;
+    }
+
+    .paper-body h2 {
+      margin: 2.3rem 0 0.9rem;
+      color: #1a1a1a;
+      font-size: 1.34rem;
+      font-weight: normal;
+    }
+
+    .paper-body h3 {
+      margin: 1.6rem 0 0.7rem;
+      color: #1a1a1a;
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+
+    .paper-body p {
+      margin: 0 0 1rem;
+    }
+
+    .paper-body ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .paper-body li {
+      margin: 0.3rem 0;
+    }
+
+    .paper-body .lead,
+    .paper-body .keywords {
+      color: #333;
+    }
+
+    .paper-body .label {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .references {
+      margin-top: 2rem;
+      padding-top: 0.2rem;
+    }
+
+    .references li {
+      margin-bottom: 0.48rem;
+      line-height: 1.68;
+    }
+
+
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 1.2rem 0.95rem 1.6rem;
+      }
+
+      .article-title {
+        font-size: 1.68rem;
+      }
+
+      .article-subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/From-Image-Generator-to-Artistic-Creator.html" data-lang-route-cn="./from-image-generator-to-artistic-creator-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./tech-insights.html" class="back-link">← 返回技术洞察</a>
+
+      <header class="article-header">
+        <h1 class="article-title">AIGC：如何从“图像生成器”走向“艺术创作家”？——面向动漫与高细粒度风格生成的预训练、监督微调与强化对齐研究综述</h1>
+        <p class="article-subtitle">From Image Generator to Artistic Creator: A Survey of Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation</p>
+        <div class="article-meta">March 10, 2026</div>
+      </header>
+
+      <main class="paper-body">
+        <p class="lead"><span class="label">摘要。</span>过去两年，文生图系统在写实图像、指令跟随与商业化部署上取得了显著突破，但“高质量生成”并不等于“艺术性创作”。尤其在动漫与插画场景中，AIGC 仍普遍面临风格同质化、细粒度艺术语义缺失、构图推理不足、个性化表达不稳定以及审美偏好对齐不充分等问题。本文基于截至 2026 年 3 月的公开研究，围绕预训练（pretraining）、监督微调（SFT）与强化对齐（RL / post-training）三个范式，系统分析 AIGC 从“图像生成器”迈向“艺术创作家”的关键瓶颈与可行路径。本文认为，问题的核心不在于像素保真度，而在于艺术语义能否被表示、分解、迁移与对齐：在预训练阶段，长尾风格分布、caption 噪声和标签粒度不足限制了模型对艺术家级风格的建模；在 SFT 阶段，LoRA 仍是小样本个性化创作最现实的开放技术路径，但多 LoRA 融合、角色—风格解耦与一致性控制仍缺乏统一框架；在 RL 阶段，偏好学习能够改善“好不好”“美不美”，却无法替代缺失的风格知识学习。进一步地，概念擦除、VLM + Human-in-the-Loop 的混合标注工程，以及 Visual CoT 所代表的“先规划、后生成”范式，正在分别进入上述三个技术层级，并共同推动 AIGC 向更可解释、更可控、也更接近艺术协作主体的方向演进。本文最终提出：真正使 AIGC 接近“艺术创作家”的，不是单一模型规模的继续膨胀，而是数据语义工程、个性化参数高效学习与多目标偏好对齐的协同设计。</p>
+
+        <p class="keywords"><span class="label">关键词。</span>AIGC；文生图；动漫生成；扩散模型；LoRA；概念擦除；偏好对齐；Visual CoT</p>
+
+        <h2>1 引言</h2>
+        <p>AIGC 图像生成的发展经历了从 GAN 到扩散模型、再到流匹配与 Diffusion Transformer 的持续跃迁。Transformer 架构奠定了大规模语义建模的基础（Vaswani et al., 2017），潜空间扩散将高分辨率图像生成推向实用阶段（Rombach et al., 2022），而 Flow Matching、MM-DiT 与 Rectified Flow 等路线进一步提升了采样效率、文本理解与图像质量（Lipman et al., 2022；Esser et al., 2024）。到 2025 年，SANA 与 Z-Image 等工作已经表明，开源图像基础模型正在从“规模竞赛”转向“架构—数据—训练效率”的系统优化（SANA, 2024；Z-Image Team, 2025）。</p>
+        <p>然而，技术进步并未自动回答一个更具艺术学与认知科学意味的问题：AIGC 能否从“图像生成器”进化为“艺术创作家”？如果说前者意味着“根据文本合成一个足够像的图像”，那么后者至少还要求模型具备三类更高层能力：其一，对风格、构图、笔触、色调、叙事氛围等高阶艺术语义的稳定理解；其二，在复杂场景中进行中间规划与多对象协调；其三，对人类审美偏好、创作者个体习惯与合规边界进行细粒度对齐。现实中，AIGC 在写实图像上已经高度逼真，但在动漫、插画与艺术风格生成上仍经常暴露所谓“AI 味”：构图趋同、光影模板化、人物比例程式化、表情与肢体缺乏风格个性、跨图一致性差。这说明，当前模型更像是一个大规模视觉统计拟合器，而非真正理解艺术形式的创作主体。</p>
+        <p>本文的基本观点是：AIGC 未能成为“艺术创作家”，根本原因不在于模型不会生成图像，而在于它尚未在“艺术语义的表示—学习—对齐”三条链路上建立闭环。预训练决定模型能否“看见”艺术语义，SFT 决定模型能否“学会某位艺术家或某种个体风格”，RL 决定模型能否输出“更符合人类偏好且更具控制性”的结果。围绕这一判断，本文将对三种范式分别展开分析。</p>
+
+        <h2>2 问题重述：为什么“写实成功”不等于“艺术理解成功”</h2>
+        <p>写实图像与动漫 / 插画图像的难度差异，并不只是“数据量多寡”的问题，更是“约束结构”是否一致的问题。真实世界图像虽然同样包含风格差异，但它们共享更强的物理先验：光照、透视、人体与物体形态总体受现实规律约束，因此模型可以借助海量互联网图像学习较稳定的视觉流形。相比之下，动漫与插画是高度风格化的视觉系统，其笔触、轮廓、夸张比例、上色逻辑、镜头语言乃至叙事氛围都允许偏离现实规律，而且不同艺术家之间的差异常常发生在高层语义空间，而非低层像素空间。也就是说，动漫生成并不是“更简单的图像生成”，恰恰是“更复杂的风格知识建模”。</p>
+        <p>因此，本文主张将“艺术家级风格”视为高细粒度建模中的一个近似原子单位。它既不是简单的标签，也不是单一颜色模板，而是由笔触密度、线条组织、阴影颗粒、透视习惯、人体程式、构图偏好、情绪氛围等多维语义共同构成的复合概念。当前 AIGC 的局限正在于：基础模型能够学到“大类风格”与“通用对象”，却往往学不到稀有、细粒度、长尾的艺术家级差异；而一旦某种头部风格在训练分布中占据支配地位，模型就会在采样时回落到统计上更“安全”的默认视觉模式，表现为用户所感知的强烈“AI 味”。</p>
+
+        <h2>3 预训练范式：决定模型能否“看见”艺术语义</h2>
+        <h3>3.1 数据分布决定风格可见性</h3>
+        <p>预训练的本质是让模型形成一个对图文联合分布的可压缩近似。对于图像生成而言，模型擅长什么、不擅长什么，首先取决于训练分布中什么被充分观察，什么长期处于长尾。近年来的工作已经表明，Diffusion / Flow 系统在大规模数据与模型扩展下能获得显著收益，但这种收益首先发生在高频、可复用、语义边界清晰的概念上，而不是自动发生在高度个体化的艺术风格上（Rombach et al., 2022；Esser et al., 2024）。</p>
+        <p>对于动漫 / 插画领域，这一问题更为尖锐。即便在专门的动漫语料中，不同作品、不同作者、不同视觉流派的分布也是极不均衡的。NovelAI Diffusion V3 的技术报告清楚显示，动漫图像模型高度依赖精细标签体系、数据清洗与训练策略优化，说明仅有“动漫数据”并不足够，关键在于是否拥有高质量、可解析、风格敏感的监督信号（Ossa et al., 2024）。换言之，预训练并非天然不适合艺术风格建模，而是当下大多数预训练数据无法把“艺术风格”表达成模型可学习、可泛化、可调用的结构化语义。</p>
+
+        <h3>3.2 从弱 caption 到结构化语义：VLM + Human-in-the-Loop 应成为预训练数据工程主线</h3>
+        <p>近两年的一个重要共识是：图像生成的上限并不只由模型结构决定，同样深受文本监督质量制约。OpenAI 在 DALL·E 3 的报告中强调，高密度、准确的合成 caption 能显著改善复杂提示跟随；Google 的 RECAP 进一步表明，对训练语料进行原则化重标注，可以同时提升图像质量和语义保真度；TokenCompose 则把监督从全局 caption 推进到 token 级对齐，从而增强对象级语义组合能力（Betker et al., 2023；Segalis et al., 2023；Wang et al., 2024）。</p>
+        <p>这意味着，未来预训练的关键增益点很可能不再是粗放式增加图文对数量，而是将标签体系从松散 caption / Tag，升级为面向艺术生成的结构化语义本体。本文认为，艺术数据的标注至少应包含对象、构图、镜头、色彩映射、光影逻辑、线条风格、材质表达、角色面部程式、肢体夸张方式等多个层级。需要特别指出的是，这里的“VLM + Human-in-the-Loop 混合标注工程”并不是某一篇论文已经完全定型的标准方案，而是基于 DALL·E 3、RECAP、TokenCompose 等数据中心路线作出的归纳性推断：由 VLM 负责初筛、重描述与一致性检查，由少量领域专家负责纠偏、锚定与本体维护，可能比完全自动标注更适合动漫与艺术生成。原因在于，VLM 虽然能大幅降低标注成本，但仍存在幻觉、忽略细节、误判风格归因等问题；而在艺术数据中，这些偏差恰恰会直接转化为风格污染。</p>
+
+        <h3>3.3 概念擦除与先验再平衡</h3>
+        <p>概念擦除（concept unlearning）近年来多被放在安全、版权和有害内容治理语境下讨论，但对艺术生成而言，它还有一个常被忽略的功能：先验再平衡。Erasing Concepts from Diffusion Models、Forget-Me-Not、AdvUnlearn 与 SAeUron 等研究已经证明，扩散模型中的目标概念可以通过权重编辑、对抗式遗忘或可解释特征干预被部分消除，同时尽量保留其它能力（Gandikota et al., 2023；Zhang et al., 2024；Cywiński and Deja, 2025）。</p>
+        <p>把这一思路放回动漫生成，一个更具建设性的用法是：在加载小众艺术家 LoRA 或进行少样本个性化学习之前，先对基础模型中过度支配的“默认头部风格”“模板化构图”或某些强先验进行适度抑制，从而为后续的个体风格适配腾出表示空间。也就是说，概念擦除不只是“删掉不想要的内容”，也可以是“降低头部风格的垄断程度”。当然，现有研究也提醒我们，unlearning 必须在鲁棒性、可逆性与基础能力保留之间做权衡，不能把它浪漫化为一键“去 AI 味”工具；更合理的定位，是把它看作预训练后、SFT 前的一道先验整形工序。</p>
+
+        <h3>3.4 可控性与推理</h3>
+        <p>Visual CoT 是一种新的图像生成范式，它完成了从描述到规划生成过程的内部解构。动漫创作通常涉及复杂的空间排布和角色表情。GVCoT（生成式视觉思维链）框架通过以下两步重构生成逻辑：首先，模型在生成最终图像前，先生成一系列空间线索，如角色骨架、构图热力图或局部修补方案；然后，基于这些“中间思考步骤”进行最终像素的填充。实验证明，这种“先推理再创作”的模式显著增强了模型对复杂指令的理解能力，特别是在处理多人物遮挡关系和精细背景互动时，其表现远超传统的一步式扩散生成。结合精细化的语义构建，这为高可控与结构化图像生成带来了新的技术路线。</p>
+
+        <h3>3.5 预训练阶段的结论</h3>
+        <p>综上，预训练阶段真正要解决的不是“模型是否足够大”，而是“艺术语义是否被看见”。对动漫和插画生成而言，未来最重要的预训练议题不是继续用通用互联网弱监督来放大统计拟合能力，而是建设高质量、结构化、可解释、带有专家纠偏机制的数据管线，并辅以先验再平衡机制。这一方向同样解释了为什么 2025 年后的开源前沿模型开始强调训练效率、数据基础设施与后训练协同，而非单纯参数扩张（SANA, 2024；Z-Image Team, 2025）。</p>
+
+        <h2>4 监督微调范式：决定模型能否“学会某位艺术家”</h2>
+        <h3>4.1 SFT 的任务不是补全世界知识，而是学习个体化偏移</h3>
+        <p>预训练的强项在于学习“世界中通常存在什么”，而 SFT 的价值在于学习“特定创作者想要什么”。当某位艺术家的作品从未在大规模公开语料中出现，或者只以极少量样本出现时，预训练模型几乎不可能仅凭提示词就稳定复现其独特风格。此时，监督微调成为把通用视觉知识转化为个体化表达的必要手段。</p>
+        <p>个性化生成路线已经形成相对清晰的技术谱系：Textual Inversion 通过学习新词向量在冻结模型中注入概念；DreamBooth 通过少样本微调实现主体绑定；Custom Diffusion 则进一步处理多概念定制问题（Gal et al., 2022；Ruiz et al., 2022；Kumari et al., 2022）。这些方法证明，小样本定制是可行的，但其成功高度依赖基础模型对相关语义的先验可达性。换言之，SFT 不是凭空创造风格，而是在已有视觉语义空间中重新组织、加强或偏移某些表示。</p>
+
+        <h3>4.2 为什么 LoRA 仍然是最重要的现实路线</h3>
+        <p>从训练方式上看，FFT 与大范围 PFT 虽然表达能力强，但在图像基础模型上代价高、过拟合风险大、易引发灾难性遗忘，也不利于社区复用；PEFT 尤其是 LoRA，则因参数量小、部署灵活、可与基座模型解耦，成为当前个性化艺术生成最现实的开放路径（Hu et al., 2021）。在小样本艺术风格学习中，LoRA 的关键优势不只是“便宜”，而是它天然支持模块化、版本化和组合化：不同角色、风格、服装、表情、场景可以被拆成多个轻量适配器，而非被迫固化到一个不可解释的大模型里。</p>
+        <p>这正是为什么围绕 LoRA 的研究在 2025 年后反而继续活跃。K-LoRA 试图在不重新训练的条件下实现内容—风格融合，ConsisLoRA 聚焦内容与风格一致性，CLoRA 通过对比式测试时组合提升多 LoRA 协同，FreeFuse 则把多主体融合推进到更可用的生成场景（Ouyang et al., 2025；ConsisLoRA, 2025；Meral et al., 2025；FreeFuse, 2025）。这些工作共同说明：LoRA 的研究重点已经从“能不能微调”转向“如何组合、如何路由、如何避免泄漏和污染”。</p>
+
+        <h3>4.3 多 LoRA 时代的核心矛盾：风格、角色与一致性如何解耦</h3>
+        <p>在艺术创作任务中，单一 LoRA 很少足够。实际需求往往是：给定某位角色、某种画风、某一场景与某种镜头语言，要求模型在多人物互动中保持身份不混、风格不漂、构图不崩。问题在于，现有多 LoRA 组合大都缺少统一的可解释机制：风格 LoRA 与角色 LoRA 容易发生特征串扰，不同层、不同扩散步的作用强度难以统一控制，多角色场景又会进一步放大一致性问题。</p>
+        <p>因此，SFT 阶段未来最重要的工作，不只是继续训练新的 LoRA，而是建立风格—角色—构图的分层表示与可路由组合机制。这里，前文提出的“VLM + Human-in-the-Loop 结构化标注”会再次发挥作用：如果微调数据能够把风格拆成更细的语义槽位，例如线条、色调、明暗组织、材质表现和人物比例程式，那么 LoRA 的学习对象就不必再是一个过于模糊的“整体风格包”，而能更精确地适配可解释子空间。</p>
+
+        <h3>4.4 闭源强模型的出现，并不消解 LoRA 的现实意义</h3>
+        <p>需要补充说明的是，闭源商业系统已经在即用性上达到极高水平。LMArena 官方博客在介绍 nano-banana 时，明确将其能力概括为复杂指令跟随、身份保持与上下文一致性；而在 LMArena 于 2026 年 1 月 25 日更新的 Image Edit 榜单中，gemini-3-pro-image-preview-2k（nano-banana-pro）位列第 2，仅次于同期的 chatgpt-image-latest-high-fidelity。这些公开信号支持一个谨慎推断：Nano Banana Pro 一类闭源模型在 zero / one / few-shot 场景具备很强的“拿来即用”能力，能够较好捕获高级风格语义并保持较高一致性。需要强调的是，这一判断主要来自公开演示与公共排行榜，而非一套完全可复现实验报告（LMArena Team, 2025；LMArena, 2026）。</p>
+        <p>但正因为如此，它们也暴露出另一层局限：闭源系统的训练数据、后训练细节、参数接口与组合机制不可见，导致其难以被复现实验、难以进行低成本领域迁移，也难以为开源社区沉淀可学习、可审计、可组合的技术资产。Z-Image 的技术报告甚至直接把 Nano Banana Pro 和 Seedream 4.0 视为“当前由闭源系统主导的高性能图像生成格局”的代表，并把“可在消费级硬件上微调和推理的开源模型”作为明确目标（Z-Image Team, 2025）。因此，从 scalability 与 learnability 角度看，LoRA 范式在 2026 年不仅没有过时，反而因为闭源系统的不可学习性而获得了更强的现实意义：它依旧是开放社区进行个性化创作、领域迁移和可解释迭代的核心基础设施。</p>
+
+        <h2>5 强化学习范式：决定模型是否“更好、更美、更可控”</h2>
+        <h3>5.1 RL 回答的是“偏好”问题，而非“存在性”问题</h3>
+        <p>如果说预训练与 SFT 主要决定“模型知不知道某种语义、学不学得会某种风格”，那么 RL 更直接回答“结果是否更符合人类偏好”。文本到图像领域的这一方向已经形成较完整链条：早期工作通过人类反馈训练奖励模型并进行对齐；Human Preference Score 与 HPS v2 为图像偏好评估提供了更贴近人类判断的自动指标；Pick-a-Pic 则提供了开放的人类偏好数据；Diffusion-DPO、Diffusion-KTO 与 Scalable Ranked Preference Optimization 进一步把偏好学习推进到更高效、更可扩展的后训练范式（Lee et al., 2023；Wu et al., 2023a；Kirstain et al., 2023；Wu et al., 2023b；Wallace et al., 2023；Li et al., 2024；Karthik et al., 2024）。</p>
+        <p>对艺术生成来说，RL / post-training 的价值主要体现在四个方面：一是改善美学质量与图像完整性；二是增强提示词遵循和构图合理性；三是抑制模板化“AI 味”；四是进行安全与合规对齐。也因此，RL 更像是一个“选择器”和“校正器”，它能把模型从“可以生成”推向“更像人类想要的生成”。</p>
+
+        <h3>5.2 为什么“只靠 RL 学艺术家风格”并不现实</h3>
+        <p>尽管如此，RL 并不能单独解决本文最核心的问题。若要通过 RL 对齐某位特定艺术家的高层风格语义，一方面可能首先需要足够多的、关于该风格“好 / 坏”“更像 / 不像”的偏好数据；另一方面，RL 的范式如果想要真正解决这个问题，可能需要对艺术家风格进一步分解并建立量化模型以构建显式奖励模型，那就远比我们之前所说的去把复杂语义封装成一个艺术家风格要复杂得多，这是一个跨领域的建模问题。艺术风格涉及如笔触质感、阴影颗粒、色调和谐、透视一致性与造型程式化等等高层次语义，CVPR 2022 的一项研究就曾指出，动漫风格的量化建模极具挑战性。针对这一问题目前学界暂时还是空白。如果能完成这一艺术风格语义建模的工作，那将为整个文生图产业奠定不可磨灭的基础框架，大大提高 AIGC 模型的可解释性。</p>
+        <p>因此，对“能否通过强化学习进一步弱化预训练偏见、增强多样化和个性化艺术表达”的回答应当是：已有明确讨论，而且已取得初步成果，但 RL 当前更适合做偏好校准，而不是做风格知识的第一性学习。换言之，RL 可以让模型在已有可达的风格空间里更接近人类选择，但很难在缺乏语义表示和监督数据的前提下，凭空补出一个本来就没有被学到的艺术家级风格。</p>
+
+        <h2>6 结论</h2>
+        <p>AIGC 从“图像生成器”走向“艺术创作家”，本质上不是一个单纯追求分辨率、采样速度或参数规模的问题，而是一个关于艺术语义表示、个体风格学习与人类偏好对齐的系统工程。本文基于最新公开研究得出三点结论。</p>
+        <p>第一，预训练阶段的首要任务不是继续无差别吞入弱监督图文对，而是建设结构化、可解释、面向艺术语义的数据工程体系，并通过概念擦除等方法对头部先验进行再平衡。第二，SFT 阶段仍应以 LoRA 为核心，因为个性化艺术生成的现实需求决定了开放、轻量、可组合、可复用的参数高效学习方式不会退出历史舞台；真正的瓶颈在于多 LoRA 的统一融合与风格—角色—构图的可解释解耦。第三，RL 对“美不美”“好不好”“合不合规”至关重要，适合作为选择器与再校正器，但是如果考虑复杂的量化建模工程，从 RL 的范式上也有可能对高级语义的强化学习产生深远影响。</p>
+        <p>因此，如果要对本文标题中的问题给出一个直接回答，那么答案是：AIGC 要想真正从图像生成器进化为艺术创作家，必须同时完成三件事——在预训练中“看见”艺术语义，在 SFT 中“学会”个体风格，在 RL 中“对齐”人类偏好。三者缺一不可。对于动漫与高细粒度艺术生成来说，真正值得投入的不是单一闭源神经网络的神秘能力，而是开放语义基础设施、模块化适配能力和可解释偏好学习机制。只有当模型不仅会画，而且知道为什么这样画、为谁这样画、如何按创作者意图这样画时，AIGC 才可能从“生成器”真正走向“创作家”。</p>
+
+        <div class="references">
+          <h2>参考文献</h2>
+          <ul>
+            <li>Vaswani, A., et al. (2017). <em>Attention Is All You Need.</em> NeurIPS.</li>
+            <li>Rombach, R., et al. (2022). <em>High-Resolution Image Synthesis with Latent Diffusion Models.</em> CVPR.</li>
+            <li>Lipman, Y., et al. (2022). <em>Flow Matching for Generative Modeling.</em></li>
+            <li>Esser, P., et al. (2024). <em>Scaling Rectified Flow Transformers for High-Resolution Image Synthesis.</em></li>
+            <li><em>SANA: Efficient High-Resolution Image Synthesis with Linear Diffusion Transformers</em> (2024).</li>
+            <li>Z-Image Team, et al. (2025). <em>Z-Image: An Efficient Image Generation Foundation Model with Single-Stream Diffusion Transformer.</em></li>
+            <li>Betker, J., et al. (2023). <em>Improving Image Generation with Better Captions.</em> OpenAI.</li>
+            <li>Segalis, E., et al. (2023). <em>A Picture is Worth a Thousand Words: Principled Recaptioning Improves Image Generation.</em></li>
+            <li>Wang, X., et al. (2024). <em>TokenCompose: Text-to-Image Diffusion with Token-level Supervision.</em> CVPR.</li>
+            <li>Ossa, J., Doğan, E., Birch, A., &amp; Johnson, F. (2024). <em>Improvements to SDXL in NovelAI Diffusion V3.</em></li>
+            <li>Gandikota, R., et al. (2023). <em>Erasing Concepts from Diffusion Models.</em> ICCV.</li>
+            <li>Zhang, E., et al. (2023). <em>Forget-Me-Not: Learning to Forget in Text-to-Image Diffusion Models.</em></li>
+            <li>Zhang, Y., et al. (2024). <em>Defensive Unlearning with Adversarial Training for Robust Concept Erasure in Diffusion Models.</em></li>
+            <li>Cywiński, B., &amp; Deja, K. (2025). <em>SAeUron: Interpretable Concept Unlearning in Diffusion Models with Sparse Autoencoders.</em></li>
+            <li>Gal, R., et al. (2022). <em>An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion.</em></li>
+            <li>Ruiz, N., et al. (2022). <em>DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation.</em></li>
+            <li>Kumari, N., et al. (2022). <em>Multi-Concept Customization of Text-to-Image Diffusion.</em></li>
+            <li>Hu, E. J., et al. (2021). <em>LoRA: Low-Rank Adaptation of Large Language Models.</em></li>
+            <li>Ouyang, X., et al. (2025). <em>K-LoRA: Unlocking Training-Free Fusion of Any Subject and Style LoRAs.</em> CVPR 2025.</li>
+            <li><em>ConsisLoRA: Enhancing Content and Style Consistency for LoRA-based Style Transfer</em> (2025).</li>
+            <li>Meral, A., et al. (2025). <em>Contrastive Test-Time Composition of Multiple LoRA Models for Image Generation (CLoRA).</em> ICCV 2025.</li>
+            <li><em>FreeFuse: Multi-Subject LoRA Fusion via Auto Masking at Test Time</em> (2025).</li>
+            <li>Lee, K., et al. (2023). <em>Aligning Text-to-Image Models using Human Feedback.</em></li>
+            <li>Wu, X., et al. (2023a). <em>Human Preference Score: Better Aligning Text-to-Image Models with Human Preference.</em></li>
+            <li>Kirstain, Y., et al. (2023). <em>Pick-a-Pic: An Open Dataset of User Preferences for Text-to-Image Generation.</em></li>
+            <li>Wu, X., et al. (2023b). <em>Human Preference Score v2: A Solid Benchmark for Evaluating Human Preferences of Text-to-Image Synthesis.</em></li>
+            <li>Wallace, B., et al. (2023). <em>Diffusion Model Alignment Using Direct Preference Optimization.</em></li>
+            <li>Li, S., et al. (2024). <em>Aligning Diffusion Models by Optimizing Human Utility.</em></li>
+            <li>Karthik, S., et al. (2024). <em>Scalable Ranked Preference Optimization for Text-to-Image Generation.</em></li>
+            <li>Yang, L., et al. (2024). <em>Mastering Text-to-Image Diffusion: Recaptioning, Planning, and Generating with Multimodal LLMs.</em> ICML 2024.</li>
+            <li>Guo, Z., et al. (2025). <em>Can We Generate Images with CoT? Let's Verify and Reinforce Image Generation Step by Step.</em></li>
+            <li>Yin, Z., et al. (2026). <em>Generative Visual Chain-of-Thought for Image Editing.</em></li>
+            <li>LMArena Team. (2025, Sep 16). <em>Nano-Banana (Gemini 2.5 Flash Image): Try it on LMArena.</em></li>
+            <li>LMArena. (Last updated Jan 25, 2026). <em>Image Edit Leaderboard.</em></li>
+          </ul>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/language.js"></script>
+</body>
+</html>

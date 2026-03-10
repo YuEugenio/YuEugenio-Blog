@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me - YuEugenio's Blog</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.8; }
+    .article-header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2.2rem; margin-bottom: 0.6rem; color: #1a1a1a; font-weight: normal; }
+    .article-meta { color: #666; font-size: 0.9rem; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+
+    .identity { margin-top: 0.7rem; color: #555; font-size: 0.95rem; }
+    .identity div { margin: 0.25rem 0; }
+
+    .section-card {
+      margin: 1.15rem 0 1.35rem;
+      padding: 1rem 1.15rem;
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .section-card h2 {
+      margin: 0.2rem 0 0.7rem;
+      color: #1a1a1a;
+      font-size: 1.35rem;
+      letter-spacing: 0.2px;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.35rem 1rem;
+      align-items: start;
+      margin: 0.35rem 0 0.2rem;
+    }
+
+    .entry-main { min-width: 0; }
+    .entry-title { margin: 0; font-size: 1.02rem; color: #1a1a1a; font-weight: 700; }
+    .entry-sub { margin: 0.1rem 0 0; font-size: 0.94rem; color: #555; font-style: italic; }
+    .entry-meta { font-size: 0.9rem; color: #666; white-space: nowrap; text-align: right; }
+    .entry-sub.no-wrap { white-space: nowrap; }
+
+    .role-line {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.35rem 1rem;
+      align-items: start;
+      margin-top: 0.1rem;
+    }
+
+    .role-line .entry-sub {
+      margin: 0;
+    }
+
+    .role-line .entry-meta {
+      margin: 0;
+    }
+
+    .mini-title {
+      margin: 0.8rem 0 0.15rem;
+      color: #333;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
+
+    .info-list {
+      margin: 0.45rem 0 0.2rem;
+      padding-left: 1.15rem;
+    }
+
+    .info-list li {
+      margin: 0.28rem 0;
+      color: #2f2f2f;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0.45rem 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .skills-grid dt {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .skills-grid dd {
+      margin: 0;
+      color: #333;
+    }
+
+    .tag-line {
+      color: #333;
+      font-size: 1.02rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .entry {
+        grid-template-columns: 1fr;
+      }
+
+      .entry-meta {
+        text-align: left;
+        white-space: normal;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="en" data-lang-route-en="./about-me.html" data-lang-route-cn="./about-me-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a
+        href="../index.html"
+        class="back-link"
+        data-i18n-en="← Back to Home"
+        data-i18n-cn="← 返回首页"
+      >← Back to Home</a>
+
+      <header class="article-header">
+        <h1
+          class="article-title"
+          data-i18n-en="About Me"
+          data-i18n-cn="关于我"
+        >About Me</h1>
+        <div class="identity">
+          <div><strong>Yu Jun</strong></div>
+          <div>yujunsysu@gmail.com · +86 13660016250</div>
+          <div>Guangzhou, Guangdong, China</div>
+        </div>
+      </header>
+
+      <main>
+        <section class="section-card">
+          <h2>Target Position</h2>
+          <p class="tag-line">AI Product Manager</p>
+        </section>
+
+        <section class="section-card">
+          <h2>Education</h2>
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">Sun Yat-sen University</p>
+              <p class="entry-sub no-wrap">School of Computer Science and Engineering</p>
+              <p class="entry-sub no-wrap">National Information Management · Bachelor of Management</p>
+            </div>
+            <div class="entry-meta">Guangzhou, China · Expected June 2026</div>
+          </div>
+          <ul class="info-list">
+            <li>GPA: 3.3 / 5.0 (83 / 100)</li>
+            <li>Relevant Coursework: Management Principles, Management Statistics, Intellectual Property Law, Trade Secret Protection, Artificial Intelligence, Artificial Neural Networks, Pattern Recognition.</li>
+          </ul>
+        </section>
+
+        <section class="section-card">
+          <h2>Overview</h2>
+          <ul class="info-list">
+            <li>AI-native practitioner with intensive daily use of AI tools and continuous tracking of frontier AI technologies, open-source ecosystems, and research papers.</li>
+            <li>System-level understanding of AIGC, Agent, and LLM ecosystems, with strong curiosity and fast self-learning capability.</li>
+            <li>Experience in startup execution, product management, and cross-functional project delivery, with strong technical reading and writing in English.</li>
+          </ul>
+        </section>
+
+        <section class="section-card">
+          <h2>Technical Skills</h2>
+          <dl class="skills-grid">
+            <dt>Languages</dt>
+            <dd>C++, Python</dd>
+
+            <dt>Frameworks</dt>
+            <dd>PyTorch, LangChain</dd>
+
+            <dt>Systems</dt>
+            <dd>Linux, OpenAI API</dd>
+
+            <dt>AI Foundations</dt>
+            <dd>Deep Learning, Neural Networks, Transformer / LLM, Diffusion Models, SFT, LoRA, Reinforcement Learning</dd>
+          </dl>
+        </section>
+
+        <section class="section-card">
+          <h2>Experience</h2>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">Beijing Unisecurity Co., Ltd</p>
+              <div class="role-line">
+                <p class="entry-sub">AIPM Intern</p>
+                <p class="entry-meta">Beijing, China · 2024</p>
+              </div>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Participated in technical solution design for an internal employee-training RAG system.</li>
+            <li>Contributed to requirement analysis, architecture discussions, enterprise knowledge-base design, and retrieval workflow planning.</li>
+          </ul>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">School Unity Cultural Technology Co., Ltd</p>
+              <div class="role-line">
+                <p class="entry-sub">Co-founder</p>
+                <p class="entry-meta">Guangzhou, China · Feb 2024 - Present</p>
+              </div>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Led product and technology strategy, drafted business plans, and built and maintained enterprise knowledge-base systems.</li>
+            <li>Served as product owner for the corporate mini-program, driving planning, requirement design, and cross-team execution.</li>
+            <li>Used Vibe Coding methods to support MVP development and iterative delivery.</li>
+          </ul>
+        </section>
+
+        <section class="section-card">
+          <h2>Projects</h2>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">Agent Skills RAG System</p>
+              <p class="entry-sub">Knowledge Orchestration Framework · LangChain</p>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Implemented an Agent + Skills + RAG framework supporting multi-tool collaboration and context enhancement.</li>
+          </ul>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">Text-to-Image System</p>
+              <p class="entry-sub">Generative Model Engineering · Anima Base Model + Python</p>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Built an end-to-end text-to-image pipeline and implemented LoRA fine-tuning and deployment workflows.</li>
+          </ul>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">OPC Multi-Agent Collaboration Framework</p>
+              <p class="entry-sub">Collaborative Agent Execution · LangChain</p>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Designed and implemented a multi-agent coordination framework for complex task execution.</li>
+          </ul>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">OpenClaw Private Deployment</p>
+              <p class="entry-sub">System Deployment and Validation · Localization Practice</p>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Completed private deployment and hands-on validation tests for OpenClaw.</li>
+          </ul>
+        </section>
+
+        <section class="section-card">
+          <h2>Research and Course Projects</h2>
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">Bachelor's Thesis</p>
+              <p class="entry-sub">Intelligent PES red-aesthetic assessment for maxillary anterior implants based on deep learning</p>
+            </div>
+          </div>
+          <ul class="info-list">
+            <li>Optimized input paradigm and base model, mitigating baseline overfitting under low-sample conditions.</li>
+            <li>Improved model performance with AUC converging to 0.7.</li>
+          </ul>
+
+          <h3 class="mini-title">Related Course Project</h3>
+          <ul class="info-list">
+            <li><strong>Transformer CN-EN Translation:</strong> Implemented a Transformer-based Chinese-English machine translation system.</li>
+            <li><strong>ResNet Fine-grained Classification:</strong> Completed fine-grained classification on CUB-200-2011 using ResNet.</li>
+          </ul>
+        </section>
+
+        <section class="section-card">
+          <h2>Awards and Certificates</h2>
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">CUMCM - Guangdong Second Prize</p>
+            </div>
+            <div class="entry-meta"><em>January 2023</em></div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">CUMCM - Guangdong Second Prize</p>
+            </div>
+            <div class="entry-meta"><em>December 2023</em></div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">COMAP ICM - Meritorious Winner</p>
+            </div>
+            <div class="entry-meta"><em>2024</em></div>
+          </div>
+
+          <ul class="info-list">
+            <li>TOEFL iBT: 94 · CET-4: 600 · CET-6: 527.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/language.js"></script>
+</body>
+</html>

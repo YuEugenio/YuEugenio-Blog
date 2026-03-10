@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Image Generator to Artistic Creator - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-10">
+  <meta name="article:section" content="tech-insights">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.85;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.6rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2.18rem;
+      line-height: 1.28;
+      margin-bottom: 0.8rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .article-subtitle {
+      max-width: 680px;
+      margin: 0 auto 0.85rem;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .article-meta {
+      color: #666;
+      font-size: 0.9rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .paper-body {
+      color: #2f2f2f;
+      font-size: 1rem;
+    }
+
+    .paper-body h2 {
+      margin: 2.3rem 0 0.9rem;
+      color: #1a1a1a;
+      font-size: 1.34rem;
+      font-weight: normal;
+    }
+
+    .paper-body h3 {
+      margin: 1.6rem 0 0.7rem;
+      color: #1a1a1a;
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+
+    .paper-body p {
+      margin: 0 0 1rem;
+    }
+
+    .paper-body ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .paper-body li {
+      margin: 0.3rem 0;
+    }
+
+    .paper-body .lead,
+    .paper-body .keywords {
+      color: #333;
+    }
+
+    .paper-body .label {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .references {
+      margin-top: 2rem;
+      padding-top: 0.2rem;
+    }
+
+    .references li {
+      margin-bottom: 0.48rem;
+      line-height: 1.6;
+    }
+
+
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 1.2rem 0.95rem 1.6rem;
+      }
+
+      .article-title {
+        font-size: 1.72rem;
+      }
+
+      .article-subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="en" data-lang-route-en="./From-Image-Generator-to-Artistic-Creator.html" data-lang-route-cn="../pages/from-image-generator-to-artistic-creator-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="../pages/tech-insights.html" class="back-link">← Back to Tech Insights</a>
+
+      <header class="article-header">
+        <h1 class="article-title">From Image Generator to Artistic Creator: A Survey of Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation</h1>
+        <p class="article-subtitle">AIGC: How Can It Move from an “Image Generator” to an “Artistic Creator”? A Survey on Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation</p>
+        <div class="article-meta">March 10, 2026</div>
+      </header>
+
+      <main class="paper-body">
+        <p class="lead"><span class="label">Abstract.</span> Over the past two years, text-to-image systems have made substantial progress in photorealistic generation, instruction following, and commercial deployment. Yet “high-quality generation” does not automatically amount to artistic creation. In anime and illustration settings in particular, AIGC still commonly suffers from stylistic homogenization, missing fine-grained artistic semantics, weak compositional reasoning, unstable personalized expression, and insufficient alignment with aesthetic preference. Based on publicly available research up to March 2026, this survey analyzes the key bottlenecks and possible technical paths for moving AIGC from an image generator toward an artistic creator through three paradigms: pretraining, supervised fine-tuning (SFT), and reinforcement alignment (RL / post-training). We argue that the core issue is not pixel fidelity, but whether artistic semantics can be represented, decomposed, transferred, and aligned. In pretraining, long-tail style distributions, caption noise, and insufficient label granularity constrain artist-level style modeling. In SFT, LoRA remains the most realistic open technical path for small-sample personalized creation, but there is still no unified framework for multi-LoRA fusion, character-style disentanglement, and consistency control. In RL, preference learning can improve whether outputs are “better” or “more beautiful,” but it cannot replace missing style knowledge. More broadly, concept erasure, VLM + Human-in-the-Loop hybrid annotation, and the “plan first, generate later” paradigm represented by Visual CoT are entering these three technical layers respectively, jointly pushing AIGC toward greater interpretability, controllability, and a role closer to an artistic collaborator. We finally argue that what truly brings AIGC closer to an artistic creator is not further inflation of model scale alone, but the coordinated design of semantic data engineering, parameter-efficient personalized learning, and multi-objective preference alignment.</p>
+
+        <p class="keywords"><span class="label">Keywords.</span> AIGC; Text-to-Image; Anime Generation; Diffusion Models; LoRA; Concept Erasure; Preference Alignment; Visual CoT</p>
+
+        <h2>1. Introduction</h2>
+        <p>The development of AIGC image generation has progressed through a continuing sequence of paradigms, from GANs to diffusion models, and then toward flow matching and Diffusion Transformers. The Transformer architecture established the foundation for large-scale semantic modeling (Vaswani et al., 2017); latent diffusion pushed high-resolution image synthesis into a practically useful stage (Rombach et al., 2022); and routes such as Flow Matching, MM-DiT, and Rectified Flow further improved sampling efficiency, text understanding, and image quality (Lipman et al., 2022; Esser et al., 2024). By 2025, works such as SANA and Z-Image had already shown that open image foundation models were shifting away from a pure “scale race” and toward system-level optimization across architecture, data, and training efficiency (SANA, 2024; Z-Image Team, 2025).</p>
+        <p>Yet technological progress has not automatically answered a more art-theoretical and cognitive-scientific question: can AIGC evolve from an “image generator” into an “artistic creator”? If the former means synthesizing an image that looks sufficiently plausible from a text prompt, the latter requires at least three higher-order capabilities: stable understanding of advanced artistic semantics such as style, composition, brushwork, tone, and narrative atmosphere; intermediate planning and multi-object coordination in complex scenes; and fine-grained alignment with human aesthetic preference, creator-specific habits, and compliance boundaries. In practice, AIGC is already highly realistic in photorealistic domains, but in anime, illustration, and artistic style generation it still frequently exposes what users often call an “AI look”: repetitive composition, templated lighting, formulaic body proportions, weak stylistic individuality in expression and gesture, and poor cross-image consistency. This suggests that current models remain closer to large-scale visual statistical fitters than to creative agents that truly understand artistic form.</p>
+        <p>The core claim of this paper is that AIGC has not yet become an artistic creator because it has failed to close the loop across three linked processes: the representation, learning, and alignment of artistic semantics. Pretraining determines whether the model can “see” artistic semantics; SFT determines whether it can “learn” a specific artist or individualized style; RL determines whether it can produce outputs that are better aligned with human preference and more controllable. The following sections analyze these three paradigms in turn.</p>
+
+        <h2>2. Problem Restatement: Why Success in Realism Does Not Equal Success in Artistic Understanding</h2>
+        <p>The difference in difficulty between realistic images and anime / illustration images is not simply a matter of dataset size; it is more fundamentally a matter of whether the underlying constraint structures are shared. Real-world imagery certainly contains stylistic variation, but it also shares stronger physical priors: lighting, perspective, human bodies, and object shapes are broadly constrained by reality. Models can therefore learn relatively stable visual manifolds from massive internet-scale data. By contrast, anime and illustration are highly stylized visual systems. Their brushwork, contours, exaggerated proportions, coloring logic, camera language, and even narrative atmosphere are all permitted to deviate from physical realism, and differences across artists often occur at the level of high-level semantic space rather than low-level pixel space. Anime generation is therefore not “simpler image generation,” but rather a harder problem of style knowledge modeling.</p>
+        <p>Accordingly, this survey argues that artist-level style should be viewed as an approximate atomic unit within fine-grained modeling. It is neither a simple label nor a single color template. Rather, it is a composite concept jointly constituted by brush density, line organization, shadow texture, perspective habits, bodily stylization, compositional preference, emotional atmosphere, and other semantic dimensions. The core limitation of current AIGC lies precisely here: foundation models can learn broad style categories and generic objects, yet often fail to learn rare, fine-grained, long-tail artist-level distinctions. Once a dominant head style occupies too much mass in the training distribution, the model tends to fall back during sampling to statistically “safer” default visual modes. This is exactly what users perceive as a strong “AI flavor.”</p>
+
+        <h2>3. The Pretraining Paradigm: Can the Model “See” Artistic Semantics?</h2>
+        <h3>3.1 Data Distribution Determines Style Visibility</h3>
+        <p>The essence of pretraining is to let a model form a compressible approximation of the joint image-text distribution. For image generation, what the model is good at and what it is not good at first depends on what has been sufficiently observed in the training distribution and what remains trapped in the long tail. Recent work has repeatedly shown that diffusion and flow systems obtain substantial gains under data and model scaling, but these gains occur first for high-frequency, reusable concepts with clear semantic boundaries, not automatically for highly individualized artistic styles (Rombach et al., 2022; Esser et al., 2024).</p>
+        <p>This issue is especially sharp in anime and illustration. Even in specifically curated anime corpora, the distributions of works, authors, and visual schools are extremely imbalanced. The technical report of NovelAI Diffusion V3 makes clear that anime image models depend heavily on fine-grained tag systems, data cleaning, and training strategy optimization. Merely possessing “anime data” is therefore not enough; what matters is whether the model receives high-quality, parsable, and style-sensitive supervisory signals (Ossa et al., 2024). Pretraining is not inherently unsuitable for artistic style modeling; rather, current training corpora usually fail to express artistic style as structured semantics that a model can learn, generalize, and call upon.</p>
+
+        <h3>3.2 From Weak Captions to Structured Semantics: VLM + Human-in-the-Loop Should Become the Main Line of Data Engineering</h3>
+        <p>One important consensus from the past two years is that the ceiling of image generation is not determined by architecture alone, but also by the quality of textual supervision. OpenAI emphasized in the DALL·E 3 report that dense and accurate synthetic captions substantially improve complex prompt following. Google’s RECAP further showed that principled recaptioning of training corpora can improve both image quality and semantic fidelity. TokenCompose pushed supervision from global captions toward token-level alignment, thereby improving object-level compositional semantics (Betker et al., 2023; Segalis et al., 2023; Wang et al., 2024).</p>
+        <p>This implies that the next crucial gain in pretraining is unlikely to come from crudely increasing the number of image-text pairs. Instead, it will likely come from upgrading label systems from loose captions and tags toward a structured semantic ontology tailored for artistic generation. We argue that annotation for artistic data should at minimum include multiple layers such as objects, composition, camera language, color mapping, lighting logic, line style, material rendering, facial stylization, and bodily exaggeration patterns. Importantly, “VLM + Human-in-the-Loop hybrid annotation” is not a fully standardized pipeline already fixed by a single paper. Rather, it is an integrative inference based on data-centric directions exemplified by DALL·E 3, RECAP, and TokenCompose: VLMs can perform initial filtering, recaptioning, and consistency checking, while a small number of domain experts handle correction, anchoring, and ontology maintenance. This may be better suited to anime and artistic generation than fully automatic labeling. The reason is that VLMs can sharply reduce annotation cost, but they still hallucinate, miss fine details, and misattribute style. In artistic data, those errors translate directly into style contamination.</p>
+
+        <h3>3.3 Concept Erasure and Prior Rebalancing</h3>
+        <p>Concept erasure has recently been discussed mostly in contexts of safety, copyright, and harmful content governance. For artistic generation, however, it also has a less discussed function: prior rebalancing. Studies such as Erasing Concepts from Diffusion Models, Forget-Me-Not, AdvUnlearn, and SAeUron show that target concepts inside diffusion models can be partially removed through weight editing, adversarial forgetting, or interpretable feature intervention, while retaining as much other capability as possible (Gandikota et al., 2023; Zhang et al., 2024; Cywiński and Deja, 2025).</p>
+        <p>Placed back into anime generation, a more constructive use of this idea is the following: before loading a niche artist LoRA or performing small-sample personalized adaptation, one can moderately suppress overly dominant “default head styles,” templated composition priors, or other strong defaults already baked into the base model. This creates representational room for subsequent individual style adaptation. In other words, concept erasure is not only about “removing unwanted content,” but also about weakening the monopoly of head styles. Existing studies also remind us that unlearning must balance robustness, reversibility, and preservation of core ability; it cannot be romanticized as a one-click “remove the AI look” tool. A better framing is to regard it as a prior-shaping step between pretraining and SFT.</p>
+
+        <h3>3.4 Controllability and Reasoning</h3>
+        <p>Visual CoT represents a new image generation paradigm by internally decomposing the generative process from description into planning. Anime creation often involves complex spatial arrangement and character expression. Frameworks such as GVCoT reconstruct generation in two stages: first the model produces intermediate spatial cues, such as character skeletons, composition heatmaps, or local repair plans; then it fills in final pixels based on these intermediate “thought steps.” Empirical evidence suggests that this “reason first, create later” pattern significantly improves the model’s understanding of complex instructions, especially in multi-character occlusion and fine-grained background interaction. Combined with fine-grained semantic construction, it opens a new technical path toward highly controllable and structurally organized image generation.</p>
+
+        <h3>3.5 Conclusion of the Pretraining Stage</h3>
+        <p>In summary, the key problem in pretraining is not whether the model is sufficiently large, but whether artistic semantics are truly visible. For anime and illustration generation, the most important future agenda is not to keep amplifying generic weakly supervised internet data, but to build high-quality, structured, interpretable data pipelines with expert correction mechanisms, supplemented by prior rebalancing methods. This also helps explain why frontier open models after 2025 increasingly emphasized training efficiency, data infrastructure, and post-training coordination, rather than pure parameter expansion (SANA, 2024; Z-Image Team, 2025).</p>
+
+        <h2>4. The Supervised Fine-Tuning Paradigm: Can the Model “Learn” a Particular Artist?</h2>
+        <h3>4.1 The Goal of SFT Is Not to Complete World Knowledge, but to Learn Personalized Shifts</h3>
+        <p>The strength of pretraining lies in learning what usually exists in the world. The value of SFT lies in learning what a particular creator actually wants. When an artist’s works never appeared in public large-scale corpora, or appeared only a few times, a pretrained model can hardly reproduce that style stably through prompting alone. Supervised fine-tuning then becomes the necessary step that transforms general visual knowledge into individualized expression.</p>
+        <p>The technical genealogy of personalized generation has become relatively clear. Textual Inversion injects new concepts into a frozen model through learned token embeddings; DreamBooth achieves subject binding through few-shot fine-tuning; and Custom Diffusion further addresses multi-concept customization (Gal et al., 2022; Ruiz et al., 2022; Kumari et al., 2022). These methods show that small-sample customization is feasible, but their success depends strongly on whether the base model already has reachable priors for the relevant semantics. SFT does not create style from nothing; it reorganizes, strengthens, or shifts existing regions of visual semantic space.</p>
+
+        <h3>4.2 Why LoRA Remains the Most Important Practical Route</h3>
+        <p>In terms of training strategy, full fine-tuning and broad parameter fine-tuning can be expressive, but for image foundation models they are expensive, prone to overfitting, vulnerable to catastrophic forgetting, and unfavorable for community reuse. Parameter-efficient fine-tuning, especially LoRA, has instead become the most realistic open route for personalized artistic generation because of its small parameter footprint, flexible deployment, and decoupling from the base model (Hu et al., 2021). In small-sample artistic style learning, the advantage of LoRA is not merely that it is cheap. Its deeper value is modularity, versionability, and composability: characters, styles, outfits, expressions, and scenes can each become lightweight adapters, rather than being hard-coded into a single opaque model.</p>
+        <p>This is exactly why research around LoRA remained active beyond 2025. K-LoRA explores content-style fusion without retraining, ConsisLoRA focuses on content and style consistency, CLoRA improves multi-LoRA collaboration through contrastive test-time composition, and FreeFuse pushes multi-subject fusion toward more usable generation scenarios (Ouyang et al., 2025; ConsisLoRA, 2025; Meral et al., 2025; FreeFuse, 2025). Collectively, these works show that the focus of LoRA research has shifted from “can it fine-tune?” to “how should multiple LoRAs be composed, routed, and prevented from leaking into one another?”</p>
+
+        <h3>4.3 The Core Contradiction in the Multi-LoRA Era: How to Disentangle Style, Character, and Consistency</h3>
+        <p>In artistic creation tasks, a single LoRA is rarely enough. Real needs often look like this: given a character, a visual style, a scene, and a camera language, the model should keep identities distinct, styles stable, and composition coherent in multi-character interactions. The problem is that most existing multi-LoRA combinations still lack a unified and interpretable mechanism. Style LoRAs and character LoRAs often interfere with one another; their effective strength across layers and diffusion steps is hard to control consistently; and multi-character scenes amplify consistency failures even further.</p>
+        <p>Accordingly, the most important future work in SFT is not simply to train more LoRAs, but to build hierarchical representations and routable combination mechanisms for style, character, and composition. Here, the “VLM + Human-in-the-Loop structured annotation” proposed earlier becomes relevant again. If fine-tuning data can decompose style into finer semantic slots such as lines, tonal organization, shading logic, material rendering, and body proportion schemes, then the target of LoRA learning no longer needs to be a vague monolithic “overall style package,” but can instead be adapted to more interpretable subspaces.</p>
+
+        <h3>4.4 The Rise of Strong Closed Models Does Not Remove the Practical Relevance of LoRA</h3>
+        <p>It is also important to note that closed commercial systems have already reached an extremely high level of immediate usability. In its official blog post on nano-banana, LMArena explicitly summarized its strengths as complex instruction following, identity preservation, and contextual consistency. On the LMArena Image Edit leaderboard updated on January 25, 2026, gemini-3-pro-image-preview-2k (nano-banana-pro) ranked second, behind only chatgpt-image-latest-high-fidelity. These public signals support a cautious inference: models such as Nano Banana Pro have strong zero-, one-, and few-shot usability, can capture higher-level style semantics reasonably well, and can maintain fairly high consistency. That said, this judgment is based mainly on public demos and public leaderboards rather than a fully reproducible benchmark report (LMArena Team, 2025; LMArena, 2026).</p>
+        <p>For exactly that reason, closed systems reveal another limitation: their training data, post-training details, parameter interfaces, and composition mechanisms remain invisible. This makes them hard to reproduce experimentally, hard to migrate across domains at low cost, and hard to turn into auditable, learnable, and composable technical assets for the open community. The Z-Image technical report even explicitly framed Nano Banana Pro and Seedream 4.0 as representatives of a high-performing image generation landscape currently dominated by closed systems, while setting as a concrete goal an open model that can be fine-tuned and inferred on consumer hardware (Z-Image Team, 2025). From the perspective of scalability and learnability, then, LoRA has not become obsolete in 2026. It has become even more important precisely because closed systems remain unlearnable. LoRA is still the key infrastructure for personalized creation, domain transfer, and interpretable iteration in the open ecosystem.</p>
+
+        <h2>5. The Reinforcement Learning Paradigm: Can the Model Become Better, More Beautiful, and More Controllable?</h2>
+        <h3>5.1 RL Answers Preference, Not Existence</h3>
+        <p>If pretraining and SFT mainly determine whether the model knows a kind of semantics and whether it can learn a given style, RL more directly answers whether results match human preference. This direction in text-to-image generation has already formed a relatively complete chain: early work trained reward models from human feedback and used them for alignment; Human Preference Score and HPS v2 provided more human-like automatic metrics; Pick-a-Pic offered open human preference data; and methods such as Diffusion-DPO, Diffusion-KTO, and Scalable Ranked Preference Optimization further pushed preference learning toward more efficient and scalable post-training paradigms (Lee et al., 2023; Wu et al., 2023a; Kirstain et al., 2023; Wu et al., 2023b; Wallace et al., 2023; Li et al., 2024; Karthik et al., 2024).</p>
+        <p>For artistic generation, the value of RL / post-training lies mainly in four aspects: improving aesthetic quality and image completeness; improving prompt adherence and compositional plausibility; suppressing templated AI flavor; and aligning safety and compliance. RL therefore functions more like a selector and corrector: it pushes a model from “able to generate” toward “able to generate what people actually prefer.”</p>
+
+        <h3>5.2 Why It Is Unrealistic to Learn Artist-Level Style Through RL Alone</h3>
+        <p>Even so, RL cannot by itself solve the central problem discussed in this paper. To align toward the high-level style semantics of a particular artist through RL, one would first need enough preference data expressing what is better or worse, more similar or less similar, for that style. More importantly, if RL is really expected to solve this problem, it may require decomposing artistic style further and constructing explicit quantitative models for reward formation. That is substantially more complex than simply packaging a complicated semantics into a single artist-style token; it becomes a genuinely cross-disciplinary modeling problem. Artistic style involves high-level semantics such as brush texture, shadow granularity, tonal harmony, perspective consistency, and stylized shape conventions. A CVPR 2022 study already pointed out that quantitative modeling of anime style is extremely challenging. At present, this area remains largely open. If such an artistic semantic modeling framework were achieved, it would lay foundational infrastructure for the entire text-to-image field and significantly improve the interpretability of AIGC models.</p>
+        <p>Therefore, to the question of whether reinforcement learning can further weaken pretraining bias and enhance diversified and personalized artistic expression, the answer should be: there has already been clear discussion and initial progress, but RL is currently better suited to preference calibration than to first-principles learning of style knowledge. In other words, RL can move a model closer to human choices within an already reachable style space, but it cannot easily conjure an artist-level style that was never properly represented or supervised in the first place.</p>
+
+        <h2>6. Conclusion</h2>
+        <p>The evolution of AIGC from an image generator to an artistic creator is not primarily a matter of resolution, sampling speed, or parameter scale. It is a systems problem involving artistic semantic representation, individualized style learning, and human preference alignment. Based on the latest public research, this survey reaches three main conclusions.</p>
+        <p>First, the pretraining stage should prioritize the construction of structured, interpretable, art-oriented data engineering pipelines, rather than continuing to absorb weakly supervised image-text pairs indiscriminately; concept erasure and related methods can also help rebalance over-dominant priors. Second, the SFT stage should still place LoRA at the center, because the real needs of personalized artistic generation ensure that open, lightweight, composable, and reusable parameter-efficient learning will not disappear; the true bottleneck lies in unified multi-LoRA fusion and interpretable disentanglement among style, character, and composition. Third, RL is crucial for whether outputs are beautiful, desirable, and compliant. It is well suited as a selector and recalibration mechanism, and if one considers the full engineering challenge of complex quantitative modeling, the RL paradigm may also exert deeper long-term influence on the reinforcement of higher-level semantics.</p>
+        <p>If the question in this paper’s title demands a direct answer, it is this: for AIGC to truly evolve from an image generator into an artistic creator, it must accomplish three things simultaneously. It must “see” artistic semantics in pretraining, “learn” individual style in SFT, and “align” with human preference in RL. None of the three can be missing. For anime and fine-grained artistic generation, the most worthwhile investment is not the mysterious power of a single closed neural network, but open semantic infrastructure, modular adaptation capability, and interpretable preference learning. Only when a model can not only draw, but also know why it draws this way, for whom it draws this way, and how to draw this way under the creator’s intent, can AIGC move from generator to creator.</p>
+
+        <div class="references">
+          <h2>References</h2>
+          <ul>
+            <li>Vaswani, A., et al. (2017). <em>Attention Is All You Need.</em> NeurIPS.</li>
+            <li>Rombach, R., et al. (2022). <em>High-Resolution Image Synthesis with Latent Diffusion Models.</em> CVPR.</li>
+            <li>Lipman, Y., et al. (2022). <em>Flow Matching for Generative Modeling.</em></li>
+            <li>Esser, P., et al. (2024). <em>Scaling Rectified Flow Transformers for High-Resolution Image Synthesis.</em></li>
+            <li><em>SANA: Efficient High-Resolution Image Synthesis with Linear Diffusion Transformers</em> (2024).</li>
+            <li>Z-Image Team, et al. (2025). <em>Z-Image: An Efficient Image Generation Foundation Model with Single-Stream Diffusion Transformer.</em></li>
+            <li>Betker, J., et al. (2023). <em>Improving Image Generation with Better Captions.</em> OpenAI.</li>
+            <li>Segalis, E., et al. (2023). <em>A Picture is Worth a Thousand Words: Principled Recaptioning Improves Image Generation.</em></li>
+            <li>Wang, X., et al. (2024). <em>TokenCompose: Text-to-Image Diffusion with Token-level Supervision.</em> CVPR.</li>
+            <li>Ossa, J., Doğan, E., Birch, A., &amp; Johnson, F. (2024). <em>Improvements to SDXL in NovelAI Diffusion V3.</em></li>
+            <li>Gandikota, R., et al. (2023). <em>Erasing Concepts from Diffusion Models.</em> ICCV.</li>
+            <li>Zhang, E., et al. (2023). <em>Forget-Me-Not: Learning to Forget in Text-to-Image Diffusion Models.</em></li>
+            <li>Zhang, Y., et al. (2024). <em>Defensive Unlearning with Adversarial Training for Robust Concept Erasure in Diffusion Models.</em></li>
+            <li>Cywiński, B., &amp; Deja, K. (2025). <em>SAeUron: Interpretable Concept Unlearning in Diffusion Models with Sparse Autoencoders.</em></li>
+            <li>Gal, R., et al. (2022). <em>An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion.</em></li>
+            <li>Ruiz, N., et al. (2022). <em>DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation.</em></li>
+            <li>Kumari, N., et al. (2022). <em>Multi-Concept Customization of Text-to-Image Diffusion.</em></li>
+            <li>Hu, E. J., et al. (2021). <em>LoRA: Low-Rank Adaptation of Large Language Models.</em></li>
+            <li>Ouyang, X., et al. (2025). <em>K-LoRA: Unlocking Training-Free Fusion of Any Subject and Style LoRAs.</em> CVPR 2025.</li>
+            <li><em>ConsisLoRA: Enhancing Content and Style Consistency for LoRA-based Style Transfer</em> (2025).</li>
+            <li>Meral, A., et al. (2025). <em>Contrastive Test-Time Composition of Multiple LoRA Models for Image Generation (CLoRA).</em> ICCV 2025.</li>
+            <li><em>FreeFuse: Multi-Subject LoRA Fusion via Auto Masking at Test Time</em> (2025).</li>
+            <li>Lee, K., et al. (2023). <em>Aligning Text-to-Image Models using Human Feedback.</em></li>
+            <li>Wu, X., et al. (2023a). <em>Human Preference Score: Better Aligning Text-to-Image Models with Human Preference.</em></li>
+            <li>Kirstain, Y., et al. (2023). <em>Pick-a-Pic: An Open Dataset of User Preferences for Text-to-Image Generation.</em></li>
+            <li>Wu, X., et al. (2023b). <em>Human Preference Score v2: A Solid Benchmark for Evaluating Human Preferences of Text-to-Image Synthesis.</em></li>
+            <li>Wallace, B., et al. (2023). <em>Diffusion Model Alignment Using Direct Preference Optimization.</em></li>
+            <li>Li, S., et al. (2024). <em>Aligning Diffusion Models by Optimizing Human Utility.</em></li>
+            <li>Karthik, S., et al. (2024). <em>Scalable Ranked Preference Optimization for Text-to-Image Generation.</em></li>
+            <li>Yang, L., et al. (2024). <em>Mastering Text-to-Image Diffusion: Recaptioning, Planning, and Generating with Multimodal LLMs.</em> ICML 2024.</li>
+            <li>Guo, Z., et al. (2025). <em>Can We Generate Images with CoT? Let's Verify and Reinforce Image Generation Step by Step.</em></li>
+            <li>Yin, Z., et al. (2026). <em>Generative Visual Chain-of-Thought for Image Editing.</em></li>
+            <li>LMArena Team. (2025, Sep 16). <em>Nano-Banana (Gemini 2.5 Flash Image): Try it on LMArena.</em></li>
+            <li>LMArena. (Last updated Jan 25, 2026). <em>Image Edit Leaderboard.</em></li>
+          </ul>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/language.js"></script>
+</body>
+</html>

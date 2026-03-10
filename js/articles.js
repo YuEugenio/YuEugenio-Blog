@@ -1,10 +1,33 @@
 // 文章数据
 const ARTICLES_DATA = [
     {
+        id: "from-image-generator-to-artistic-creator",
+        title: {
+            en: "From Image Generator to Artistic Creator: A Survey of Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation",
+            cn: "AIGC：如何从“图像生成器”走向“艺术创作家”？——面向动漫与高细粒度风格生成的预训练、监督微调与强化对齐研究综述"
+        },
+        date: "2026-03-10",
+        category: "tech-insights",
+        section: "tech-insights",
+        tags: ["aigc", "text-to-image", "anime", "diffusion models", "lora", "reinforcement learning"],
+        excerpt: {
+            en: "A survey of how AIGC can move from generic image synthesis toward artist-like creation in anime and fine-grained style generation through pretraining, SFT, and RL alignment.",
+            cn: "综述 AIGC 如何通过预训练、监督微调与强化对齐，从通用图像生成走向动漫与高细粒度风格下更接近艺术创作主体的生成范式。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/From-Image-Generator-to-Artistic-Creator.html",
+            fileEn: "articles/From-Image-Generator-to-Artistic-Creator.html",
+            fileCn: "pages/from-image-generator-to-artistic-creator-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
         id: "circuit-variables",
         title: "Circuit Variables Fundamentals",
         date: "2025-07-04",
-        category: "technology",
+        category: "studies",
+        section: "studies",
         tags: ["circuit analysis", "electrical engineering", "mathematics", "ohm's law"],
         excerpt: "Exploring the four fundamental variables in circuits: voltage, current, resistance, and power, along with their mathematical relationships. From Ohm's Law to Kirchhoff's Laws, master the foundations of circuit analysis.",
         mathPreview: "$v = iR$ and $p = vi = \\frac{v^2}{R} = i^2R$",
@@ -14,15 +37,30 @@ const ARTICLES_DATA = [
         }
     },
     {
-        id: "quantum-computing",
-        title: "Mathematical Foundations of Quantum Computing",
-        date: "2025-07-02",
-        category: "technology",
-        tags: ["quantum computing", "mathematics", "physics"],
-        excerpt: "Exploring the linear algebra and complex number theory behind quantum computing, from Hilbert spaces to quantum gate operations.",
-        mathPreview: "$$|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle$$ where $$|\\alpha|^2 + |\\beta|^2 = 1$$",
+        id: "circuit-elements",
+        title: "Chapter 2: Circuit Elements",
+        date: "2025-08-17",
+        category: "studies",
+        section: "studies",
+        tags: ["circuit elements", "electrical engineering", "kcl", "kvl"],
+        excerpt: "A structured note on ideal sources, resistance, Ohm's law, and Kirchhoff's laws, with worked examples and annotated figures.",
+        mathPreview: "$v = iR$ and $\\sum v = 0,\\ \\sum i = 0$",
         content: {
-            file: "articles/quantum-computing.html",
+            file: "articles/Circuit-Elements.html",
+            hasLaTeX: true
+        }
+    },
+    {
+        id: "simple-resistive-circuits",
+        title: "Simple Resistive Circuits",
+        date: "2025-08-17",
+        category: "studies",
+        section: "studies",
+        tags: ["resistors", "voltage divider", "current divider", "wheatstone bridge"],
+        excerpt: "Consolidated notes on series/parallel resistors, divider rules, and equivalent circuit transformations for resistive analysis.",
+        mathPreview: "$R_{eq}=\\sum R_i$ and $\\frac{1}{R_{eq}}=\\sum\\frac{1}{R_i}$",
+        content: {
+            file: "articles/Simple-Resistive-Circuits.html",
             hasLaTeX: true
         }
     }
@@ -97,6 +135,14 @@ const ArticleUtils = {
 
 // 动态文章加载器
 const ArticleLoader = {
+    resolveSitePath: (path) => {
+        if (!path) return '';
+        if (/^(https?:)?\/\//i.test(path) || path.startsWith('/')) return path;
+
+        const basePath = document.body?.dataset?.basePath || '';
+        return `${basePath}${path}`;
+    },
+
     // 侦测分支（优先 main，fallback master）
     detectBranch: async (owner, repo) => {
         const tryBranch = async (branch) => {
@@ -141,10 +187,13 @@ const ArticleLoader = {
             const limit = (SITE_CONFIG?.articles?.excerptLength) || 150;
             if (excerpt.length > limit) excerpt = excerpt.slice(0, limit) + '…';
 
-            return { title, date, excerpt };
+            // 分类：优先 meta[name=\"article:section\"]
+            const section = doc.querySelector('meta[name=\"article:section\"]')?.getAttribute('content') || '';
+
+            return { title, date, excerpt, section };
         } catch (e) {
             console.warn('Parse metadata failed for', filePath, e);
-            return { title: filePath.split('/').pop(), date: '', excerpt: '' };
+            return { title: filePath.split('/').pop(), date: '', excerpt: '', section: '' };
         }
     },
 
@@ -182,15 +231,17 @@ const ArticleLoader = {
             const articles = await Promise.all(htmlFiles.map(async (it) => {
                 const path = `articles/${it.name}`;
                 // 从站点同源读取 HTML 内容以便解析
-                let title = '', date = '', excerpt = '';
+                let title = '', date = '', excerpt = '', section = '';
                 try {
-                    const pageRes = await fetch(`${path}?v=${Date.now()}`);
+                    const resolvedPath = ArticleLoader.resolveSitePath(path);
+                    const pageRes = await fetch(`${resolvedPath}?v=${Date.now()}`);
                     if (pageRes.ok) {
                         const htmlText = await pageRes.text();
                         const meta = ArticleLoader.parseArticleMetadata(htmlText, path);
                         title = meta.title;
                         date = meta.date;
                         excerpt = meta.excerpt;
+                        section = meta.section;
                     }
                 } catch {}
 
@@ -207,7 +258,8 @@ const ArticleLoader = {
                     id,
                     title: title || it.name.replace(/\.html?$/i, ''),
                     date: date || '',
-                    category: '',
+                    category: section || '',
+                    section: section || '',
                     tags: [],
                     excerpt: excerpt || '',
                     mathPreview: null,
