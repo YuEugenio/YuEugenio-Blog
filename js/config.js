@@ -93,6 +93,13 @@ const SITE_CONFIG = {
     // 文章分类映射（缺省时会回落到 studies）
     articleSectionMap: {
         "cybersoul-product-brief": "project-briefing",
+        "greenforest-rag-project-brief": "project-briefing",
+        "langchain-learning-notes": "studies",
+        "python-basics-learning-notes": "studies",
+        "openai-api-learning-notes": "studies",
+        "semantic-search-learning-notes": "studies",
+        "agent-basics-and-demos": "studies",
+        "attention-mechanism-learning-notes": "studies",
         "circuit-variables": "studies",
         "circuit-elements": "studies",
         "simple-resistive-circuits": "studies",

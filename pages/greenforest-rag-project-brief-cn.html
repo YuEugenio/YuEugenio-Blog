@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenForest_RAG：项目简报 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="project-briefing">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .brief-body h2 { margin: 2.2rem 0 0.9rem; color: #1a1a1a; font-size: 1.34rem; font-weight: normal; }
+    .brief-body p { margin: 0 0 1rem; }
+    .brief-body ul { margin: 0.45rem 0 1rem 1.25rem; padding: 0; }
+    .brief-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.58rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/GreenForest-RAG-Project-Brief.html" data-lang-route-cn="./greenforest-rag-project-brief-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./project-briefing.html" class="back-link">← 返回项目简报</a>
+
+      <header class="article-header">
+        <h1 class="article-title">GreenForest_RAG：项目简报</h1>
+        <p class="article-subtitle">对一个基于 LangChain 的园艺知识库、当前检索问答 demo，以及已经实现的技术范围做一个整体介绍。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="brief-body">
+        <div class="summary-card">
+          <p>GreenForest_RAG 是一个围绕“萃意生机”生态阳台项目搭建的小型检索增强生成原型。它把分散在 PDF、DOCX 和 CSV 中的资料整理成一个可检索知识库，用来支持更可靠、更有依据的问题回答。</p>
+        </div>
+
+        <h2>1. GreenForest_RAG 是什么</h2>
+        <p>从项目定位上看，GreenForest_RAG 是一个面向垂直领域知识调用的实验。它处理的并不是通用网页文本，而是一组本地项目资料：其中既包含植物养护手册、植物数据库，也包含商业计划书、市场调研、私域运营资料、会议记录和工作表格。</p>
+        <p>这让它成为一个很典型的 RAG 场景：知识来源分散、文档格式混杂，而目标并不是泛泛聊天，而是让系统能够基于现有资料给出更扎实、更可追溯的回答。</p>
+
+        <h2>2. 为什么要做这个项目</h2>
+        <p>这个项目最核心的动机，是把“萃意生机”相关资料变成更容易被调用的知识资产。当信息分别散落在手册、SOP、表格和策划文档里时，直接检索并整合上下文，显然比人工逐个打开文件更高效，也比单纯依赖记忆更可靠。</p>
+        <p>因此，当前版本聚焦于一个很明确的问题：面对一个园艺与商业信息交织的垂直场景，小型本地知识库能不能提供更可靠的知识召回？</p>
+
+        <h2>3. 当前已经实现了什么</h2>
+        <ul>
+          <li>使用 <strong>LangChain UnstructuredLoader</strong> 读取本地 PDF、DOCX、CSV 等混合格式资料。</li>
+          <li>使用 <strong>RecursiveCharacterTextSplitter</strong> 进行文本切分，把长文档整理成更适合检索的语义片段。</li>
+          <li>通过兼容 OpenAI 接口的 embedding 配置生成向量表示，并改为使用环境变量管理模型参数。</li>
+          <li>使用 <strong>Chroma</strong> 做本地持久化向量存储，使知识库可以一次构建、重复调用。</li>
+          <li>提供一个简洁的命令行问答循环：先检索上下文，再在“仅基于检索结果回答”的约束下生成回复。</li>
+        </ul>
+
+        <h2>4. 当前 demo 的样子</h2>
+        <p>当前工作流被有意做得很轻：运行 <strong>`RAG.py`</strong> 后，系统会扫描本地资料、加载文档、切分文本、生成向量，并把结果写入本地 Chroma 目录；运行 <strong>`ask.py`</strong> 后，则可以直接在这个持久化知识库之上进入命令行问答。</p>
+        <p>在问答阶段，检索器会先选出最相关的若干文本片段，把它们整理成上下文，再连同问题一起送入聊天模型。如果当前资料不足以回答，提示词会优先要求系统承认不知道，而不是编造内容。</p>
+        <p>所以，现阶段的 GreenForest_RAG 还不是一个完整产品界面，也不是部署好的知识服务，而是把资料导入、索引构建、检索召回和有依据回答这条核心链路先跑通。</p>
+
+        <h2>5. 这个 demo 的意义</h2>
+        <p>GreenForest_RAG 的价值不在于界面复杂度，而在于可靠性验证。它证明了一个小型垂直资料库可以被重组为可用的知识检索系统，也说明了 RAG 的确能够让项目知识的调用更高效，同时比无约束生成更少依赖幻觉式补全。</p>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/GreenForest_RAG" target="_blank" rel="noreferrer">https://github.com/YuEugenio/GreenForest_RAG</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

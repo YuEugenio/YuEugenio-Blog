@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semantic Search Learning Notes - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.3; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.72; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.62rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="article-content">
+      <a href="../pages/studies.html" class="back-link" data-i18n-en="← Back to Studies" data-i18n-cn="← 返回学科学习">← Back to Studies</a>
+
+      <header class="article-header">
+        <h1 class="article-title">Semantic Search Learning Notes</h1>
+        <p class="article-subtitle">A study summary centered on document loading, chunking, embeddings, vector storage, retrieval, and the transition from search to minimal RAG.</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>This learning track is about how unstructured documents can be transformed into retrievable semantic memory rather than remaining as plain files.</p>
+        </div>
+
+        <h2>1. What I Focused On</h2>
+        <p>The materials in <strong>`Semantic_Search_langchain/`</strong> helped me understand the end-to-end path from raw documents to semantic retrieval. Instead of keyword matching alone, the goal is to build a system that retrieves by meaning.</p>
+
+        <h2>2. What I Practiced</h2>
+        <ul>
+          <li>Loading source documents with LangChain abstractions.</li>
+          <li>Splitting long text into chunks that balance context size and retrieval precision.</li>
+          <li>Generating embeddings for those chunks and storing them in a vector database.</li>
+          <li>Running similarity-based retrieval over the indexed content.</li>
+          <li>Extending retrieval into a minimal RAG flow so search results can support answering.</li>
+        </ul>
+
+        <h2>3. What I Learned</h2>
+        <p>The key takeaway is that semantic search is really a pipeline design problem. Retrieval quality depends on more than the embedding model alone; document quality, chunk strategy, metadata cleanliness, and retrieval settings all matter.</p>
+        <p>I also learned that semantic search is one of the most practical bridges between raw knowledge assets and usable AI products, because it gives structure to otherwise messy document collections.</p>
+
+        <h2>4. Current Outcome</h2>
+        <p>My semantic-search learning outcome is the ability to set up a small but complete retrieval loop: ingest documents, convert them into vectorized chunks, store them, and use those chunks as relevant context for downstream LLM interaction.</p>
+
+        <div class="link-card">
+          <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

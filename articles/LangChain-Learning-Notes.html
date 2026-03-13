@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LangChain Learning Notes - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.3; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.72; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.62rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="article-content">
+      <a href="../pages/studies.html" class="back-link" data-i18n-en="← Back to Studies" data-i18n-cn="← 返回学科学习">← Back to Studies</a>
+
+      <header class="article-header">
+        <h1 class="article-title">LangChain Learning Notes</h1>
+        <p class="article-subtitle">A compact record of how I learned LangChain abstractions, workflow composition, and graph-based orchestration through small experiments.</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>This study track focuses on understanding how LangChain organizes model calls, prompts, retrieval components, and workflow state into reusable application building blocks.</p>
+        </div>
+
+        <h2>1. What I Focused On</h2>
+        <p>I used this stage to understand the engineering layer around LLMs: how prompts, model wrappers, retrievers, memory, and tools are composed into a pipeline instead of being written as one large script.</p>
+        <p>The goal was not just to call a model successfully, but to understand how LangChain helps structure multi-step applications that can still be debugged, extended, and reused.</p>
+
+        <h2>2. What I Practiced</h2>
+        <ul>
+          <li>Reading and following LangChain retrieval examples to understand loaders, embeddings, vector stores, and retrievers.</li>
+          <li>Building a graph-style search workflow in <strong>`langgraphdemo.py`</strong> with separate nodes for query understanding, web search, and answer generation.</li>
+          <li>Using environment-variable based model configuration so experiments stay portable across compatible providers.</li>
+          <li>Observing how state flows between nodes instead of relying on a single prompt-only interaction.</li>
+        </ul>
+
+        <h2>3. What I Learned</h2>
+        <p>The most important lesson is that LangChain becomes especially valuable when the application logic has structure. Once a task involves retrieval, tools, branching steps, or state passing, explicit components make the system easier to reason about than a monolithic script.</p>
+        <p>I also learned that orchestration quality matters as much as model quality. Breaking a task into understand, retrieve, and synthesize often produces a cleaner result than asking one prompt to do everything at once.</p>
+
+        <h2>4. Current Outcome</h2>
+        <p>At this stage, my LangChain learning outcome is not one single product, but a working foundation: I can already organize multi-step LLM workflows, express them as reusable nodes, and connect model calls with retrieval or external search in a more systematic way.</p>
+
+        <div class="link-card">
+          <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

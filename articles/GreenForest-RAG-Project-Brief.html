@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenForest_RAG: A Project Brief - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="project-briefing">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.85; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2.08rem; line-height: 1.28; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 690px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.72; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .brief-body h2 { margin: 2.2rem 0 0.9rem; color: #1a1a1a; font-size: 1.34rem; font-weight: normal; }
+    .brief-body p { margin: 0 0 1rem; }
+    .brief-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .brief-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.66rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="en" data-lang-route-en="./GreenForest-RAG-Project-Brief.html" data-lang-route-cn="../pages/greenforest-rag-project-brief-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="../pages/project-briefing.html" class="back-link">← Back to Project Briefing</a>
+
+      <header class="article-header">
+        <h1 class="article-title">GreenForest_RAG: A Project Brief</h1>
+        <p class="article-subtitle">A general introduction to a LangChain-based gardening knowledge base, the current retrieval demo, and the implementation scope already completed.</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="brief-body">
+        <div class="summary-card">
+          <p>GreenForest_RAG is a small retrieval-augmented generation prototype built around the “萃意生机” balcony-ecology project. It turns scattered PDF, DOCX, and CSV materials into a searchable knowledge base that supports more grounded question answering.</p>
+        </div>
+
+        <h2>1. What GreenForest_RAG Is</h2>
+        <p>At the project level, GreenForest_RAG is a domain-focused knowledge retrieval experiment. The source materials are not generic web text, but a mixed local document collection that includes horticulture manuals, business planning files, market research, private-domain operation notes, meeting records, and plant data tables.</p>
+        <p>That makes the project useful as a compact but realistic RAG case: the knowledge is fragmented, the formats are heterogeneous, and the goal is not open-ended chatting, but answering questions with evidence drawn from the indexed materials.</p>
+
+        <h2>2. Why This Project Was Built</h2>
+        <p>The core motivation is to make the project knowledge around “萃意生机” easier to recall and reuse. When information is spread across manuals, SOPs, spreadsheets, and planning documents, direct retrieval becomes much more practical than depending on memory or manually opening files one by one.</p>
+        <p>So the current version focuses on one simple but important question: can a small local knowledge base provide more reliable recall for a specialized gardening-and-business context?</p>
+
+        <h2>3. What Is Already Implemented</h2>
+        <ul>
+          <li>Mixed-format document loading with <strong>LangChain UnstructuredLoader</strong> over local PDF, DOCX, and CSV files.</li>
+          <li>Chunking with <strong>RecursiveCharacterTextSplitter</strong> so long files become retrieval-friendly segments.</li>
+          <li>Embedding generation through an OpenAI-compatible interface, with environment-variable based model configuration.</li>
+          <li>Persistent vector indexing with <strong>Chroma</strong>, so the knowledge base can be rebuilt once and reused locally.</li>
+          <li>A simple CLI question-answer loop that retrieves relevant context first and then answers under a “use retrieved context only” constraint.</li>
+        </ul>
+
+        <h2>4. The Current Demo Experience</h2>
+        <p>The current workflow is intentionally lightweight. Running <strong>`RAG.py`</strong> scans the local document set, loads the available materials, splits them into chunks, embeds them, and writes the result into a local Chroma directory. Running <strong>`ask.py`</strong> then starts a command-line chat loop on top of that persisted store.</p>
+        <p>At inference time, the retriever selects the top related passages, assembles them into context, and sends the question plus retrieved evidence to the chat model. If the material is insufficient, the prompt is designed to prefer admitting uncertainty over inventing facts.</p>
+        <p>In other words, the current scope is not yet a polished application layer or a deployed product. It is the retrieval core: document ingestion, indexing, retrieval, and grounded answering.</p>
+
+        <h2>5. Why This Demo Matters</h2>
+        <p>What makes GreenForest_RAG meaningful is not interface complexity, but reliability. It demonstrates how a small, domain-specific document archive can be reorganized into a usable retrieval system, and how RAG can make project knowledge easier to call back with less hallucination risk than unconstrained generation.</p>
+
+        <div class="link-card">
+          <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/GreenForest_RAG" target="_blank" rel="noreferrer">https://github.com/YuEugenio/GreenForest_RAG</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

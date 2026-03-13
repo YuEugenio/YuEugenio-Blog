@@ -23,6 +23,28 @@ const ARTICLES_DATA = [
         }
     },
     {
+        id: "greenforest-rag-project-brief",
+        title: {
+            en: "GreenForest_RAG: A Project Brief",
+            cn: "GreenForest_RAG：项目简报"
+        },
+        date: "2026-03-13",
+        category: "project-briefing",
+        section: "project-briefing",
+        tags: ["rag", "langchain", "chroma", "retrieval", "knowledge base"],
+        excerpt: {
+            en: "A general introduction to GreenForest_RAG, the current retrieval demo, and the grounded knowledge-recall workflow already implemented.",
+            cn: "对 GreenForest_RAG、当前检索问答 demo，以及已经实现的知识召回链路做一个整体介绍。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/GreenForest-RAG-Project-Brief.html",
+            fileEn: "articles/GreenForest-RAG-Project-Brief.html",
+            fileCn: "pages/greenforest-rag-project-brief-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
         id: "from-image-generator-to-artistic-creator",
         title: {
             en: "From Image Generator to Artistic Creator: A Survey of Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation",
@@ -41,6 +63,126 @@ const ARTICLES_DATA = [
             file: "articles/From-Image-Generator-to-Artistic-Creator.html",
             fileEn: "articles/From-Image-Generator-to-Artistic-Creator.html",
             fileCn: "pages/from-image-generator-to-artistic-creator-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "langchain-learning-notes",
+        title: {
+            en: "LangChain Learning Notes",
+            cn: "LangChain 学习笔记"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["langchain", "langgraph", "workflow", "llm apps"],
+        excerpt: {
+            en: "Learning notes on LangChain abstractions, workflow composition, and graph-based orchestration through small code experiments.",
+            cn: "围绕 LangChain 抽象、工作流编排与图式 orchestration 的学习总结。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/LangChain-Learning-Notes.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "python-basics-learning-notes",
+        title: {
+            en: "Python Basics Learning Notes",
+            cn: "Python 基础学习笔记"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["python", "functions", "classes", "numpy"],
+        excerpt: {
+            en: "A compact summary of my Python fundamentals practice across syntax, functions, classes, and NumPy basics.",
+            cn: "关于 Python 语法、函数、类与 NumPy 基础练习的学习总结。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/Python-Basics-Learning-Notes.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "openai-api-learning-notes",
+        title: {
+            en: "OpenAI API Learning Notes",
+            cn: "OpenAI API 学习笔记"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["openai api", "streaming", "multimodal", "async"],
+        excerpt: {
+            en: "Notebook-based practice on chat completions, streaming responses, async requests, multimodal inputs, and multi-turn interaction.",
+            cn: "围绕对话补全、流式输出、异步请求、多模态输入与多轮对话的 API 学习总结。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/OpenAI-API-Learning-Notes.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "semantic-search-learning-notes",
+        title: {
+            en: "Semantic Search Learning Notes",
+            cn: "语义搜索学习笔记"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["semantic search", "embeddings", "vector store", "rag"],
+        excerpt: {
+            en: "A study summary on document loading, chunking, embeddings, vector storage, retrieval, and the bridge from search to minimal RAG.",
+            cn: "关于文档加载、切分、向量化、向量存储、检索以及最小 RAG 链路的学习总结。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/Semantic-Search-Learning-Notes.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "agent-basics-and-demos",
+        title: {
+            en: "Agent Basics and Demos",
+            cn: "Agent 基础与 Demo"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["agent", "react", "tools", "workflow"],
+        excerpt: {
+            en: "Early agent experiments around tool use, multi-step execution, search orchestration, and streamed reasoning-style output.",
+            cn: "围绕工具调用、多步执行、搜索编排与流式推理输出的 Agent 初步实践。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/Agent-Basics-and-Demos.html",
+            hasLaTeX: false
+        }
+    },
+    {
+        id: "attention-mechanism-learning-notes",
+        title: {
+            en: "Attention Mechanism Learning Notes",
+            cn: "注意力机制学习笔记"
+        },
+        date: "2026-03-13",
+        category: "studies",
+        section: "studies",
+        tags: ["attention", "transformer", "llm", "deep learning"],
+        excerpt: {
+            en: "A study summary based on Attention Is All You Need, from self-attention intuition to Transformer architectural blocks.",
+            cn: "基于 Attention Is All You Need，从自注意力直觉到 Transformer 结构模块的学习总结。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/Attention-Mechanism-Learning-Notes.html",
             hasLaTeX: false
         }
     },
