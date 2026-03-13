@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LangChain 学习笔记 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.6rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/LangChain-Learning-Notes.html" data-lang-route-cn="./langchain-learning-notes-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./studies.html" class="back-link">← 返回学科学习</a>
+
+      <header class="article-header">
+        <h1 class="article-title">LangChain 学习笔记</h1>
+        <p class="article-subtitle">围绕 LangChain 抽象、工作流编排与图结构 orchestration 的一组学习记录，并在页面下方直接展示对应源码的完整内容。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>这一部分的重点不是“把模型调起来”本身，而是理解 LangChain 怎么把 prompt、模型、状态、工具和流程拆成可以复用、可以调试的组件。</p>
+        </div>
+
+        <h2>1. 我主要在学什么</h2>
+        <p>我把这一阶段当成“LLM 应用工程层”的入门：不是把所有逻辑都塞进一个大 prompt，而是学习怎么把理解问题、调用工具、获取结果、生成回答拆成清晰的步骤。</p>
+        <p>因此，LangChain 对我来说最重要的价值，是让多步任务的结构变得可见。这样当流程变复杂时，代码仍然可以读、可以调、可以继续扩展。</p>
+
+        <h2>2. 我具体练了什么</h2>
+        <ul>
+          <li>通过 `langgraphdemo.py` 理解状态图式工作流：把用户问题理解、真实搜索、答案生成拆成独立节点。</li>
+          <li>通过 `langsmith_test.py` 观察一个最小 agent 例子如何绑定工具并完成一次调用。</li>
+          <li>练习把模型配置和 API 信息改成环境变量，减少脚本对固定环境的耦合。</li>
+        </ul>
+
+        <h2>3. 我目前理解到的关键点</h2>
+        <p>我觉得 LangChain 真正有价值的地方，在于任务一旦不再是“单轮问答”，它就能帮助我们把应用逻辑写得更像工程系统，而不是更像一次性 prompt 实验。</p>
+        <p>另外，我也越来越清楚：模型能力本身很重要，但流程设计同样重要。理解、检索、整合这三步如果拆得更清楚，结果往往也会更稳定。</p>
+
+        <h2>4. 完整代码笔记</h2>
+        <p class="source-notice">下面不是节选，而是直接渲染这个学习主题对应的完整源码，方便把“笔记理解”和“代码实现”放在同一页里看。</p>
+        <div id="study-sources"></div>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "cn",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "langgraphdemo.py",
+          "type": "script",
+          "title": "langgraphdemo.py",
+          "description": "LangGraph 风格的搜索工作流 demo，包含理解、搜索和答案生成三个节点。"
+        },
+        {
+          "path": "Semantic_Search_langchain/langsmith_test.py",
+          "type": "script",
+          "title": "Semantic_Search_langchain/langsmith_test.py",
+          "description": "一个最小 LangChain agent 例子，用来理解模型和工具的绑定方式。"
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

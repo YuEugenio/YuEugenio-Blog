@@ -7,6 +7,7 @@
   <meta name="article:date" content="2026-03-13">
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -29,7 +30,7 @@
     }
   </style>
 </head>
-<body>
+<body data-lang-page="en" data-lang-route-en="./Agent-Basics-and-Demos.html" data-lang-route-cn="../pages/agent-basics-and-demos-cn.html">
   <div class="container">
     <div class="article-content">
       <a href="../pages/studies.html" class="back-link" data-i18n-en="← Back to Studies" data-i18n-cn="← 返回学科学习">← Back to Studies</a>
@@ -62,12 +63,39 @@
         <h2>4. Current Outcome</h2>
         <p>My current agent-learning outcome is a practical grasp of the basics: I can already build small loops that combine models with tools, retrieval, or search, and I understand more clearly how agent behavior emerges from structured execution rather than from model magic alone.</p>
 
+        <h2>5. Full Code Notes</h2>
+        <p class="source-notice">The complete code below covers my current agent-practice files: a streaming interaction experiment and a ReAct-style tool-using travel assistant.</p>
+        <div id="study-sources"></div>
+
         <div class="link-card">
           <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
         </div>
       </main>
     </div>
   </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "en",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "draft.py",
+          "type": "script",
+          "title": "draft.py",
+          "description": "A streaming experiment that separates visible answer text from reasoning-style output."
+        },
+        {
+          "path": "travelassistant.py",
+          "type": "script",
+          "title": "travelassistant.py",
+          "description": "A simple ReAct-style agent demo with weather and attraction tools."
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
   <script src="../js/config.js?v=20260310-1"></script>
   <script src="../js/language.js?v=20260310-1"></script>
 </body>

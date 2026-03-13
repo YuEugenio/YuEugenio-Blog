@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注意力机制学习笔记 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.6rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/Attention-Mechanism-Learning-Notes.html" data-lang-route-cn="./attention-mechanism-learning-notes-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./studies.html" class="back-link">← 返回学科学习</a>
+
+      <header class="article-header">
+        <h1 class="article-title">注意力机制学习笔记</h1>
+        <p class="article-subtitle">基于 Attention Is All You Need 的一组学习记录，从 softmax 与 scaled dot-product attention 到 Transformer 结构，并附完整 notebook 代码。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>这一部分更偏原理学习。它帮助我理解，为什么现代大模型会建立在 Transformer 之上，以及 attention 为什么能替代更传统的序列建模方式。</p>
+        </div>
+
+        <h2>1. 我主要在学什么</h2>
+        <p>我主要是沿着论文里的主线往下走：self-attention 是怎么计算的，为什么要缩放，multi-head 有什么意义，position information 怎么保留下来，以及整个 Transformer 堆叠结构是怎么组织的。</p>
+
+        <h2>2. 我具体在练什么</h2>
+        <ul>
+          <li>softmax 的数值稳定写法。</li>
+          <li>scaled dot-product attention 的实现与维度理解。</li>
+          <li>multi-head attention 的并行关系建模思想。</li>
+          <li>编码器 / 解码器与残差连接、归一化的配合方式。</li>
+        </ul>
+
+        <h2>3. 我目前的理解</h2>
+        <p>我觉得 attention 最核心的变化，是把“按时间一步一步传递信息”换成了“直接学习 token 之间的关系”。这件事为后面大上下文建模、embedding、检索增强等很多东西都提供了基础。</p>
+
+        <h2>4. 完整代码笔记</h2>
+        <p class="source-notice">下面会完整渲染这个 notebook 的所有代码单元，因此可以直接看到 softmax、attention 计算和相关实验代码。</p>
+        <div id="study-sources"></div>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "cn",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "13_attention_is_all_you_need.ipynb",
+          "type": "notebook",
+          "title": "13_attention_is_all_you_need.ipynb",
+          "description": "基于 Attention Is All You Need 的 notebook 代码与推导练习。"
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenAI API 学习笔记 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.6rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/OpenAI-API-Learning-Notes.html" data-lang-route-cn="./openai-api-learning-notes-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./studies.html" class="back-link">← 返回学科学习</a>
+
+      <header class="article-header">
+        <h1 class="article-title">OpenAI API 学习笔记</h1>
+        <p class="article-subtitle">围绕聊天补全、多模态、异步调用、多轮对话与流式输出的一组 API 实践记录，并附完整 notebook 代码。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>这一部分对我来说，是把“模型能力”真正变成“代码接口能力”的阶段。只有进入 API 层，很多抽象的能力才会变成可以被产品和脚本真正调用的对象。</p>
+        </div>
+
+        <h2>1. 我主要在学什么</h2>
+        <p>`openai_apis.ipynb` 是我这一部分的核心练习载体。我主要在理解：消息结构怎么写、不同调用方式差别在哪里、什么情况下需要流式输出或异步调用，以及多轮对话为什么必须显式维护历史。</p>
+
+        <h2>2. 我具体练了什么</h2>
+        <ul>
+          <li>基础 chat completion 调用。</li>
+          <li>多模态输入的组织方式。</li>
+          <li>异步请求的写法和并发调用场景。</li>
+          <li>多轮对话的历史维护方式。</li>
+          <li>流式输出以及“思考过程样式展示”的实验。</li>
+        </ul>
+
+        <h2>3. 我目前的理解</h2>
+        <p>我现在更清楚地意识到，API 不是“把 prompt 发出去”这么简单。真正做应用时，消息历史、返回处理、异常处理、流式输出、模型参数配置，都会直接影响交互体验和工程可维护性。</p>
+
+        <h2>4. 完整代码笔记</h2>
+        <p class="source-notice">下面直接完整展示这个 notebook 中的所有代码单元，因此可以连续看到从基础调用到多轮与流式输出的整个练习过程。</p>
+        <div id="study-sources"></div>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "cn",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "openai_apis.ipynb",
+          "type": "notebook",
+          "title": "openai_apis.ipynb",
+          "description": "聊天补全、多模态、异步、多轮和流式输出相关 API 练习 notebook。"
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

@@ -83,6 +83,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/LangChain-Learning-Notes.html",
+            fileEn: "articles/LangChain-Learning-Notes.html",
+            fileCn: "pages/langchain-learning-notes-cn.html",
             hasLaTeX: false
         }
     },
@@ -103,6 +105,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/Python-Basics-Learning-Notes.html",
+            fileEn: "articles/Python-Basics-Learning-Notes.html",
+            fileCn: "pages/python-basics-learning-notes-cn.html",
             hasLaTeX: false
         }
     },
@@ -123,6 +127,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/OpenAI-API-Learning-Notes.html",
+            fileEn: "articles/OpenAI-API-Learning-Notes.html",
+            fileCn: "pages/openai-api-learning-notes-cn.html",
             hasLaTeX: false
         }
     },
@@ -143,6 +149,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/Semantic-Search-Learning-Notes.html",
+            fileEn: "articles/Semantic-Search-Learning-Notes.html",
+            fileCn: "pages/semantic-search-learning-notes-cn.html",
             hasLaTeX: false
         }
     },
@@ -163,6 +171,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/Agent-Basics-and-Demos.html",
+            fileEn: "articles/Agent-Basics-and-Demos.html",
+            fileCn: "pages/agent-basics-and-demos-cn.html",
             hasLaTeX: false
         }
     },
@@ -183,6 +193,8 @@ const ARTICLES_DATA = [
         mathPreview: null,
         content: {
             file: "articles/Attention-Mechanism-Learning-Notes.html",
+            fileEn: "articles/Attention-Mechanism-Learning-Notes.html",
+            fileCn: "pages/attention-mechanism-learning-notes-cn.html",
             hasLaTeX: false
         }
     },

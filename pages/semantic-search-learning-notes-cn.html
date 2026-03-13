@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>语义搜索学习笔记 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.6rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/Semantic-Search-Learning-Notes.html" data-lang-route-cn="./semantic-search-learning-notes-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./studies.html" class="back-link">← 返回学科学习</a>
+
+      <header class="article-header">
+        <h1 class="article-title">语义搜索学习笔记</h1>
+        <p class="article-subtitle">围绕文档加载、切分、向量化、向量库、检索与最小 RAG 的一组学习记录，并完整展示 notebook 代码单元。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>这部分学习对我来说很关键，因为它把“原始资料”变成了“可调用知识”。语义搜索本身就是很多 RAG 系统的真正入口。</p>
+        </div>
+
+        <h2>1. 我主要在学什么</h2>
+        <p>我主要是在理解一条完整链路：文档怎么读进来、为什么要切块、embedding 是如何把文本变成向量、向量库怎么存，以及 retrieval 最后怎么接到问答链路上。</p>
+
+        <h2>2. 我具体练了什么</h2>
+        <ul>
+          <li>用 LangChain 的 loader 加载文档。</li>
+          <li>用 text splitter 把长文档变成适合检索的片段。</li>
+          <li>生成 embedding 并写入向量存储。</li>
+          <li>通过 similarity search 和 retriever 取回相关上下文。</li>
+          <li>把检索结果进一步用于最小 RAG 实验。</li>
+        </ul>
+
+        <h2>3. 我目前的理解</h2>
+        <p>我现在比较明确的一点是：语义搜索从来不只是 embedding 模型的问题。文档质量、切块策略、metadata、召回参数，都会显著影响最后的检索质量。</p>
+
+        <h2>4. 完整代码笔记</h2>
+        <p class="source-notice">下面完整展示这部分 notebook 中的所有代码单元，因此可以直接顺着代码看到“从文档到检索再到 RAG”的整个过程。</p>
+        <div id="study-sources"></div>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "cn",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "Semantic_Search_langchain/SS.ipynb",
+          "type": "notebook",
+          "title": "Semantic_Search_langchain/SS.ipynb",
+          "description": "关于 loader、splitter、embedding、vector store、retriever 和最小 RAG 的 notebook。"
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent 基础与 Demo - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="studies">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <style>
+    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
+    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #1a1a1a; }
+    .article-header { text-align: center; margin-bottom: 2.2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .article-title { font-size: 2rem; line-height: 1.32; margin-bottom: 0.75rem; color: #1a1a1a; font-weight: normal; }
+    .article-subtitle { max-width: 700px; margin: 0 auto 0.9rem; color: #666; font-size: 1rem; line-height: 1.74; }
+    .article-meta { color: #666; font-size: 0.9rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .study-body h2 { margin: 2rem 0 0.8rem; color: #1a1a1a; font-size: 1.3rem; font-weight: normal; }
+    .study-body p { margin: 0 0 1rem; }
+    .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
+    .study-body li { margin: 0.34rem 0; }
+    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .summary-card p, .link-card p { margin: 0; }
+    .link-card a { color: #1a1a1a; word-break: break-all; }
+    @media (max-width: 768px) {
+      .article-content { padding: 1.2rem 0.95rem 1.6rem; }
+      .article-title { font-size: 1.6rem; }
+      .article-subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/Agent-Basics-and-Demos.html" data-lang-route-cn="./agent-basics-and-demos-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./studies.html" class="back-link">← 返回学科学习</a>
+
+      <header class="article-header">
+        <h1 class="article-title">Agent 基础与 Demo</h1>
+        <p class="article-subtitle">围绕工具调用、多步执行、流式输出与 ReAct 风格流程的一组早期 Agent 实践，并附完整源码。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="study-body">
+        <div class="summary-card">
+          <p>这一部分是我从“普通聊天调用”往“能做事的系统”迈进的阶段。Agent 的关键并不只是回复像不像人，而是它能不能按步骤完成任务。</p>
+        </div>
+
+        <h2>1. 我主要在学什么</h2>
+        <p>我在这一阶段主要想搞清楚一个问题：当模型不再只是直接回答，而是需要调用工具、读取观察结果、再继续决策时，代码应该怎么组织。</p>
+
+        <h2>2. 我具体练了什么</h2>
+        <ul>
+          <li>`draft.py`：练习流式回复和“思考样式内容”与正式回答内容的分离。</li>
+          <li>`travelassistant.py`：练习一个简化版 ReAct agent，能调用天气和搜索工具，按 Thought / Action / Observation 循环推进。</li>
+        </ul>
+
+        <h2>3. 我目前的理解</h2>
+        <p>我现在比较清楚的是，Agent 的本质并不是“更聪明的对话”，而是“更结构化的执行”。一旦把动作格式、工具调用和观察结果都写清楚，系统就会比纯 prompt 更容易调试和演进。</p>
+
+        <h2>4. 完整代码笔记</h2>
+        <p class="source-notice">下面完整展示我目前这部分学习所对应的全部脚本源码，而不是只放演示用的片段。</p>
+        <div id="study-sources"></div>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Agent-Studies" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Agent-Studies</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script id="study-page-config" type="application/json">
+    {
+      "lang": "cn",
+      "owner": "YuEugenio",
+      "repo": "Agent-Studies",
+      "branch": "main",
+      "sources": [
+        {
+          "path": "draft.py",
+          "type": "script",
+          "title": "draft.py",
+          "description": "流式输出与 reasoning-style 内容展示实验。"
+        },
+        {
+          "path": "travelassistant.py",
+          "type": "script",
+          "title": "travelassistant.py",
+          "description": "一个带天气与景点工具的简化 ReAct 风格 Agent demo。"
+        }
+      ]
+    }
+  </script>
+  <script src="../js/study-code-viewer.js?v=20260313-1"></script>
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

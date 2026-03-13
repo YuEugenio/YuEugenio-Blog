@@ -1,0 +1,119 @@
+.source-notice {
+  margin: 0 0 1rem;
+  color: #555;
+}
+
+.loading-box,
+.error-box,
+.empty-box {
+  margin: 1rem 0;
+  padding: 0.95rem 1rem;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  background: #fbfbfb;
+  color: #555;
+}
+
+.error-box {
+  border-color: #efc9c9;
+  background: #fff7f7;
+  color: #8a3d3d;
+}
+
+.source-section {
+  margin: 1.5rem 0 2rem;
+  padding: 1.1rem;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  background: #fcfcfc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.source-header {
+  margin-bottom: 1rem;
+}
+
+.source-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.source-title {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.source-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.source-link:hover {
+  color: #1a1a1a;
+}
+
+.source-meta {
+  margin-top: 0.4rem;
+  color: #666;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.source-desc {
+  margin: 0.55rem 0 0;
+  color: #555;
+}
+
+.cell-block + .cell-block {
+  margin-top: 1rem;
+}
+
+.cell-label {
+  margin-bottom: 0.45rem;
+  color: #666;
+  font-size: 0.88rem;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.code-block {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #ececec;
+  background: #f6f6f6;
+}
+
+.code-block code {
+  display: block;
+  font-family: "SFMono-Regular", SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #222;
+  white-space: pre;
+}
+
+@media (max-width: 768px) {
+  .source-section {
+    padding: 0.95rem;
+  }
+
+  .source-title {
+    font-size: 1rem;
+  }
+
+  .code-block {
+    padding: 0.85rem;
+  }
+
+  .code-block code {
+    font-size: 0.84rem;
+  }
+}
