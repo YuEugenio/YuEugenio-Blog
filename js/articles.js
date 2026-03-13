@@ -1,6 +1,28 @@
 // 文章数据
 const ARTICLES_DATA = [
     {
+        id: "cybersoul-product-brief",
+        title: {
+            en: "Cybersoul: A Product Brief",
+            cn: "Cybersoul：产品简报"
+        },
+        date: "2026-03-13",
+        category: "project-briefing",
+        section: "project-briefing",
+        tags: ["companion ai", "agent", "cyber world", "fastapi", "world model"],
+        excerpt: {
+            en: "A general introduction to Cybersoul, the current CyberWorld demo, and the implementation scope already running today.",
+            cn: "对 Cybersoul 整体产品方向、当前 CyberWorld demo，以及已经落地实现的技术范围做一个整体介绍。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/Cybersoul-Product-Brief.html",
+            fileEn: "articles/Cybersoul-Product-Brief.html",
+            fileCn: "pages/cybersoul-product-brief-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
         id: "from-image-generator-to-artistic-creator",
         title: {
             en: "From Image Generator to Artistic Creator: A Survey of Pretraining, Supervised Fine-Tuning, and Reinforcement Alignment for Anime and Fine-Grained Style Generation",

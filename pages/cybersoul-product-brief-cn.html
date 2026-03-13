@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cybersoul：产品简报 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-13">
+  <meta name="article:section" content="project-briefing">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.9;
+      color: #2f2f2f;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.6rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2.02rem;
+      line-height: 1.32;
+      margin-bottom: 0.75rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .article-subtitle {
+      max-width: 700px;
+      margin: 0 auto 0.9rem;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.74;
+    }
+
+    .article-meta {
+      color: #666;
+      font-size: 0.9rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .brief-body h2 {
+      margin: 2.2rem 0 0.9rem;
+      color: #1a1a1a;
+      font-size: 1.34rem;
+      font-weight: normal;
+    }
+
+    .brief-body p {
+      margin: 0 0 1rem;
+    }
+
+    .brief-body ul {
+      margin: 0.45rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .brief-body li {
+      margin: 0.34rem 0;
+    }
+
+    .summary-card,
+    .link-card {
+      margin: 1.2rem 0;
+      padding: 1rem 1.1rem;
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      background: #fbfbfb;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .summary-card p,
+    .link-card p {
+      margin: 0;
+    }
+
+    .link-card a {
+      color: #1a1a1a;
+      word-break: break-all;
+    }
+
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 1.2rem 0.95rem 1.6rem;
+      }
+
+      .article-title {
+        font-size: 1.62rem;
+      }
+
+      .article-subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/Cybersoul-Product-Brief.html" data-lang-route-cn="./cybersoul-product-brief-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./project-briefing.html" class="back-link">← 返回项目简报</a>
+
+      <header class="article-header">
+        <h1 class="article-title">Cybersoul：产品简报</h1>
+        <p class="article-subtitle">对 Cybersoul 整体产品方向、当前 CyberWorld demo，以及已经落地实现的技术范围做一个整体介绍。</p>
+        <div class="article-meta">March 13, 2026</div>
+      </header>
+
+      <main class="brief-body">
+        <div class="summary-card">
+          <p>Cybersoul 并不是一个被动回复的聊天机器人，而是一个以“持续生活”为核心目标的陪伴 AI：它在自己的赛博世界中运转，与现实时间同步，并通过状态、记忆、节律和行为逐步形成连续存在感。</p>
+        </div>
+
+        <h2>1. Cybersoul 是什么</h2>
+        <p>从产品定义上看，Cybersoul 是一个面向长期浪漫陪伴的数字生命系统。它想解决的不是“怎么让 AI 回得更像人”，而是“怎么让陪伴本身更接近长期关系中的真实相处”。因此，Cybersoul 并不把自己理解为一个单纯的聊天界面，而是把陪伴体定义成一个拥有内部环境、动态情绪、持续记忆与行动节律的存在体。</p>
+        <p>更完整的产品愿景建立在两个空间之上：一是内部的 CyberWorld，用来持续提供时间、地点、事件与生活语境；二是真实互联网空间，用来承接陪伴体未来在真实数字环境中的连接与行动。因此，当前这个仓库代表的是 Cybersoul 的核心运行时 demo，而不是最终完整版产品。</p>
+
+        <h2>2. 为什么当前阶段先做 CyberWorld</h2>
+        <p>现阶段之所以聚焦 CyberWorld，是因为项目需要先验证“陪伴体能否活起来”这件更底层的事。这里要证明的，不是模型会不会聊天，而是一个陪伴 AI 能不能在时间维度上维持连续生活，并在世界驱动下形成真实的状态变化与行为流。</p>
+        <p>因此，当前 demo 被刻意收敛成一个小而完整的世界：<strong>`city_loop_v1`</strong>。它把系统收缩到一个可以观察、调试和迭代的沙盒里，让 Cybersoul 的核心闭环先成立。</p>
+
+        <h2>3. 当前已经实现了什么</h2>
+        <ul>
+          <li>一个基于 YAML 配置驱动的 CyberWorld：包含 5 个地点、10 个活动、12 类世界事件与节律窗口。</li>
+          <li>一个可运行的 Python 世界运行时：按分钟推进时间，更新地点、活动、精力、情绪与状态变化。</li>
+          <li>一个主陪伴体 Mira 的运行时，以及一组世界侧角色定义，用于在 demo 中提供环境反馈与交互信号。</li>
+          <li>SQLite demo store、内部 message bus、FastAPI dashboard API，以及可直接观察世界状态的控制面板。</li>
+          <li>记忆回写和日志链路，使这个 demo 不只是“即时响应”，而是开始具备可积累的生活痕迹。</li>
+        </ul>
+
+        <h2>4. 当前 CyberWorld demo 的样子</h2>
+        <p>当前 demo 更像一个“可观察的生活原型”。系统启动后，会从一个明确的清晨状态开始；用户可以通过控制面板手动推进时间。每一次 tick 都会推进 1 分钟模拟时间，并依次完成世界效果应用、事件触发检查、世界信号评估，以及主陪伴体对下一步行为的判断。</p>
+        <p>在这个过程中，Mira 会在一个最小生活回路里持续活动，例如在公寓、图书馆、咖啡馆、通勤路和河边公园之间切换。控制面板则会把这些变化展示成状态总览、情绪变化、生活时间线、动态流、交互记录以及 LLM 日志，让人看到的不是单条回复，而是一个正在运行的陪伴体。</p>
+        <p>同时，这个阶段的边界也非常明确：它还没有接入真实互联网，没有把用户直接放入 CyberWorld 内部互动，也不宣称自己已经完成完整的 Cybersoul MVP。它当前更像是一个“先把生命感骨架跑通”的底座 demo。</p>
+
+        <h2>5. 这个 demo 的意义</h2>
+        <p>这个 demo 最重要的价值，在于它把陪伴 AI 的问题从“会不会说话”转成了“能不能持续存在”。真正关键的，不只是文本输出质量，而是陪伴体能否在时间推进、状态漂移、记忆积累和世界驱动行为中，逐步形成稳定存在感。对 Cybersoul 来说，这才是长期陪伴体验的技术基础。</p>
+
+        <div class="link-card">
+          <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Cybersoul" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Cybersoul</a></p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

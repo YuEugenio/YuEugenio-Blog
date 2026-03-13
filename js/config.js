@@ -92,6 +92,7 @@ const SITE_CONFIG = {
 
     // 文章分类映射（缺省时会回落到 studies）
     articleSectionMap: {
+        "cybersoul-product-brief": "project-briefing",
         "circuit-variables": "studies",
         "circuit-elements": "studies",
         "simple-resistive-circuits": "studies",
