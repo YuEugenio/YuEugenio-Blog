@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>本科毕业设计：PES 多任务分类框架 - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-14">
+  <meta name="article:section" content="project-briefing">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.9;
+      color: #2f2f2f;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.6rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2rem;
+      line-height: 1.32;
+      margin-bottom: 0.75rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .article-subtitle {
+      max-width: 700px;
+      margin: 0 auto 0.9rem;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.74;
+    }
+
+    .article-meta {
+      color: #666;
+      font-size: 0.9rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .brief-body h2 {
+      margin: 2.2rem 0 0.9rem;
+      color: #1a1a1a;
+      font-size: 1.34rem;
+      font-weight: normal;
+    }
+
+    .brief-body p {
+      margin: 0 0 1rem;
+    }
+
+    .brief-body ul {
+      margin: 0.45rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .brief-body li {
+      margin: 0.34rem 0;
+    }
+
+    .summary-card,
+    .link-card {
+      margin: 1.2rem 0;
+      padding: 1rem 1.1rem;
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      background: #fbfbfb;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .summary-card p,
+    .link-card p {
+      margin: 0;
+    }
+
+    .link-card a {
+      color: #1a1a1a;
+      word-break: break-all;
+    }
+
+    .brief-figure {
+      margin: 1.6rem 0 1.9rem;
+    }
+
+    .brief-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      border: 1px solid #ececec;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .figure-caption {
+      margin-top: 0.7rem;
+      color: #666;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 1.2rem 0.95rem 1.6rem;
+      }
+
+      .article-title {
+        font-size: 1.58rem;
+      }
+
+      .article-subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="cn" data-lang-route-en="../articles/PES-Multi-Task-Classification-Project-Brief.html" data-lang-route-cn="./pes-multi-task-classification-project-brief-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="./project-briefing.html" class="back-link">← 返回项目简报</a>
+
+      <header class="article-header">
+        <h1 class="article-title">本科毕业设计：PES 多任务分类框架</h1>
+        <p class="article-subtitle">对我的本科毕业设计做一个整体介绍：从数据构建、模块化建模，到架构消融与 LoRA 微调搜索，逐步形成一个可复用的 PES 自动评估实验框架。</p>
+        <div class="article-meta">March 14, 2026</div>
+      </header>
+
+      <main class="brief-body">
+        <div class="summary-card">
+          <p>这是我的本科毕业设计项目。它围绕 PES 多任务分类，搭建了一个模块化深度学习框架，目标是把种植美学相关评价从“单次模型尝试”推进到“可系统比较、可持续迭代的实验体系”。</p>
+        </div>
+
+        <h2>1. 这个项目是什么</h2>
+        <p>从系统形态上看，这并不是一个固定死的单模型仓库，而是一个可配置的实验框架。整个项目把骨干网络、输入流设计、特征融合模块、分类头、损失函数、数据划分方式和实验配置拆成了可以自由组合的组件。</p>
+        <p>结合任务定义和 ROI 标注方式来看，这个项目面向的是种植相关图像中的 Pink Esthetic Score 自动评估问题。它并不把任务简化成一个单标签输出，而是把问题拆成 7 个子任务：近中牙龈乳头、远中牙龈乳头、龈缘水平、软组织形态、牙槽突缺损、粘膜颜色和黏膜质地。</p>
+
+        <h2>2. 它试图解决什么问题</h2>
+        <p>这个项目所面对的核心难点，是美学评价本身并不天然适合被压缩成一个简单分类标签。它同时依赖多个细粒度视觉因素，而且这些因素既存在于种植体附近的局部区域，也依赖更大的整体上下文。因此，我把它建模成多任务学习问题，而不是单输出分类。</p>
+        <p>为了支撑这一点，数据侧会同时读取图像、LabelMe 风格的 ROI 标注 JSON，以及 Excel 标签表，并按 patient 维度构建训练/验证划分。输入侧则设计了两种模式：一种是只看种植位与对侧位的 <strong>two local</strong>，另一种是在此基础上加入整体视角的 <strong>three-stream</strong> 方案。</p>
+
+        <h2>3. 当前已经实现了什么</h2>
+        <ul>
+          <li>一个统一的数据构建器：可以解析 ROI 标注、读取多任务标签、进行 patient-group 划分，并生成 dataloader。</li>
+          <li>一个统一的模型构建器：按配置组装 backbone、fusion 和多任务分类头。</li>
+          <li>多种 backbone 支持，包括 ResNet50、BioMedCLIP ViT 和 CLIP ViT。</li>
+          <li>多种融合与头部组合支持，包括 concat / cross-attention 和 linear / mlp。</li>
+          <li>一个两阶段实验流程：Stage 1 做 24 组架构搜索，Stage 2 在最优骨架上继续做 11 组 LoRA 组合搜索。</li>
+          <li>完整的训练与结果导出链路，包括 AUC-first 的 checkpoint 选择、history 保存和可视化产物生成。</li>
+        </ul>
+
+        <h2>4. 当前实验说明了什么</h2>
+        <p>对我来说，这个项目最重要的一点是，它已经走过了“模型能不能跑起来”的阶段，而进入了“如何系统比较结构设计”的阶段。现在的实验流程已经比较完整：Stage 1 会对 <strong>24 组模型组合</strong> 做架构消融，这 24 组来自 3 个 backbone、2 种输入模式、2 种融合方式和 2 种 head 设计；随后再把最优 Stage 1 结构带入 Stage 2，继续做 LoRA 组合搜索。</p>
+        <p>与此同时，任务本身也从更早阶段的 4 个任务扩展到了现在的 <strong>7 个 PES 子任务</strong>，训练轮数也延长到 <strong>100 epochs</strong>。这意味着我现在观察到的不只是“哪个模型某一刻冲得高”，而是“哪个结构在完整训练过程中更稳定、更可信”。</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/training_curves.png" alt="PES 实验中代表性的训练曲线">
+          <figcaption class="figure-caption">毕业设计汇报中的代表性训练曲线。它很直观地说明：不同架构的失败方式并不一样，有的平稳收敛，有的迅速过拟合，也有的先波动再重新收敛。</figcaption>
+        </figure>
+
+        <h2>5. Stage 1 中观察到的三类收敛模式</h2>
+        <p>结合 3.3 阶段的实验图和 3.6 的总结汇报，我最后把 Stage 1 的主要结果概括成三类收敛模式。这个划分很重要，因为它直接影响了我对“最优模型”的定义。</p>
+        <ul>
+          <li><strong>Case 1：稳定收敛。</strong> 这类情况大多出现在 <strong>concat + linear</strong> 组合中，验证损失和 AUC 变化更平滑，后期不会明显崩掉。</li>
+          <li><strong>Case 2：严重过拟合。</strong> 这类情况在不少非 <strong>concat + linear</strong> 组合里都出现过，尤其是部分 ResNet50 方案。它们可能在前期看起来还不错，但后期验证性能会明显下滑。</li>
+          <li><strong>Case 3：非平滑收敛。</strong> 这类模型可能在中期先达到一个高峰，随后回落，再到后面重新收敛。如果只看峰值，很容易高估它的真实可靠性。</li>
+        </ul>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="Case 1 稳定收敛曲线">
+          <figcaption class="figure-caption">Case 1 的代表结果。这类曲线是我最终偏向 <strong>concat + linear</strong> 的核心依据之一，因为它在完整训练周期里体现出更可控、更可信的收敛行为。</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="Case 2 严重过拟合曲线">
+          <figcaption class="figure-caption">Case 2 的代表结果。它说明有些结构虽然前期指标会迅速变好，但泛化能力并不稳定，后期很容易出现明显退化。</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="Case 3 非平滑收敛曲线">
+          <figcaption class="figure-caption">Case 3 的代表结果。它提醒我不能只看某个瞬时最优 checkpoint，而要同时关注完整训练过程中的最终收敛质量。</figcaption>
+        </figure>
+
+        <h2>6. 当前为什么选择这条模型路线</h2>
+        <p>如果只看报告中的<strong>最高峰值</strong>，当前最强的组合是 <strong>CLIP + 3 streams + cross-attention + MLP</strong>，AUC 最高大约能到 <strong>0.72</strong>。但如果看<strong>最终稳定收敛</strong>，当前更值得保留的结果是 <strong>CLIP + 3 streams + concat + linear</strong>，它的最终 AUC 大致稳定在 <strong>0.70</strong> 左右。</p>
+        <p>这也是这篇本科毕业设计文章里最关键的判断：我最终并不是单纯选择“瞬时最高分”的模型，而是更倾向选择“在完整训练协议下能稳定收敛”的模型。从整体结果看，backbone 的表现大致可以概括为 <strong>CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50</strong>；而加入 <strong>global stream</strong> 也不仅仅是增加输入噪声，它确实对最终表征质量和结果上限有帮助。</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/confusion_matrices.png" alt="PES 模型的混淆矩阵结果">
+          <figcaption class="figure-caption">实验总结中的混淆矩阵。除了 AUC 这样的整体指标之外，它还能从类别分布层面补充说明当前所选结构的实际判别质量。</figcaption>
+        </figure>
+
+        <h2>7. 这个本科毕设项目的意义</h2>
+        <p>这个项目的价值，不只是“某个模型分数更高”，而是它把整个问题组织成了一个真正的研究与工程框架：我不仅能比较不同 backbone，也能系统比较输入流、融合方式、头部设计和参数高效微调策略，并在统一协议下给出结果。</p>
+        <p>从本科毕业设计的角度看，它已经具备了比较完整的研究形态：问题形式化、数据管线构建、模块化实现、消融设计和基于证据的模型选择。也正因为如此，这个项目既是一个能运行的工程系统，也是一个相对完整的研究产物。</p>
+
+        <div class="link-card">
+          <p><strong>项目状态：</strong> 这个本科毕业设计项目目前还是本地工作区，暂时还没有作为公开 GitHub 仓库发布。</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

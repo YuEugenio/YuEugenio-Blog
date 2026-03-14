@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PES Multi-Task Classification: A Project Brief - YuEugenio's Blog</title>
+  <meta name="article:date" content="2026-03-14">
+  <meta name="article:section" content="project-briefing">
+  <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <style>
+    .article-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.85;
+      color: #2f2f2f;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.6rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+
+    .article-title {
+      font-size: 2.08rem;
+      line-height: 1.28;
+      margin-bottom: 0.75rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .article-subtitle {
+      max-width: 690px;
+      margin: 0 auto 0.9rem;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.72;
+    }
+
+    .article-meta {
+      color: #666;
+      font-size: 0.9rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .brief-body h2 {
+      margin: 2.2rem 0 0.9rem;
+      color: #1a1a1a;
+      font-size: 1.34rem;
+      font-weight: normal;
+    }
+
+    .brief-body p {
+      margin: 0 0 1rem;
+    }
+
+    .brief-body ul {
+      margin: 0.4rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .brief-body li {
+      margin: 0.34rem 0;
+    }
+
+    .summary-card,
+    .link-card {
+      margin: 1.2rem 0;
+      padding: 1rem 1.1rem;
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      background: #fbfbfb;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .summary-card p,
+    .link-card p {
+      margin: 0;
+    }
+
+    .link-card a {
+      color: #1a1a1a;
+      word-break: break-all;
+    }
+
+    .brief-figure {
+      margin: 1.6rem 0 1.9rem;
+    }
+
+    .brief-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      border: 1px solid #ececec;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .figure-caption {
+      margin-top: 0.7rem;
+      color: #666;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .article-content {
+        padding: 1.2rem 0.95rem 1.6rem;
+      }
+
+      .article-title {
+        font-size: 1.66rem;
+      }
+
+      .article-subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang-page="en" data-lang-route-en="./PES-Multi-Task-Classification-Project-Brief.html" data-lang-route-cn="../pages/pes-multi-task-classification-project-brief-cn.html">
+  <div class="container">
+    <div class="article-content">
+      <a href="../pages/project-briefing.html" class="back-link">← Back to Project Briefing</a>
+
+      <header class="article-header">
+        <h1 class="article-title">PES Multi-Task Classification: A Project Brief</h1>
+        <p class="article-subtitle">A compact introduction to my undergraduate thesis project: a modular multi-task framework for automated PES evaluation, from data construction and architecture search to LoRA-based refinement.</p>
+        <div class="article-meta">March 14, 2026</div>
+      </header>
+
+      <main class="brief-body">
+        <div class="summary-card">
+          <p>This project is my undergraduate thesis work. It builds a modular deep-learning framework for PES multi-task classification, with the goal of turning implant-related esthetic evaluation into a more structured, learnable, and experimentally comparable modeling problem.</p>
+        </div>
+
+        <h2>1. What This Project Is</h2>
+        <p>At the system level, this is not a single fixed model, but a configurable experiment framework. The repository is organized around interchangeable components: backbone encoders, multi-stream inputs, feature-fusion modules, classification heads, loss functions, split strategies, and experiment configs.</p>
+        <p>From the task catalog and ROI definitions, the project targets automated Pink Esthetic Score related assessment on dental images, especially around implant-centered local regions and their surrounding esthetic context. Instead of predicting only one score, the framework treats the problem as a 7-task classification setup, including mesial papilla, distal papilla, gingival margin, soft tissue contour, alveolar ridge defect, mucosal color, and mucosal texture.</p>
+
+        <h2>2. What Problem It Tries to Solve</h2>
+        <p>The main challenge is that esthetic evaluation is not naturally a single-label problem. It depends on multiple fine-grained visual factors, and those factors are distributed across both local implant-centered regions and broader global context. That is why this project frames PES evaluation as multi-task learning rather than as a flat one-score classifier.</p>
+        <p>To support that, the dataset pipeline reads image files together with LabelMe-style ROI annotations and an Excel label table, then builds patient-aware train/validation splits. The input side supports two different views of the problem: a <strong>two-local</strong> mode using implant ROI plus control ROI, and a <strong>three-stream</strong> mode that adds a global view.</p>
+
+        <h2>3. What Has Already Been Implemented</h2>
+        <ul>
+          <li>A unified dataset builder that parses ROI JSON annotations, reads task labels, constructs patient-group splits, and creates dataloaders under fixed or auto-search split settings.</li>
+          <li>A modular model builder that assembles backbones, feature fusion, and task heads into a configurable PES multi-task model.</li>
+          <li>Support for multiple backbones, including ResNet50, BioMedCLIP ViT, and CLIP ViT.</li>
+          <li>Support for multiple fusion and head choices, including concat vs. cross-attention and linear vs. MLP classification heads.</li>
+          <li>A two-stage experiment workflow: Stage 1 architecture search across 24 configurations, followed by Stage 2 LoRA search across 11 refinement configurations.</li>
+          <li>A full training pipeline with AUC-first checkpoint selection, history export, best-result snapshots, and visualization outputs.</li>
+        </ul>
+
+        <h2>4. What the Current Experiments Show</h2>
+        <p>The most important result so far is that the project is no longer at the “can this be trained?” stage. It has already produced a structured ablation workflow and a clearly selected architecture direction. In the current setup, Stage 1 evaluates <strong>24 model combinations</strong> built from 3 backbones, 2 input modes, 2 fusion methods, and 2 head types, while Stage 2 continues with LoRA refinement on the strongest Stage 1 base.</p>
+        <p>The experiment design was also expanded from an earlier 4-task formulation into a <strong>7-task PES setup</strong>, and training was extended to <strong>100 epochs</strong>. This matters because the later-stage curves reveal not only which model can peak once, but which structure can keep converging without collapsing.</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/training_curves.png" alt="Representative training curves of the selected PES configurations">
+          <figcaption class="figure-caption">Representative training curves from the thesis report. The figure highlights that different architecture combinations do not fail in the same way: some stay smooth and stable, some overfit rapidly, and others oscillate before reconverging.</figcaption>
+        </figure>
+
+        <h2>5. Three Convergence Patterns Observed in Stage 1</h2>
+        <p>After reviewing the Stage 1 curves, I summarize the main outcomes into three convergence cases. This framing became important in my thesis because model selection could not rely on peak AUC alone.</p>
+        <ul>
+          <li><strong>Case 1 — Stable convergence:</strong> typically associated with <strong>concat + linear</strong>. Validation loss and AUC move in a smoother direction, with little late-stage collapse.</li>
+          <li><strong>Case 2 — Severe overfitting:</strong> seen in many non-<strong>concat + linear</strong> settings, especially weaker ResNet50 combinations. These models may improve early and then degrade sharply.</li>
+          <li><strong>Case 3 — Non-smooth convergence:</strong> validation AUC can peak around the middle of training, fall back, and only later reconverge. This makes the final choice less obvious if one only watches the highest momentary score.</li>
+        </ul>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="Case 1 stable convergence under concat and linear head">
+          <figcaption class="figure-caption">Case 1. A representative stable-convergence pattern. This is the behavior that most strongly motivated the thesis conclusion that <strong>concat + linear</strong> is the safest architectural backbone for reliable PES training.</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="Case 2 severe overfitting in PES training">
+          <figcaption class="figure-caption">Case 2. A severe-overfitting pattern. Even when early validation metrics look promising, the model can quickly lose generalization ability and finish with a much weaker final state.</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="Case 3 non-smooth convergence in CLIP-based PES training">
+          <figcaption class="figure-caption">Case 3. A non-smooth convergence pattern. This kind of curve explains why the thesis pays attention to both peak performance and end-of-training stability instead of reporting only the best transient checkpoint.</figcaption>
+        </figure>
+
+        <h2>6. Current Model Choice and Why</h2>
+        <p>The current best <strong>peak</strong> result in the report comes from <strong>CLIP + 3 streams + cross-attention + MLP</strong>, which reaches an AUC around <strong>0.72</strong>. However, the strongest <strong>stable final convergence</strong> comes from <strong>CLIP + 3 streams + concat + linear</strong>, whose final AUC is consistently around <strong>0.70</strong>.</p>
+        <p>This distinction is central to the thesis. My conclusion is not simply “choose the model with the highest transient number,” but rather “choose the model that can converge reliably under the full training schedule.” From that perspective, <strong>CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50</strong> is the overall backbone ranking, and adding the <strong>global stream</strong> is useful not just for noise reduction, but for improving the final representation quality.</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/confusion_matrices.png" alt="Confusion matrices of representative PES models">
+          <figcaption class="figure-caption">Confusion matrices from the experiment summary. Beyond a single scalar AUC, they show how the selected architecture produces a more usable class-distribution profile across PES subtasks.</figcaption>
+        </figure>
+
+        <h2>7. Why This Thesis Project Matters</h2>
+        <p>What makes this project meaningful is that it moves the work from an isolated model attempt toward a real experimental framework. The contribution is not only “one model got the best score,” but also the design of a reusable pipeline for comparing architectures, input streams, fusion strategies, and parameter-efficient tuning choices under a consistent protocol.</p>
+        <p>As an undergraduate thesis project, it already has a clear research shape: task formalization, data pipeline construction, modular implementation, ablation design, and evidence-based model selection. In that sense, the project is both a working engineering system and a structured research artifact.</p>
+
+        <div class="link-card">
+          <p><strong>Project Status.</strong> This undergraduate thesis workspace is currently local and has not been published as a public GitHub repository yet.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js?v=20260310-1"></script>
+  <script src="../js/language.js?v=20260310-1"></script>
+</body>
+</html>

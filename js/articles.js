@@ -1,6 +1,28 @@
 // 文章数据
 const ARTICLES_DATA = [
     {
+        id: "pes-multi-task-classification-project-brief",
+        title: {
+            en: "PES Multi-Task Classification: A Project Brief",
+            cn: "本科毕业设计：PES 多任务分类框架"
+        },
+        date: "2026-03-14",
+        category: "project-briefing",
+        section: "project-briefing",
+        tags: ["undergraduate thesis", "medical ai", "multi-task learning", "clip", "lora"],
+        excerpt: {
+            en: "A compact introduction to my undergraduate thesis project: a modular PES multi-task classification framework with architecture search and LoRA refinement.",
+            cn: "对我的本科毕业设计做一个整体介绍：一个面向 PES 自动评估的多任务分类框架，包含架构搜索与 LoRA 微调搜索。"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/PES-Multi-Task-Classification-Project-Brief.html",
+            fileEn: "articles/PES-Multi-Task-Classification-Project-Brief.html",
+            fileCn: "pages/pes-multi-task-classification-project-brief-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
         id: "cybersoul-product-brief",
         title: {
             en: "Cybersoul: A Product Brief",
