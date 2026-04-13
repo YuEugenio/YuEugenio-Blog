@@ -1,0 +1,37 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F4F8F2"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFEFB" stroke="#DCE7D7" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">GreenForest_RAG Retrieval Pipeline</text>
+  <text x="90" y="146" fill="#5E665C" font-family="Georgia, serif" font-size="20">Mixed local documents are transformed into a grounded question-answer loop.</text>
+  <rect x="94" y="210" width="160" height="96" rx="20" fill="#EEF5EA" stroke="#CFE0C5" stroke-width="2"/>
+  <text x="135" y="252" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">PDF</text>
+  <text x="128" y="282" fill="#5A6456" font-family="Arial, sans-serif" font-size="17">DOCX / CSV</text>
+  <rect x="302" y="210" width="166" height="96" rx="20" fill="#F7F2E8" stroke="#E7D9C5" stroke-width="2"/>
+  <text x="339" y="252" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Loader</text>
+  <text x="329" y="282" fill="#675C4D" font-family="Arial, sans-serif" font-size="17">Unstructured</text>
+  <rect x="516" y="210" width="182" height="96" rx="20" fill="#EFF4FA" stroke="#D3DEEC" stroke-width="2"/>
+  <text x="544" y="252" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Chunking</text>
+  <text x="541" y="282" fill="#556170" font-family="Arial, sans-serif" font-size="17">Recursive splitter</text>
+  <rect x="746" y="210" width="170" height="96" rx="20" fill="#F2F6EF" stroke="#D7E3D0" stroke-width="2"/>
+  <text x="779" y="252" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Embedding</text>
+  <text x="792" y="282" fill="#586255" font-family="Arial, sans-serif" font-size="17">Vectors</text>
+  <rect x="964" y="210" width="142" height="96" rx="20" fill="#EDF3F1" stroke="#D4E2DE" stroke-width="2"/>
+  <text x="998" y="252" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Chroma</text>
+  <text x="993" y="282" fill="#54615C" font-family="Arial, sans-serif" font-size="17">Store</text>
+  <rect x="234" y="404" width="198" height="108" rx="22" fill="#F7FBF5" stroke="#DCE8D7" stroke-width="2"/>
+  <text x="268" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Retriever</text>
+  <text x="264" y="484" fill="#586257" font-family="Arial, sans-serif" font-size="18">Similarity search</text>
+  <rect x="496" y="404" width="232" height="108" rx="22" fill="#FBF6EE" stroke="#E6DAC8" stroke-width="2"/>
+  <text x="534" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Context Pack</text>
+  <text x="529" y="484" fill="#665B4F" font-family="Arial, sans-serif" font-size="18">Top passages + metadata</text>
+  <rect x="792" y="404" width="252" height="108" rx="22" fill="#EEF4FA" stroke="#D2DEEB" stroke-width="2"/>
+  <text x="824" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Grounded Answer</text>
+  <text x="813" y="484" fill="#556170" font-family="Arial, sans-serif" font-size="18">Answer only from retrieved evidence</text>
+  <path d="M254 258H302" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M468 258H516" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M698 258H746" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M916 258H964" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1035 306V366H334V404" stroke="#81907D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M432 458H496" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M728 458H792" stroke="#81907D" stroke-width="4" stroke-linecap="round"/>
+</svg>

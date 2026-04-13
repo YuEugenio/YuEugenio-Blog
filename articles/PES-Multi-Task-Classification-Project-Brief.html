@@ -7,6 +7,15 @@
   <meta name="article:date" content="2026-03-14">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     .article-content {
       max-width: 760px;
@@ -65,6 +74,13 @@
       font-weight: normal;
     }
 
+    .brief-body h3 {
+      margin: 1.5rem 0 0.65rem;
+      color: #1a1a1a;
+      font-size: 1.08rem;
+      font-weight: normal;
+    }
+
     .brief-body p {
       margin: 0 0 1rem;
     }
@@ -119,6 +135,14 @@
       line-height: 1.7;
     }
 
+    .formula-block {
+      margin: 1rem 0 1.2rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid #d9d9d9;
+      background: #fafafa;
+      overflow-x: auto;
+    }
+
     @media (max-width: 768px) {
       .article-content {
         padding: 1.2rem 0.95rem 1.6rem;
@@ -141,80 +165,156 @@
 
       <header class="article-header">
         <h1 class="article-title">PES Multi-Task Classification: A Project Brief</h1>
-        <p class="article-subtitle">A compact introduction to my undergraduate thesis project: a modular multi-task framework for automated PES evaluation, from data construction and architecture search to LoRA-based refinement.</p>
+        <p class="article-subtitle">This article presents the method design, experiment setup, and main results of my undergraduate thesis, with emphasis on the shared 7-task classification line and the structured modeling branches for gingival margin and soft-tissue contour.</p>
         <div class="article-meta">March 14, 2026</div>
       </header>
 
       <main class="brief-body">
         <div class="summary-card">
-          <p>This project is my undergraduate thesis work. It builds a modular deep-learning framework for PES multi-task classification, with the goal of turning implant-related esthetic evaluation into a more structured, learnable, and experimentally comparable modeling problem.</p>
+          <p>The full method design follows two lines. The first line is a shared 7-task multi-task classification framework for a unified PES baseline. The second line is structured modeling for gingival margin and soft-tissue contour, used to complement the structural limitations of pure image classification.</p>
         </div>
 
-        <h2>1. What This Project Is</h2>
-        <p>At the system level, this is not a single fixed model, but a configurable experiment framework. The repository is organized around interchangeable components: backbone encoders, multi-stream inputs, feature-fusion modules, classification heads, loss functions, split strategies, and experiment configs.</p>
-        <p>From the task catalog and ROI definitions, the project targets automated Pink Esthetic Score related assessment on dental images, especially around implant-centered local regions and their surrounding esthetic context. Instead of predicting only one score, the framework treats the problem as a 7-task classification setup, including mesial papilla, distal papilla, gingival margin, soft tissue contour, alveolar ridge defect, mucosal color, and mucosal texture.</p>
+        <h2>1. Research Theme</h2>
+        <p>This work studies automatic Pink Esthetic Score evaluation from intraoral photographs of maxillary anterior implants. PES includes seven sub-items: mesial papilla, distal papilla, gingival margin, soft-tissue contour, alveolar ridge defect, mucosal color, and mucosal texture. The task is therefore formulated as a multi-task classification problem with shared visual representation and task-specific outputs.</p>
+        <p>The overall design follows a two-layer strategy. The shared classification line provides a unified 7-task baseline. The structured branches separately model the height relation in gingival margin and the contour correspondence in soft-tissue contour.</p>
 
-        <h2>2. What Problem It Tries to Solve</h2>
-        <p>The main challenge is that esthetic evaluation is not naturally a single-label problem. It depends on multiple fine-grained visual factors, and those factors are distributed across both local implant-centered regions and broader global context. That is why this project frames PES evaluation as multi-task learning rather than as a flat one-score classifier.</p>
-        <p>To support that, the dataset pipeline reads image files together with LabelMe-style ROI annotations and an Excel label table, then builds patient-aware train/validation splits. The input side supports two different views of the problem: a <strong>two-local</strong> mode using implant ROI plus control ROI, and a <strong>three-stream</strong> mode that adds a global view.</p>
+        <h2>2. Principle and Implementation of the Shared Classification Line</h2>
+        <p>The shared classification line is built on a unified experiment basis. The dataset contains organized score labels, ROI annotations, and patient-level splits. In total, 332 valid samples contain complete labels for all seven PES tasks and complete ROI information. The input design preserves implant-side local ROI, control-side local ROI, and the full anterior region to jointly model local comparison and global harmony.</p>
 
-        <h2>3. What Has Already Been Implemented</h2>
+        <h3>2.1 Multi-Task Output Form</h3>
+        <p>The shared classification framework uses a shared encoder, a shared fusion module, and task-specific classification heads. All seven tasks share one visual representation space, while each task outputs a three-class prediction. For task $t$, the output is written as:</p>
+        <div class="formula-block">
+          $$\hat{\mathbf{p}}_{n,t} = [\hat{p}_{n,t,0}, \hat{p}_{n,t,1}, \hat{p}_{n,t,2}], \qquad \hat y_{n,t}=\arg\max_c \hat p_{n,t,c}$$
+        </div>
+        <p>This design uses shared representation under limited data while preserving the semantic boundary of each PES sub-item.</p>
+
+        <h3>2.2 Input Stream Design</h3>
+        <p>The shared classification experiments compare two input modes. The first is <strong>two-local</strong>, which uses implant-side ROI and control-side ROI. The second is <strong>three-stream</strong>, which adds a global anterior view. The three ROI types are shown below.</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/pes_roi_example.png" alt="Three ROI types used in the PES experiments">
+          <figcaption class="figure-caption">Three ROI types used in the PES experiments. The red box marks the implant-side local ROI, the blue box marks the control-side local ROI, and the green box marks the global anterior ROI.</figcaption>
+        </figure>
+
+        <p>The three-stream design is not a redundant extra view. It explicitly combines local implant-side evidence, mirrored natural-tooth reference, and the global harmony of the anterior region.</p>
+
+        <h3>2.3 Search Space and Training Setup</h3>
+        <p>The shared classification line starts from an existing baseline built with ResNet50, dual-local inputs, cross-attention fusion, and a linear head. Under one fixed protocol, the experiments compare four structural factors: input organization, backbone model, fusion method, and head design. The total search space is:</p>
+        <div class="formula-block">
+          $$2 \times 3 \times 2 \times 2 = 24$$
+        </div>
         <ul>
-          <li>A unified dataset builder that parses ROI JSON annotations, reads task labels, constructs patient-group splits, and creates dataloaders under fixed or auto-search split settings.</li>
-          <li>A modular model builder that assembles backbones, feature fusion, and task heads into a configurable PES multi-task model.</li>
-          <li>Support for multiple backbones, including ResNet50, BioMedCLIP ViT, and CLIP ViT.</li>
-          <li>Support for multiple fusion and head choices, including concat vs. cross-attention and linear vs. MLP classification heads.</li>
-          <li>A two-stage experiment workflow: Stage 1 architecture search across 24 configurations, followed by Stage 2 LoRA search across 11 refinement configurations.</li>
-          <li>A full training pipeline with AUC-first checkpoint selection, history export, best-result snapshots, and visualization outputs.</li>
+          <li>Input mode: dual-local or three-stream</li>
+          <li>Backbone: ResNet50, CLIP ViT, or BioMedCLIP ViT</li>
+          <li>Fusion: feature concatenation or cross-attention</li>
+          <li>Head: linear or MLP</li>
+        </ul>
+        <p>All experiments use one shared training protocol: patient-level GroupShuffleSplit, 264 training samples, 68 validation samples, 100 epochs, AdamW, initial learning rate $1\times10^{-4}$, and validation macro AUC as the main model-selection metric.</p>
+
+        <h3>2.4 Loss and Selection Logic</h3>
+        <p>The seven tasks have different class balances, so the shared classification line uses weighted cross-entropy. For class $c$ in task $t$, the class weight is defined by inverse frequency:</p>
+        <div class="formula-block">
+          $$w_{t,c}=\frac{N_t}{C\cdot n_{t,c}}$$
+        </div>
+        <p>The final model is not selected by peak AUC alone. Model selection also depends on the final convergence behavior over the full training schedule.</p>
+
+        <h2>3. Results of the Shared Classification Line</h2>
+        <p>The 24 architecture runs fall into three convergence types: stable convergence, overfitting collapse, and non-smooth convergence. This classification directly determines the final selection rule.</p>
+        <ul>
+          <li>Input organization affects the expression of comparative and global context, and three-stream performs better than local-only inputs.</li>
+          <li>The backbone ranking is CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50.</li>
+          <li>Fusion and head design affect training stability more strongly than backbone replacement alone.</li>
+          <li>The concat + linear combination gives the most stable convergence under the small-sample setting.</li>
         </ul>
 
-        <h2>4. What the Current Experiments Show</h2>
-        <p>The most important result so far is that the project is no longer at the “can this be trained?” stage. It has already produced a structured ablation workflow and a clearly selected architecture direction. In the current setup, Stage 1 evaluates <strong>24 model combinations</strong> built from 3 backbones, 2 input modes, 2 fusion methods, and 2 head types, while Stage 2 continues with LoRA refinement on the strongest Stage 1 base.</p>
-        <p>The experiment design was also expanded from an earlier 4-task formulation into a <strong>7-task PES setup</strong>, and training was extended to <strong>100 epochs</strong>. This matters because the later-stage curves reveal not only which model can peak once, but which structure can keep converging without collapsing.</p>
-
         <figure class="brief-figure">
-          <img src="../images/projects/pes/training_curves.png" alt="Representative training curves of the selected PES configurations">
-          <figcaption class="figure-caption">Representative training curves from the thesis report. The figure highlights that different architecture combinations do not fail in the same way: some stay smooth and stable, some overfit rapidly, and others oscillate before reconverging.</figcaption>
+          <img src="../images/projects/pes/training_curves.png" alt="Representative training curves of the PES experiments">
+          <figcaption class="figure-caption">Representative training curves from the shared classification line. Different architectures show clearly different behaviors, including stable convergence, severe overfitting, and non-smooth convergence.</figcaption>
         </figure>
 
-        <h2>5. Three Convergence Patterns Observed in Stage 1</h2>
-        <p>After reviewing the Stage 1 curves, I summarize the main outcomes into three convergence cases. This framing became important in my thesis because model selection could not rely on peak AUC alone.</p>
-        <ul>
-          <li><strong>Case 1 — Stable convergence:</strong> typically associated with <strong>concat + linear</strong>. Validation loss and AUC move in a smoother direction, with little late-stage collapse.</li>
-          <li><strong>Case 2 — Severe overfitting:</strong> seen in many non-<strong>concat + linear</strong> settings, especially weaker ResNet50 combinations. These models may improve early and then degrade sharply.</li>
-          <li><strong>Case 3 — Non-smooth convergence:</strong> validation AUC can peak around the middle of training, fall back, and only later reconverge. This makes the final choice less obvious if one only watches the highest momentary score.</li>
-        </ul>
+        <h3>3.1 Three Convergence Patterns</h3>
+        <p><strong>Stable convergence</strong> shows smooth late-stage behavior and small peak-to-final gaps, and mostly appears under <strong>concat + linear</strong>. <strong>Severe overfitting</strong> appears mainly in complex ResNet50 settings and is characterized by rising validation loss and late-stage AUC degradation. <strong>Non-smooth convergence</strong> appears in some CLIP and BioMedCLIP settings, where the model reaches a high mid-training peak but does not preserve that peak at the end.</p>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="Case 1 stable convergence under concat and linear head">
-          <figcaption class="figure-caption">Case 1. A representative stable-convergence pattern. This is the behavior that most strongly motivated the thesis conclusion that <strong>concat + linear</strong> is the safest architectural backbone for reliable PES training.</figcaption>
+          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="Stable convergence pattern">
+          <figcaption class="figure-caption">Representative stable-convergence pattern. This type of model preserves its performance through the full training schedule.</figcaption>
         </figure>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="Case 2 severe overfitting in PES training">
-          <figcaption class="figure-caption">Case 2. A severe-overfitting pattern. Even when early validation metrics look promising, the model can quickly lose generalization ability and finish with a much weaker final state.</figcaption>
+          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="Severe overfitting pattern">
+          <figcaption class="figure-caption">Representative overfitting pattern. The model looks promising early but degrades sharply at later epochs.</figcaption>
         </figure>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="Case 3 non-smooth convergence in CLIP-based PES training">
-          <figcaption class="figure-caption">Case 3. A non-smooth convergence pattern. This kind of curve explains why the thesis pays attention to both peak performance and end-of-training stability instead of reporting only the best transient checkpoint.</figcaption>
+          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="Non-smooth convergence pattern">
+          <figcaption class="figure-caption">Representative non-smooth convergence pattern. These models can reach a high peak but are less reliable at the end of training.</figcaption>
         </figure>
 
-        <h2>6. Current Model Choice and Why</h2>
-        <p>The current best <strong>peak</strong> result in the report comes from <strong>CLIP + 3 streams + cross-attention + MLP</strong>, which reaches an AUC around <strong>0.72</strong>. However, the strongest <strong>stable final convergence</strong> comes from <strong>CLIP + 3 streams + concat + linear</strong>, whose final AUC is consistently around <strong>0.70</strong>.</p>
-        <p>This distinction is central to the thesis. My conclusion is not simply “choose the model with the highest transient number,” but rather “choose the model that can converge reliably under the full training schedule.” From that perspective, <strong>CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50</strong> is the overall backbone ranking, and adding the <strong>global stream</strong> is useful not just for noise reduction, but for improving the final representation quality.</p>
+        <h3>3.2 Final Shared Baseline</h3>
+        <p>The selected final model is <strong>CLIP ViT + three-stream + concat + linear</strong>. Its validation macro AUC is <strong>0.7004</strong>, with a best validation macro AUC of <strong>0.7009</strong>. More complex CLIP variants can produce a higher transient peak, but the three-stream concat linear model gives better final convergence quality.</p>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/confusion_matrices.png" alt="Confusion matrices of representative PES models">
-          <figcaption class="figure-caption">Confusion matrices from the experiment summary. Beyond a single scalar AUC, they show how the selected architecture produces a more usable class-distribution profile across PES subtasks.</figcaption>
+          <img src="../images/projects/pes/pretrained_sota_baseline_val_loss_auc.png" alt="Curve comparison between the final selected model and representative baselines">
+          <figcaption class="figure-caption">Curve comparison between the selected model and representative baselines. The CLIP three-stream concat linear model shows a more stable late-stage trajectory in both validation loss and macro AUC.</figcaption>
         </figure>
 
-        <h2>7. Why This Thesis Project Matters</h2>
-        <p>What makes this project meaningful is that it moves the work from an isolated model attempt toward a real experimental framework. The contribution is not only “one model got the best score,” but also the design of a reusable pipeline for comparing architectures, input streams, fusion strategies, and parameter-efficient tuning choices under a consistent protocol.</p>
-        <p>As an undergraduate thesis project, it already has a clear research shape: task formalization, data pipeline construction, modular implementation, ablation design, and evidence-based model selection. In that sense, the project is both a working engineering system and a structured research artifact.</p>
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/pretrained_sota_baseline_task_auc.png" alt="AUC results across the seven PES subtasks">
+          <figcaption class="figure-caption">AUC results across the seven PES subtasks. The modeling difficulty is uneven, and gingival margin and soft-tissue contour are among the harder tasks.</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/confusion_matrices.png" alt="Confusion matrices of the shared PES baseline">
+          <figcaption class="figure-caption">Confusion matrices of the shared baseline. Beyond a scalar AUC, they show the class-distribution behavior of the selected model across the seven PES subtasks.</figcaption>
+        </figure>
+
+        <h2>4. Structured Modeling for Gingival Margin</h2>
+        <p>The gingival margin task measures the relative height difference between the gingival zenith of the implant side and the control side. This task has explicit structural meaning, so the thesis introduces a structured quantification pipeline on top of the shared classification baseline.</p>
+        <p>The pipeline has three main steps. First, it generates stable tooth masks from global ROI guidance and candidate-tooth localization. Second, it estimates the central reference line and the calibrated coordinate system from the segmentation result. Third, it detects the gingival zenith on both sides and maps a normalized height difference to a discrete score.</p>
+
+        <h3>4.1 Height-Difference Quantification</h3>
+        <p>Let the calibrated vertical coordinates of the implant-side and control-side zenith points be $z_i^\star$ and $z_c^\star$. The absolute height difference is:</p>
+        <div class="formula-block">
+          $$\Delta h_{\mathrm{abs}} = |z_i^\star - z_c^\star|$$
+        </div>
+        <p>The main feature selected in the thesis is the smaller-axis-height normalized difference:</p>
+        <div class="formula-block">
+          $$\delta_h = \frac{\Delta h_{\mathrm{abs}}}{\min(H_i, H_c)}$$
+        </div>
+        <p>A global threshold search maps this continuous feature to three classes:</p>
+        <div class="formula-block">
+          $$\hat y_h =
+          \begin{cases}
+          2, & \delta_h \le \tau_2,\\
+          1, & \tau_2 < \delta_h \le \tau_1,\\
+          0, & \delta_h > \tau_1.
+          \end{cases}$$
+        </div>
+        <p>On 240 screened cases, the structured gingival-margin pipeline reaches <strong>0.6042</strong> Accuracy and <strong>0.5307</strong> Macro-F1. On a manually curated subset of 196 good-quality cases, the result improves to <strong>0.6480</strong> Accuracy and <strong>0.5656</strong> Macro-F1. This shows that explicit height features become useful once the reference frame and boundary quality are controlled.</p>
+
+        <h2>5. Structured Modeling for Soft-Tissue Contour</h2>
+        <p>The soft-tissue contour task depends more on contour curvature, fullness, and overall outline consistency than the gingival-margin task does. For this reason, the thesis builds a contour-based structured analysis pipeline on top of the shared classification baseline.</p>
+        <p>The pipeline also starts from ROI prompting and SAM segmentation, then extracts the upper contours of both teeth and compares multiple alignment strategies, including rigid translation, local window search, and narrow-band DTW.</p>
+
+        <h3>5.1 Contour Comparison and Alignment</h3>
+        <p>The basic contour feature is correlation distance. Let the implant-side contour be $c_i(t)$ and the mirrored control-side contour be $c_c(1-t)$. The correlation distance is defined as:</p>
+        <div class="formula-block">
+          $$d_{\mathrm{corr}} = 1 - \mathrm{corr}(c_i(t), c_c(1-t))$$
+        </div>
+        <p>For alignment optimization, the thesis further compares rigid translation and narrow-band DTW. The role of narrow-band DTW is not unrestricted warping, but locally constrained correspondence adjustment under order preservation. Its path-smoothness penalty is written as:</p>
+        <div class="formula-block">
+          $$\phi_{\mathrm{slope}} =
+          \frac{1}{L-1}\sum_{k=2}^{L}
+          \left|(i_k-j_k)-(i_{k-1}-j_{k-1})\right|$$
+        </div>
+        <p>The shared classification baseline reaches only <strong>0.5548</strong> AUC on the soft-tissue contour task. In contrast, direct contour-correlation comparison reaches <strong>0.6144</strong> Accuracy, rigid translation reaches <strong>0.6208</strong>, and narrow-band DTW improves the best Accuracy to <strong>0.6375</strong>. This result indicates that soft-tissue contour depends more on contour-level alignment and quantification than on general RGB classification.</p>
+
+        <h2>6. Conclusion</h2>
+        <p>The experiments support three main conclusions. First, shared multi-task classification is the right main line for PES automatic assessment, and the CLIP ViT three-stream concat linear architecture gives the best balance of performance and stability. Second, the key factor behind stable convergence is not the backbone alone, but the fusion-head combination, and <strong>concat + linear</strong> is the most reliable structure under the present small-sample setting. Third, gingival margin and soft-tissue contour cannot be fully handled by black-box classification alone. Structured modeling with segmentation, reference-frame correction, zenith detection, contour extraction, and curve alignment provides a clearer explanatory path and stronger supplementary evidence.</p>
+        <p>The final method design therefore does not force one model family to solve every aspect of the problem. It uses a dual-layer framework: a shared classification main line plus task-specific structured modeling.</p>
 
         <div class="link-card">
-          <p><strong>Project Status.</strong> This undergraduate thesis workspace is currently local and has not been published as a public GitHub repository yet.</p>
+          <p><strong>Project Status.</strong> This undergraduate thesis project is still local and has not yet been released as a public GitHub repository.</p>
         </div>
       </main>
     </div>
@@ -222,5 +322,6 @@
 
   <script src="../js/config.js?v=20260310-1"></script>
   <script src="../js/language.js?v=20260310-1"></script>
+  <script src="../js/math.js?v=20260310-1"></script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F5F7FA"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFEFC" stroke="#DCE3EC" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">OpenAI API Practice Map</text>
+  <text x="90" y="146" fill="#5D6570" font-family="Georgia, serif" font-size="20">The notebook focuses on message structure, runtime patterns, and response handling.</text>
+  <rect x="94" y="228" width="204" height="102" rx="20" fill="#F8F1E8" stroke="#E7D8C6" stroke-width="2"/>
+  <text x="136" y="270" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Application</text>
+  <text x="124" y="300" fill="#685C4E" font-family="Arial, sans-serif" font-size="17">Client code or notebook</text>
+  <rect x="354" y="228" width="222" height="102" rx="20" fill="#EEF4FA" stroke="#D4DEEB" stroke-width="2"/>
+  <text x="416" y="270" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Messages</text>
+  <text x="389" y="300" fill="#556170" font-family="Arial, sans-serif" font-size="17">System, user, multimodal input</text>
+  <rect x="632" y="228" width="206" height="102" rx="20" fill="#F3F7EF" stroke="#D7E2D0" stroke-width="2"/>
+  <text x="682" y="270" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Model API</text>
+  <text x="672" y="300" fill="#596257" font-family="Arial, sans-serif" font-size="17">Call configuration</text>
+  <rect x="894" y="228" width="216" height="102" rx="20" fill="#F9F2EA" stroke="#E8DACC" stroke-width="2"/>
+  <text x="930" y="270" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Response Loop</text>
+  <text x="930" y="300" fill="#685D51" font-family="Arial, sans-serif" font-size="17">Parse and display</text>
+  <rect x="208" y="412" width="210" height="106" rx="22" fill="#F5F8FB" stroke="#DDE3EE" stroke-width="2"/>
+  <text x="250" y="458" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Streaming</text>
+  <text x="252" y="490" fill="#556170" font-family="Arial, sans-serif" font-size="18">Incremental tokens</text>
+  <rect x="484" y="412" width="208" height="106" rx="22" fill="#F7FBF5" stroke="#DCE8D7" stroke-width="2"/>
+  <text x="546" y="458" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Async</text>
+  <text x="523" y="490" fill="#586258" font-family="Arial, sans-serif" font-size="18">Concurrent requests</text>
+  <rect x="758" y="412" width="262" height="106" rx="22" fill="#F6F2FA" stroke="#DED8EA" stroke-width="2"/>
+  <text x="821" y="458" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Multimodal</text>
+  <text x="796" y="490" fill="#60596A" font-family="Arial, sans-serif" font-size="18">Text plus image input</text>
+  <path d="M298 279H354" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M576 279H632" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M838 279H894" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1002 330V372H313V412" stroke="#87909B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M588 330V412" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M735 330V372H889V412" stroke="#87909B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

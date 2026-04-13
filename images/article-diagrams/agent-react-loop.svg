@@ -1,0 +1,29 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F4F7FA"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFEFC" stroke="#DCE3EC" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">Agent Execution Loop</text>
+  <text x="90" y="146" fill="#5C6470" font-family="Georgia, serif" font-size="20">The demos move from plain completion to explicit thought, action, observation, and response.</text>
+  <rect x="110" y="244" width="180" height="98" rx="20" fill="#F8F1E7" stroke="#E7D8C6" stroke-width="2"/>
+  <text x="141" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">User Task</text>
+  <text x="142" y="314" fill="#685C4E" font-family="Arial, sans-serif" font-size="17">Question or goal</text>
+  <rect x="356" y="170" width="236" height="118" rx="22" fill="#EEF4FA" stroke="#D6DEEB" stroke-width="2"/>
+  <text x="420" y="219" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Planner</text>
+  <text x="391" y="252" fill="#556170" font-family="Arial, sans-serif" font-size="18">Decide whether to answer</text>
+  <text x="415" y="276" fill="#556170" font-family="Arial, sans-serif" font-size="18">or call a tool</text>
+  <rect x="356" y="392" width="236" height="118" rx="22" fill="#F2F6EE" stroke="#D6E1CE" stroke-width="2"/>
+  <text x="418" y="441" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Observation</text>
+  <text x="400" y="474" fill="#586255" font-family="Arial, sans-serif" font-size="18">Tool output returns to</text>
+  <text x="431" y="498" fill="#586255" font-family="Arial, sans-serif" font-size="18">the agent state</text>
+  <rect x="674" y="244" width="188" height="98" rx="20" fill="#F3F7EF" stroke="#D7E2D0" stroke-width="2"/>
+  <text x="715" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Tool Call</text>
+  <text x="710" y="314" fill="#596256" font-family="Arial, sans-serif" font-size="17">Weather / Search</text>
+  <rect x="930" y="244" width="170" height="98" rx="20" fill="#F9F2EA" stroke="#E8DACC" stroke-width="2"/>
+  <text x="956" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Final Answer</text>
+  <text x="968" y="314" fill="#685D51" font-family="Arial, sans-serif" font-size="17">Visible response</text>
+  <path d="M290 293H356" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M592 229H640C659.882 229 676 245.118 676 265V293" stroke="#87909B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M862 293H930" stroke="#87909B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M768 342V372C768 386.359 756.359 398 742 398H592" stroke="#87909B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M356 451H290C270.118 451 254 434.882 254 415V342" stroke="#87909B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="714" y="388" fill="#5C6470" font-family="Arial, sans-serif" font-size="17">iterate if needed</text>
+</svg>

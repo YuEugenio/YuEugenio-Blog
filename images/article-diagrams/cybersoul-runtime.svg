@@ -1,0 +1,40 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F8F6F1"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFCF8" stroke="#E7DFD2" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">Cybersoul Runtime Loop</text>
+  <text x="90" y="146" fill="#6A6258" font-family="Georgia, serif" font-size="20">A world-driven companion runtime with memory, events, and dashboard observability.</text>
+  <rect x="90" y="196" width="200" height="110" rx="22" fill="#EAF3EF" stroke="#C8DDD1" stroke-width="2"/>
+  <text x="128" y="244" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Clock Tick</text>
+  <text x="118" y="280" fill="#52635B" font-family="Arial, sans-serif" font-size="18">Advance simulated</text>
+  <text x="138" y="304" fill="#52635B" font-family="Arial, sans-serif" font-size="18">time by 1 minute</text>
+  <rect x="346" y="196" width="210" height="110" rx="22" fill="#F3F7EC" stroke="#D5E1C6" stroke-width="2"/>
+  <text x="387" y="244" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">World State</text>
+  <text x="377" y="280" fill="#59604E" font-family="Arial, sans-serif" font-size="18">Locations, events,</text>
+  <text x="386" y="304" fill="#59604E" font-family="Arial, sans-serif" font-size="18">activities, rhythms</text>
+  <rect x="612" y="196" width="210" height="110" rx="22" fill="#EFF3FA" stroke="#D5DDEE" stroke-width="2"/>
+  <text x="641" y="244" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Mira Runtime</text>
+  <text x="639" y="280" fill="#55606C" font-family="Arial, sans-serif" font-size="18">State update and</text>
+  <text x="654" y="304" fill="#55606C" font-family="Arial, sans-serif" font-size="18">next action choice</text>
+  <rect x="878" y="196" width="222" height="110" rx="22" fill="#FBF1E7" stroke="#E7D3BA" stroke-width="2"/>
+  <text x="930" y="244" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Dashboard</text>
+  <text x="913" y="280" fill="#6A5A4B" font-family="Arial, sans-serif" font-size="18">Logs, emotion,</text>
+  <text x="915" y="304" fill="#6A5A4B" font-family="Arial, sans-serif" font-size="18">timeline, controls</text>
+  <rect x="232" y="392" width="264" height="122" rx="24" fill="#FAF5ED" stroke="#E6DCCA" stroke-width="2"/>
+  <text x="277" y="441" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="28">Event Engine</text>
+  <text x="271" y="476" fill="#635A50" font-family="Arial, sans-serif" font-size="18">Check triggers and</text>
+  <text x="285" y="500" fill="#635A50" font-family="Arial, sans-serif" font-size="18">apply world effects</text>
+  <rect x="558" y="392" width="410" height="122" rx="24" fill="#F2F6F7" stroke="#D6E1E4" stroke-width="2"/>
+  <text x="610" y="441" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="28">Memory and Trace Store</text>
+  <text x="610" y="476" fill="#556166" font-family="Arial, sans-serif" font-size="18">SQLite demo store + message bus + memory writeback</text>
+  <text x="610" y="500" fill="#556166" font-family="Arial, sans-serif" font-size="18">for accumulated life traces instead of stateless replies</text>
+  <path d="M290 251H346" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M556 251H612" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M822 251H878" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M451 306V392" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M717 306V392" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M495 453H558" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <path d="M989 306V392" stroke="#8A8A80" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="346" cy="251" r="6" fill="#8A8A80"/>
+  <circle cx="612" cy="251" r="6" fill="#8A8A80"/>
+  <circle cx="878" cy="251" r="6" fill="#8A8A80"/>
+</svg>

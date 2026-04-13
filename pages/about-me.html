@@ -15,104 +15,267 @@
     };
   </script>
   <style>
-    .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.8; }
-    .article-header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
-    .article-title { font-size: 2.2rem; margin-bottom: 0.6rem; color: #1a1a1a; font-weight: normal; }
-    .article-meta { color: #666; font-size: 0.9rem; }
-    .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
-    .back-link:hover { color: #1a1a1a; }
+    .container {
+      max-width: 680px;
+      min-height: auto;
+      padding: 20px 18px;
+    }
 
-    .identity { margin-top: 0.7rem; color: #555; font-size: 0.95rem; }
-    .identity div { margin: 0.25rem 0; }
+    .article-content {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      line-height: 1.42;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 0.86rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.88rem;
+    }
+
+    .back-link:hover {
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      text-align: center;
+      margin-bottom: 0.78rem;
+      border-bottom: 1px solid #ececec;
+      padding-bottom: 0.72rem;
+    }
+
+    .article-title {
+      font-size: 1.84rem;
+      margin-bottom: 0.26rem;
+      color: #1a1a1a;
+      font-weight: normal;
+    }
+
+    .identity {
+      margin-top: 0.32rem;
+      color: #555;
+      font-size: 0.88rem;
+      line-height: 1.3;
+    }
+
+    .identity div {
+      margin: 0.08rem 0;
+    }
+
+    .resume-page {
+      display: flex;
+      flex-direction: column;
+      gap: 0.58rem;
+    }
+
+    .resume-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 0.58rem;
+      align-items: stretch;
+    }
+
+    .resume-column {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.58rem;
+    }
 
     .section-card {
-      margin: 1.15rem 0 1.35rem;
-      padding: 1rem 1.15rem;
+      margin: 0;
+      padding: 0.62rem 0.72rem;
       border: 1px solid #ececec;
-      border-radius: 12px;
+      border-radius: 9px;
       background: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .section-card h2 {
-      margin: 0.2rem 0 0.7rem;
+      margin: 0.02rem 0 0.34rem;
       color: #1a1a1a;
-      font-size: 1.35rem;
-      letter-spacing: 0.2px;
+      font-size: 0.98rem;
+      letter-spacing: 0.08px;
+      font-weight: 700;
     }
 
     .entry {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 0.35rem 1rem;
+      gap: 0.12rem 0.42rem;
       align-items: start;
-      margin: 0.35rem 0 0.2rem;
+      margin: 0.12rem 0 0.06rem;
     }
 
-    .entry-main { min-width: 0; }
-    .entry-title { margin: 0; font-size: 1.02rem; color: #1a1a1a; font-weight: 700; }
-    .entry-sub { margin: 0.1rem 0 0; font-size: 0.94rem; color: #555; font-style: italic; }
-    .entry-meta { font-size: 0.9rem; color: #666; white-space: nowrap; text-align: right; }
-    .entry-sub.no-wrap { white-space: nowrap; }
+    .entry-main {
+      min-width: 0;
+    }
+
+    .entry-title {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #1a1a1a;
+      font-weight: 700;
+      line-height: 1.28;
+    }
+
+    .entry-sub {
+      margin: 0.04rem 0 0;
+      font-size: 0.8rem;
+      color: #555;
+      font-style: italic;
+      line-height: 1.28;
+    }
+
+    .entry-sub.no-wrap {
+      white-space: nowrap;
+    }
+
+    .entry-meta {
+      margin: 0;
+      font-size: 0.79rem;
+      color: #666;
+      white-space: nowrap;
+      text-align: right;
+      line-height: 1.28;
+    }
 
     .role-line {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.35rem 1rem;
-      align-items: start;
-      margin-top: 0.1rem;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.08rem 0.36rem;
+      margin-top: 0.05rem;
     }
 
-    .role-line .entry-sub {
-      margin: 0;
-    }
-
+    .role-line .entry-sub,
     .role-line .entry-meta {
       margin: 0;
+      text-align: left;
     }
 
-    .mini-title {
-      margin: 0.8rem 0 0.15rem;
+    .tag-line {
+      margin: 0;
       color: #333;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.1px;
+      font-size: 0.83rem;
+      line-height: 1.4;
     }
 
     .info-list {
-      margin: 0.45rem 0 0.2rem;
-      padding-left: 1.15rem;
+      margin: 0.14rem 0 0.02rem;
+      padding-left: 0.92rem;
     }
 
     .info-list li {
-      margin: 0.28rem 0;
+      margin: 0.08rem 0;
       color: #2f2f2f;
+      font-size: 0.8rem;
+      line-height: 1.32;
     }
 
     .skills-grid {
       display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 0.45rem 0.9rem;
-      margin-top: 0.25rem;
+      grid-template-columns: 82px 1fr;
+      gap: 0.16rem 0.46rem;
     }
 
     .skills-grid dt {
       color: #1a1a1a;
       font-weight: 700;
+      font-size: 0.8rem;
     }
 
     .skills-grid dd {
       margin: 0;
       color: #333;
+      font-size: 0.8rem;
+      line-height: 1.32;
     }
 
-    .tag-line {
-      color: #333;
-      font-size: 1.02rem;
-      margin-top: 0.2rem;
+    .skill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.08rem 0.32rem;
+    }
+
+    .award-stack {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.34rem;
+    }
+
+    .award-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      margin-top: 0.14rem;
+    }
+
+    .award-list .entry {
+      margin: 0;
+    }
+
+    .award-stack-secondary {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.34rem;
+    }
+
+    .section-card--award-fill {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-link {
+      display: block;
+      margin-top: 0.14rem;
+      color: #444;
+      font-size: 0.79rem;
+      line-height: 1.34;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .blog-link:hover {
+      color: #1a1a1a;
+      text-decoration: underline;
+    }
+
+    .link-title {
+      display: inline-block;
+      color: #1a1a1a;
+      text-decoration: none;
+    }
+
+    .link-title:hover {
+      text-decoration: underline;
+    }
+
+    .section-card--wide {
+      width: 100%;
     }
 
     @media (max-width: 768px) {
+      .container {
+        padding: 24px 18px;
+      }
+
+      .resume-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .resume-page {
+        gap: 0.58rem;
+      }
+
       .entry {
         grid-template-columns: 1fr;
       }
@@ -122,9 +285,13 @@
         white-space: normal;
       }
 
+      .entry-sub.no-wrap {
+        white-space: normal;
+      }
+
       .skills-grid {
         grid-template-columns: 1fr;
-        gap: 0.2rem;
+        gap: 0.14rem;
       }
     }
   </style>
@@ -152,133 +319,193 @@
         </div>
       </header>
 
-      <main>
-        <section class="section-card">
-          <h2>Target Position</h2>
-          <p class="tag-line">AI Product Manager</p>
-        </section>
+      <main class="resume-page">
+        <div class="resume-layout">
+          <aside class="resume-column">
+            <section class="section-card">
+              <h2>Target Roles</h2>
+              <p class="tag-line">AI Product / Presales / Solutions / Consulting / Operations / Management Trainee</p>
+            </section>
 
-        <section class="section-card">
-          <h2>Education</h2>
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">Sun Yat-sen University</p>
-              <p class="entry-sub no-wrap">School of Computer Science and Engineering</p>
-              <p class="entry-sub no-wrap">National Information Management · Bachelor of Management</p>
-            </div>
-            <div class="entry-meta">Guangzhou, China · Expected June 2026</div>
-          </div>
-          <ul class="info-list">
-            <li>GPA: 3.3 / 5.0 (83 / 100)</li>
-            <li>Relevant Coursework: Management Principles, Management Statistics, Intellectual Property Law, Trade Secret Protection, Artificial Intelligence, Artificial Neural Networks, Pattern Recognition.</li>
-          </ul>
-        </section>
+            <section class="section-card">
+              <h2>Education</h2>
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">Sun Yat-sen University | School of Computer Science</p>
+                  <p class="entry-sub no-wrap">Confidentiality Management · Bachelor of Management</p>
+                </div>
+                <div class="entry-meta">2022 - 2026</div>
+              </div>
+              <ul class="info-list">
+                <li>GPA: 3.3 / 5.0 (83 / 100)</li>
+                <li>Relevant Coursework: Management Principles, Management Statistics, Intellectual Property Law, Trade Secret Protection, Artificial Intelligence, Artificial Neural Networks, Pattern Recognition.</li>
+              </ul>
+            </section>
 
-        <section class="section-card">
-          <h2>Overview</h2>
-          <ul class="info-list">
-            <li>AI-native practitioner with intensive daily use of AI tools and continuous tracking of frontier AI technologies, open-source ecosystems, and research papers.</li>
-            <li>System-level understanding of AIGC, Agent, and LLM ecosystems, with strong curiosity and fast self-learning capability.</li>
-            <li>Experience in startup execution, product management, and cross-functional project delivery, with strong technical reading and writing in English.</li>
-          </ul>
-        </section>
+            <section class="section-card">
+              <h2>Technical Skills</h2>
+              <dl class="skills-grid">
+                <dt>Languages</dt>
+                <dd>C++, Python</dd>
 
-        <section class="section-card">
-          <h2>Technical Skills</h2>
-          <dl class="skills-grid">
-            <dt>Languages</dt>
-            <dd>C++, Python</dd>
+                <dt>Frameworks</dt>
+                <dd>PyTorch, LangChain</dd>
 
-            <dt>Frameworks</dt>
-            <dd>PyTorch, LangChain</dd>
+                <dt>Systems</dt>
+                <dd>Linux, OpenAI API</dd>
 
-            <dt>Systems</dt>
-            <dd>Linux, OpenAI API</dd>
+                <dt>Agent</dt>
+                <dd>
+                  <div class="skill-wrap">
+                    <span>Paradigms</span>
+                    <span>|</span>
+                    <span>Harness</span>
+                    <span>|</span>
+                    <span>Prompting</span>
+                    <span>|</span>
+                    <span>Skills</span>
+                    <span>|</span>
+                    <span>Context</span>
+                    <span>|</span>
+                    <span>Memory</span>
+                  </div>
+                </dd>
 
-            <dt>AI Foundations</dt>
-            <dd>Deep Learning, Neural Networks, Transformer / LLM, Diffusion Models, SFT, LoRA, Reinforcement Learning</dd>
-          </dl>
-        </section>
+                <dt>DL Theory</dt>
+                <dd>
+                  <div class="skill-wrap">
+                    <span>LLM / Transformer</span>
+                    <span>|</span>
+                    <span>Diffusion</span>
+                    <span>|</span>
+                    <span>SFT / LoRA</span>
+                    <span>|</span>
+                    <span>Alignment / RL</span>
+                  </div>
+                </dd>
+              </dl>
+            </section>
 
-        <section class="section-card">
-          <h2>Experience</h2>
+            <div class="award-stack">
+              <section class="section-card">
+                <h2>Awards</h2>
+                <div class="award-list">
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">CUMCM - Guangdong Second Prize</p>
+                    </div>
+                    <div class="entry-meta"><em>Jan 2023</em></div>
+                  </div>
 
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">Beijing Unisecurity Co., Ltd</p>
-              <div class="role-line">
-                <p class="entry-sub">AIPM Intern</p>
-                <p class="entry-meta">Beijing, China · 2024</p>
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">CUMCM - Guangdong Second Prize</p>
+                    </div>
+                    <div class="entry-meta"><em>Dec 2023</em></div>
+                  </div>
+
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">COMAP ICM - Meritorious Winner</p>
+                    </div>
+                    <div class="entry-meta"><em>2024</em></div>
+                  </div>
+                </div>
+              </section>
+
+              <div class="award-stack-secondary">
+                <section class="section-card section-card--award-fill">
+                  <h2>Language</h2>
+                  <ul class="info-list">
+                    <li>TOEFL iBT: 94</li>
+                    <li>CET-4: 600 · CET-6: 527</li>
+                  </ul>
+                </section>
+
+                <section class="section-card section-card--award-fill">
+                  <h2>Related Links</h2>
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title"><a class="link-title" href="https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html" target="_blank" rel="noreferrer">AIGC Art Generation Review</a></p>
+                    </div>
+                  </div>
+                  <a class="blog-link" href="https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html" target="_blank" rel="noreferrer">https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html</a>
+
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title"><a class="link-title" href="https://github.com/YuEugenio/Cybersoul-2" target="_blank" rel="noreferrer">Cybersoul AI Cyber World Repository</a></p>
+                    </div>
+                  </div>
+                  <a class="blog-link" href="https://github.com/YuEugenio/Cybersoul-2" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Cybersoul-2</a>
+                </section>
               </div>
             </div>
-          </div>
-          <ul class="info-list">
-            <li>Participated in technical solution design for an internal employee-training RAG system.</li>
-            <li>Contributed to requirement analysis, architecture discussions, enterprise knowledge-base design, and retrieval workflow planning.</li>
-          </ul>
+          </aside>
 
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">School Unity Cultural Technology Co., Ltd</p>
-              <div class="role-line">
-                <p class="entry-sub">Co-founder</p>
-                <p class="entry-meta">Guangzhou, China · Feb 2024 - Present</p>
+          <div class="resume-column">
+            <section class="section-card">
+              <h2>Profile</h2>
+              <ul class="info-list">
+                <li>AI-native practitioner with intensive daily use of AI tools, continuous tracking of frontier AI technologies, open-source ecosystems, and research progress, and the ability to quickly reproduce and validate paper ideas.</li>
+                <li>System-level understanding of AIGC, Agent, and LLM ecosystems, with strong curiosity and fast self-learning capability.</li>
+                <li>Experience in startup execution, product management, and cross-functional project delivery, with strong technical reading and writing in English.</li>
+              </ul>
+            </section>
+
+            <section class="section-card">
+              <h2>Experience</h2>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">Beijing Zhixin Tianyi</p>
+                  <div class="role-line">
+                    <p class="entry-sub">AIPM Intern</p>
+                    <p class="entry-meta">Beijing, China · Jul 2024 - Aug 2024</p>
+                  </div>
+                </div>
               </div>
-            </div>
+              <ul class="info-list">
+                <li>Participated in solution selection, requirement analysis, system architecture discussions, and enterprise knowledge-base design and chunking workflow planning for an internal employee-training RAG system.</li>
+                <li>Built an MVP with LangChain to validate the retrieval-augmented QA pipeline, and evaluated trade-offs among chunking strategy, recall quality, answer accuracy, traceability, cost, and maintainability in enterprise scenarios.</li>
+              </ul>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">School Unity (Guangzhou) Cultural Technology Co., Ltd.</p>
+                  <div class="role-line">
+                    <p class="entry-sub">Co-founder</p>
+                    <p class="entry-meta">Guangzhou, China · Feb 2024 - Present</p>
+                  </div>
+                </div>
+              </div>
+              <ul class="info-list">
+                <li>Led product and technology strategy, drafted business plans, and built and maintained enterprise knowledge-base systems.</li>
+                <li>Served as product owner for the corporate mini-program, driving planning, requirement design, cross-team collaboration, and MVP iteration through Vibe Coding.</li>
+              </ul>
+            </section>
+
+            <section class="section-card">
+              <h2>Featured Project</h2>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">Cybersoul: Agent-Based AI Cyber World / AI Companion System</p>
+                  <p class="entry-sub">Product Design + Agent Runtime Design · Python / OpenAI API / Prompt Runtime</p>
+                </div>
+              </div>
+              <ul class="info-list">
+                <li>Independently conceived and advanced the Cybersoul AI companion project, starting from the question of how a digital companion can sustain a persistent sense of presence instead of remaining a passive chatbot.</li>
+                <li>Abstracted the product into two layers: an existence layer for time, world, relationships, and action drives, and a perception layer for leaving perceivable traces in cyberspace.</li>
+                <li>Designed the Agent Runtime around cyberspace, clock-driven behavior, initiative, and relationship continuity to explore how companions can keep running and living without explicit user triggers.</li>
+                <li>Used a modular architecture that separates the LLM brain, agent modules, world modules, and instantiation configs, improving extensibility for model switching, persona replacement, and world expansion.</li>
+                <li>Current focus is validating world-driven semantics, heartbeat-based initiative, and the feasibility of moving from a chat product toward a presence product, while continuously writing PRDs, MVP plans, and technical documentation.</li>
+              </ul>
+            </section>
           </div>
-          <ul class="info-list">
-            <li>Led product and technology strategy, drafted business plans, and built and maintained enterprise knowledge-base systems.</li>
-            <li>Served as product owner for the corporate mini-program, driving planning, requirement design, and cross-team execution.</li>
-            <li>Used Vibe Coding methods to support MVP development and iterative delivery.</li>
-          </ul>
-        </section>
+        </div>
 
-        <section class="section-card">
-          <h2>Projects</h2>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">LangChain-based RAG System</p>
-              <p class="entry-sub">Retrieval-Augmented Generation Framework · LangChain</p>
-            </div>
-          </div>
-          <ul class="info-list">
-            <li>Provided more reliable knowledge recall through an Agent + RAG retrieval-augmented generation paradigm.</li>
-          </ul>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">Text-to-Image System</p>
-              <p class="entry-sub">Generative Model Engineering · Anima Base Model + Python</p>
-            </div>
-          </div>
-          <ul class="info-list">
-            <li>Built an end-to-end text-to-image pipeline and implemented LoRA fine-tuning and deployment workflows.</li>
-          </ul>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">Agent-Based Cyber World</p>
-              <p class="entry-sub">Agent System Built with Python and the OpenAI API</p>
-            </div>
-          </div>
-          <ul class="info-list">
-            <li>Implemented autonomous agent life in a world model as a demo technical module for companion AI.</li>
-          </ul>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">OpenClaw Private Deployment</p>
-              <p class="entry-sub">System Deployment and Validation · Localization Practice</p>
-            </div>
-          </div>
-          <ul class="info-list">
-            <li>Completed private deployment and hands-on validation tests for OpenClaw.</li>
-          </ul>
-        </section>
-
-        <section class="section-card">
-          <h2>Research and Course Projects</h2>
+        <section class="section-card section-card--wide">
+          <h2>Research Experience</h2>
           <div class="entry">
             <div class="entry-main">
               <p class="entry-title">Bachelor's Thesis</p>
@@ -286,42 +513,21 @@
             </div>
           </div>
           <ul class="info-list">
-            <li>Optimized input paradigm and base model, mitigating baseline overfitting under low-sample conditions.</li>
-            <li>Improved model performance with AUC converging to 0.7.</li>
+            <li>Optimized the input paradigm, base model, and network structure to mitigate baseline overfitting under extremely low-sample conditions.</li>
+            <li>Improved overall classification performance and made AUC converge stably to 0.7.</li>
+            <li>Applied object detection and image segmentation for geometry-aware medical semantic modeling, improving single-task ACC to 0.7.</li>
           </ul>
 
-          <h3 class="mini-title">Related Course Project</h3>
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">AIGC Art Generation Review</p>
+              <p class="entry-sub">From Image Generator to Artistic Creator</p>
+            </div>
+          </div>
           <ul class="info-list">
-            <li><strong>Transformer CN-EN Translation:</strong> Implemented a Transformer-based Chinese-English machine translation system.</li>
-            <li><strong>ResNet Fine-grained Classification:</strong> Completed fine-grained classification on CUB-200-2011 using ResNet.</li>
-          </ul>
-        </section>
-
-        <section class="section-card">
-          <h2>Awards and Certificates</h2>
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">CUMCM - Guangdong Second Prize</p>
-            </div>
-            <div class="entry-meta"><em>January 2023</em></div>
-          </div>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">CUMCM - Guangdong Second Prize</p>
-            </div>
-            <div class="entry-meta"><em>December 2023</em></div>
-          </div>
-
-          <div class="entry">
-            <div class="entry-main">
-              <p class="entry-title">COMAP ICM - Meritorious Winner</p>
-            </div>
-            <div class="entry-meta"><em>2024</em></div>
-          </div>
-
-          <ul class="info-list">
-            <li>TOEFL iBT: 94 · CET-4: 600 · CET-6: 527.</li>
+            <li>Conducted a systematic review of how text-to-image systems may evolve from image generators toward artistic creators, with emphasis on style homogenization, semantic loss, and aesthetic alignment in anime and fine-grained style generation.</li>
+            <li>Compared three technical paths, pretraining, supervised fine-tuning, and reinforcement-based alignment, and analyzed the roles and limitations of caption quality, structured semantics, LoRA personalization, and preference alignment in art-grade AIGC.</li>
+            <li>Argued from a combined product and technical perspective that approaching an artistic creator depends not only on model scale, but on the coordinated design of artistic semantic engineering, personalized learning, and multi-objective preference alignment.</li>
           </ul>
         </section>
       </main>

@@ -92,6 +92,7 @@ const SITE_CONFIG = {
 
     // 文章分类映射（缺省时会回落到 studies）
     articleSectionMap: {
+        "ai-arts-project-brief": "project-briefing",
         "pes-multi-task-classification-project-brief": "project-briefing",
         "cybersoul-product-brief": "project-briefing",
         "greenforest-rag-project-brief": "project-briefing",

@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,36 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Semantic Search Learning Notes</h1>
-        <p class="article-subtitle">A study summary centered on document loading, chunking, embeddings, vector storage, retrieval, and the transition from search to minimal RAG.</p>
+        <p class="article-subtitle">This article reorganizes document loading, chunking, embedding, vector storage, and retrieval into one end-to-end pipeline, then explains what each notebook step is actually solving.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This learning track is about how unstructured documents can be transformed into retrievable semantic memory rather than remaining as plain files.</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">The core object of semantic search is not the embedding model alone. It is the way documents are reorganized into retrievable semantic memory. This note set follows that path from raw files all the way to a minimal RAG answer flow.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`Semantic_Search_langchain/SS.ipynb`</strong> covering loaders, splitters, embeddings, vector stores, and retrievers.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">The full retrieval path from raw documents to reusable context.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">A minimal semantic-search system already connected to a basic RAG setting.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>Semantic search does not solve the problem of finding the same words. It solves the problem of finding semantically related content. The object is therefore a pipeline by definition: documents have to be ingested, chunked into useful units, mapped into vector space, and then retrieved again when a query arrives.</p>
+        <p>Looking at the embedding model alone is not enough. Retrieval quality can degrade because of document quality, chunk strategy, or metadata design just as easily as because of the embedding model. Semantic search is therefore a system-design problem rather than a single-model problem.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/semantic-search-loop.svg" alt="A semantic-search pipeline from documents and chunking to embeddings, vector databases, query vectors, and similarity retrieval">
+          <figcaption class="figure-caption">The important move in this study is to place document processing and query retrieval inside one diagram. Retrieval quality comes from the full chain, not from one isolated component.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The logic of semantic search can be divided into four objects. First, the document object defines what information the system starts with. Second, the chunk object defines the retrieval unit. Third, the embedding space maps text from strings into comparable vectors. Fourth, the retriever decides which chunks should be returned for a query.</p>
+        <p>These objects are tightly coupled. If chunks are too large, retrieval mixes in noise. If chunks are too small, semantic coherence is lost. If metadata is messy, filtering and citation become difficult. If retriever settings are weak, even good embeddings may fail to surface useful context.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Document Organization</h3>
+            <p>The loader and source-material quality determine whether the system begins with clean text objects.</p>
+          </div>
+          <div class="info-card">
+            <h3>Retrieval Unit</h3>
+            <p>The chunk strategy controls recall granularity and the balance between precision and usable context.</p>
+          </div>
+          <div class="info-card">
+            <h3>Recall Control</h3>
+            <p>Embeddings, vector store design, and retriever settings together decide whether top-k results are actually useful.</p>
+          </div>
         </div>
 
-        <h2>1. What I Focused On</h2>
-        <p>The materials in <strong>`Semantic_Search_langchain/`</strong> helped me understand the end-to-end path from raw documents to semantic retrieval. Instead of keyword matching alone, the goal is to build a system that retrieves by meaning.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p>The current notebook loads documents with LangChain abstractions, splits long text into indexable chunks, generates embeddings, and writes those embeddings into a vector store. After that, similarity search and retriever interfaces are used to return relevant context, and the retrieved passages are connected to a minimal RAG answer flow.</p>
+        <p>This implementation path matters because it turns retrieval from an abstract term into explicit code objects. Each stage can be inspected on its own: whether the document was loaded cleanly, whether chunking became too fragmented, whether metadata survived, whether the vector store really persisted, and whether the top-k results match the question.</p>
 
-        <h2>2. What I Practiced</h2>
-        <ul>
-          <li>Loading source documents with LangChain abstractions.</li>
-          <li>Splitting long text into chunks that balance context size and retrieval precision.</li>
-          <li>Generating embeddings for those chunks and storing them in a vector database.</li>
-          <li>Running similarity-based retrieval over the indexed content.</li>
-          <li>Extending retrieval into a minimal RAG flow so search results can support answering.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Ingestion and Chunking</h3>
+            <p>The quality ceiling of retrieval is often set early by how the text is segmented.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Embedding and Storage</h3>
+            <p>The vectorization layer turns static files into reusable memory units for downstream retrieval.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Retrieval to Answering</h3>
+            <p>The minimal RAG step tests whether retrieved passages can truly support later response generation.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The key takeaway is that semantic search is really a pipeline design problem. Retrieval quality depends on more than the embedding model alone; document quality, chunk strategy, metadata cleanliness, and retrieval settings all matter.</p>
-        <p>I also learned that semantic search is one of the most practical bridges between raw knowledge assets and usable AI products, because it gives structure to otherwise messy document collections.</p>
+        <h2>4. Current Output</h2>
+        <p>This study track already yields a complete minimal system. Raw documents can be ingested, chunked, embedded, stored in a vector database, and retrieved through similarity search when a query arrives. For an introductory RAG study, that pipeline already captures the essential mechanism.</p>
+        <p>The more important gain is methodological. Judging retrieval quality no longer depends on vague intuition. Chunk size, metadata, retriever parameters, and returned passages have all become observable and optimizable objects.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>My semantic-search learning outcome is the ability to set up a small but complete retrieval loop: ingest documents, convert them into vectorized chunks, store them, and use those chunks as relevant context for downstream LLM interaction.</p>
+        <h2>5. Conclusion</h2>
+        <p>Semantic search changes the way knowledge is used. Documents stop being static files and become context resources that can be segmented, indexed, recalled, and recombined. Much of RAG quality ultimately depends on whether this retrieval chain is reliable.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">Below is the full semantic-search notebook code, including document loading, text splitting, embedding, vector-store construction, retrieval, and the minimal RAG chain.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>Three checkpoints to keep in mind while reading the notebook</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with chunks</h3>
+              <p>Retrieval quality often breaks first at the chunking stage, not at the answer stage.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect the vector store</h3>
+              <p>If the index is incomplete or metadata is lost, the retriever may look correct while staying unstable.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with the RAG hook</h3>
+              <p>The minimal answer chain exists to verify that retrieved passages can actually support a response.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders the full <strong>`Semantic_Search_langchain/SS.ipynb`</strong> notebook so the retrieval chain and minimal RAG path can be read together.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -86,7 +154,7 @@
           "path": "Semantic_Search_langchain/SS.ipynb",
           "type": "notebook",
           "title": "Semantic_Search_langchain/SS.ipynb",
-          "description": "Notebook practice on loaders, chunking, embeddings, vector stores, retrievers, and RAG."
+          "description": "Notebook work on document loading, chunking, embeddings, vector stores, retrievers, and a minimal RAG flow."
         }
       ]
     }

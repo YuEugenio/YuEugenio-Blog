@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,29 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Agent 基础与 Demo</h1>
-        <p class="article-subtitle">围绕工具调用、多步执行、流式输出与 ReAct 风格流程的一组早期 Agent 实践，并附完整源码。</p>
+        <p class="article-subtitle">本文把工具调用、观察回路、流式响应与 ReAct 风格执行放回同一个 Agent 视角中，说明 Agent 为什么本质上是结构化执行系统，而不是更会聊天的 prompt。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>这一部分是我从“普通聊天调用”往“能做事的系统”迈进的阶段。Agent 的关键并不只是回复像不像人，而是它能不能按步骤完成任务。</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">Agent 的关键不在“人格更强”，而在“执行链更明确”。一旦任务被拆成思考、动作、观察和最终回答几个阶段，模型就开始从一次性生成器变成一个可以逐步做事的系统。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">核心材料</div>
+              <div class="fact-label"><strong>`draft.py`</strong> 与 <strong>`travelassistant.py`</strong>，分别覆盖流式交互与工具调用循环。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">学习对象</div>
+              <div class="fact-label">从单轮 completion 到带工具、带状态的显式执行回路。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前产出</div>
+              <div class="fact-label">已经能够构造一个最小 ReAct 风格 Agent，并理解控制逻辑比 prompt 本身更重要。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 学习主题</h2>
+        <p>本文讨论的对象不是“Agent 这个词”，而是模型何时开始从回答问题转向执行任务。只要系统需要决定是否调用工具、如何读取观察结果、是否继续迭代，以及何时结束，这个系统就已经不再是普通 completion，而是一个最小执行框架。</p>
+        <p>因此，学习重点不是给模型增加更多风格，而是让步骤显式化。执行回路一旦被写清楚，系统会比纯 prompt 更容易调试、更容易扩展，也更容易定位失败到底发生在计划、工具调用还是结果整合阶段。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/agent-react-loop.svg" alt="从用户任务、规划、工具调用、观察返回到最终回答的 Agent 执行循环图">
+          <figcaption class="figure-caption">Agent 学习的核心不是换一个更长的 prompt，而是把用户任务、工具动作、观察结果和最终回答组织成显式循环。</figcaption>
+        </figure>
+
+        <h2>2. 核心原理</h2>
+        <p>Agent 的核心原理可以概括为“状态化执行”。模型不再只看输入然后直接给答案，而是先判断当前是否需要外部动作，再把工具结果作为新的观察写回上下文，最后继续决策。这样一来，系统的能力就不只来自模型参数，也来自动作格式、工具接口和控制回路的设计。</p>
+        <p>ReAct 风格尤其适合作为入门框架，因为它把 Thought、Action、Observation 几个阶段显式拆开。哪怕实现还很简化，这种结构也已经足以说明 Agent 与普通聊天调用的本质差异。</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>动作显式化</h3>
+            <p>一旦工具调用与回答生成被分开，系统行为就不再只受最终文本支配。</p>
+          </div>
+          <div class="info-card">
+            <h3>观察回写</h3>
+            <p>工具返回值会成为下一轮决策的输入，Agent 因而具备迭代执行能力。</p>
+          </div>
+          <div class="info-card">
+            <h3>控制逻辑</h3>
+            <p>动作格式、解析规则和停止条件往往比单条 prompt 更能决定系统是否稳定。</p>
+          </div>
         </div>
 
-        <h2>1. 我主要在学什么</h2>
-        <p>我在这一阶段主要想搞清楚一个问题：当模型不再只是直接回答，而是需要调用工具、读取观察结果、再继续决策时，代码应该怎么组织。</p>
+        <h2>3. 练习实现</h2>
+        <p><strong>`draft.py`</strong> 用来练习流式输出与 reasoning-style 展示内容的分离，重点在于理解“用户看到什么”和“系统内部怎样推进”未必是同一层逻辑。<strong>`travelassistant.py`</strong> 则把工具调用、天气查询和景点搜索接入到一个简化版 ReAct 回路里，让 Thought / Action / Observation 可以连续发生。</p>
+        <p>这两段代码分别对应 Agent 的两个重要面向。前者更接近交互层，说明系统可以把执行过程拆成不同展示面。后者更接近任务层，说明工具和观察一旦被写进循环，模型就不再只是“回答器”，而是开始承担调度责任。</p>
 
-        <h2>2. 我具体练了什么</h2>
-        <ul>
-          <li>`draft.py`：练习流式回复和“思考样式内容”与正式回答内容的分离。</li>
-          <li>`travelassistant.py`：练习一个简化版 ReAct agent，能调用天气和搜索工具，按 Thought / Action / Observation 循环推进。</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>流式交互</h3>
+            <p><strong>`draft.py`</strong> 说明可见输出和内部执行并不一定是一回事。</p>
+          </div>
+          <div class="demo-card">
+            <h3>工具回路</h3>
+            <p><strong>`travelassistant.py`</strong> 用天气和景点工具把最小 ReAct 结构跑了起来。</p>
+          </div>
+          <div class="demo-card">
+            <h3>失败定位</h3>
+            <p>显式动作和观察让失败可以被归因到格式、工具或状态管理，而不是只怪模型“不聪明”。</p>
+          </div>
+        </div>
 
-        <h2>3. 我目前的理解</h2>
-        <p>我现在比较清楚的是，Agent 的本质并不是“更聪明的对话”，而是“更结构化的执行”。一旦把动作格式、工具调用和观察结果都写清楚，系统就会比纯 prompt 更容易调试和演进。</p>
+        <h2>4. 当前产出</h2>
+        <p>这组学习已经给出一个清晰判断：Agent 的能力主要来自流程设计，而不是抽象地“更强”。只要把动作、工具、观察和结束条件组织清楚，即使是很小的 demo，也能体现出任务执行与单轮问答的本质差异。</p>
+        <p>这也意味着，后续如果继续增加检索、状态图、记忆或外部系统接入，核心工作不会是“再写一个更大的 prompt”，而是继续把执行结构设计清楚。</p>
 
-        <h2>4. 完整代码笔记</h2>
-        <p class="source-notice">下面完整展示我目前这部分学习所对应的全部脚本源码，而不是只放演示用的片段。</p>
+        <h2>5. 结论</h2>
+        <p>Agent 不是更会聊天的模型壳，而是一个把推理、动作、观察和回答组织成执行循环的系统。这个视角一旦建立，后续的工具编排、工作流图和多步任务设计都会变得更容易理解。</p>
+
+        <h2>6. 完整代码笔记</h2>
+        <div class="code-guide">
+          <h3>看这组源码时建议先抓住三个对象</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>先看动作格式</h3>
+              <p>如果 Thought / Action 的边界不清楚，后面的工具调用就很难稳定。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>再看工具返回</h3>
+              <p>Observation 怎样写回上下文，决定了 Agent 能不能继续下一步。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>最后看停止条件</h3>
+              <p>一个最小 Agent 是否可控，通常取决于它何时停止而不是何时开始。</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>代码范围：</strong>完整渲染 <strong>`draft.py`</strong> 与 <strong>`travelassistant.py`</strong>，便于把交互层和工具层放在同一页中对照。</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -79,13 +154,13 @@
           "path": "draft.py",
           "type": "script",
           "title": "draft.py",
-          "description": "流式输出与 reasoning-style 内容展示实验。"
+          "description": "流式输出与 reasoning-style 展示分离实验。"
         },
         {
           "path": "travelassistant.py",
           "type": "script",
           "title": "travelassistant.py",
-          "description": "一个带天气与景点工具的简化 ReAct 风格 Agent demo。"
+          "description": "带天气与景点工具的最小 ReAct 风格 Agent demo。"
         }
       ]
     }

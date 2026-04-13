@@ -7,6 +7,7 @@
   <meta name="article:date" content="2026-03-13">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.85; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -19,8 +20,8 @@
     .brief-body p { margin: 0 0 1rem; }
     .brief-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .brief-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -36,39 +37,90 @@
 
       <header class="article-header">
         <h1 class="article-title">GreenForest_RAG: A Project Brief</h1>
-        <p class="article-subtitle">A general introduction to a LangChain-based gardening knowledge base, the current retrieval demo, and the implementation scope already completed.</p>
+        <p class="article-subtitle">This article defines the GreenForest_RAG task object, explains the retrieval-augmented pipeline, summarizes the current demo scope, and states the engineering conclusion already supported by this small domain knowledge base.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="brief-body">
-        <div class="summary-card">
-          <p>GreenForest_RAG is a small retrieval-augmented generation prototype built around the “萃意生机” balcony-ecology project. It turns scattered PDF, DOCX, and CSV materials into a searchable knowledge base that supports more grounded question answering.</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Project Article</p>
+          <p class="article-lead">GreenForest_RAG reorganizes gardening and project-operation materials into a searchable local knowledge base. The current objective is not interface richness, but a complete path from document ingestion to evidence-grounded answering.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Knowledge Sources</div>
+              <div class="fact-label">Mixed PDF, DOCX, and CSV materials covering plant care, planning, operations, records, and data tables.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Core Goal</div>
+              <div class="fact-label">Turn scattered files into a traceable retrieval system instead of depending on unconstrained generation.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Interface</div>
+              <div class="fact-label">A local CLI retrieval-and-answer demo built on LangChain and Chroma.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>GreenForest_RAG is a domain-oriented RAG prototype. Its source materials are not open-web pages, but the local document archive around the “萃意生机” balcony-ecology project. Those materials mix horticultural knowledge with business and operational information, which makes the setup much closer to a real project knowledge environment.</p>
+        <p>The object of this article is therefore not one model parameter choice. It is the conversion of a document pile into a system that can retrieve, cite, and answer from project knowledge in a disciplined way.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/greenforest-rag-pipeline.svg" alt="The current GreenForest_RAG pipeline from mixed local documents to Chroma indexing and grounded question answering">
+          <figcaption class="figure-caption">The current core loop. Documents are loaded and chunked first, then embedded into a local vector store, and finally retrieved as evidence for answering.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The logic is simple but precise. RAG does not mainly make a model “more eloquent.” It makes the answer depend on retrievable evidence. In a project environment where knowledge is fragmented across heterogeneous files, that organization is more reliable than direct chatting and more efficient than manual file-by-file lookup.</p>
+        <p>GreenForest_RAG therefore follows a four-step method. First, read mixed local files into a unified document interface. Second, split long text into retrieval-friendly semantic segments. Third, embed those segments and persist them in a local vector store. Fourth, answer only after retrieval, with the model constrained to the returned evidence.</p>
+
+        <div class="callout-box callout-box--soft">
+          <div class="callout-title">Method Boundary</div>
+          <p>The current demo answers the question of reliable knowledge recall. It does not yet solve product-layer concerns such as access control, web UI, scheduled ingestion, or production monitoring.</p>
         </div>
 
-        <h2>1. What GreenForest_RAG Is</h2>
-        <p>At the project level, GreenForest_RAG is a domain-focused knowledge retrieval experiment. The source materials are not generic web text, but a mixed local document collection that includes horticulture manuals, business planning files, market research, private-domain operation notes, meeting records, and plant data tables.</p>
-        <p>That makes the project useful as a compact but realistic RAG case: the knowledge is fragmented, the formats are heterogeneous, and the goal is not open-ended chatting, but answering questions with evidence drawn from the indexed materials.</p>
+        <h2>3. Implementation</h2>
+        <p>The current build uses <strong>LangChain UnstructuredLoader</strong> for local PDF, DOCX, and CSV materials, <strong>RecursiveCharacterTextSplitter</strong> for chunking, and an OpenAI-compatible embedding configuration for vectorization. Model and interface parameters have already been moved into environment variables so the scripts are less tightly coupled to one fixed runtime.</p>
+        <p><strong>Chroma</strong> is used as the persistent vector store. Running <strong>`RAG.py`</strong> performs document scanning, loading, splitting, embedding, and persistence. Running <strong>`ask.py`</strong> then starts the command-line answer loop on top of the existing index.</p>
+        <p>The most important constraint at answer time is retrieval first, response second. The retriever selects the most relevant passages and metadata, packages them into context, and then sends the question plus evidence to the model. If the indexed material is insufficient, the prompt prefers an explicit “do not know” answer over unsupported completion.</p>
 
-        <h2>2. Why This Project Was Built</h2>
-        <p>The core motivation is to make the project knowledge around “萃意生机” easier to recall and reuse. When information is spread across manuals, SOPs, spreadsheets, and planning documents, direct retrieval becomes much more practical than depending on memory or manually opening files one by one.</p>
-        <p>So the current version focuses on one simple but important question: can a small local knowledge base provide more reliable recall for a specialized gardening-and-business context?</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Ingestion Layer</h3>
+            <p>The first job is to normalize mixed-format files into one processing interface.</p>
+          </div>
+          <div class="info-card">
+            <h3>Index Layer</h3>
+            <p>Chunking, embeddings, and Chroma persistence together form the minimal knowledge substrate.</p>
+          </div>
+          <div class="info-card">
+            <h3>Answer Layer</h3>
+            <p>The question passes through retrieval before generation, which keeps answers tied to explicit context.</p>
+          </div>
+        </div>
 
-        <h2>3. What Is Already Implemented</h2>
-        <ul>
-          <li>Mixed-format document loading with <strong>LangChain UnstructuredLoader</strong> over local PDF, DOCX, and CSV files.</li>
-          <li>Chunking with <strong>RecursiveCharacterTextSplitter</strong> so long files become retrieval-friendly segments.</li>
-          <li>Embedding generation through an OpenAI-compatible interface, with environment-variable based model configuration.</li>
-          <li>Persistent vector indexing with <strong>Chroma</strong>, so the knowledge base can be rebuilt once and reused locally.</li>
-          <li>A simple CLI question-answer loop that retrieves relevant context first and then answers under a “use retrieved context only” constraint.</li>
-        </ul>
+        <h2>4. Demo Results</h2>
+        <p>The current demo already completes the path from local documents to grounded answers. It turns content scattered across manuals, planning files, spreadsheets, and meeting notes into retrievable project knowledge, and it can return relevant passages quickly when a user asks a question.</p>
+        <p>For this project, the main observation is not whether the answer sounds polished. The main observation is whether the answer can be traced back to indexed material. Once that condition is satisfied, chunk strategy, metadata design, retrieval parameters, and answer prompts all become concrete and improvable objects.</p>
 
-        <h2>4. The Current Demo Experience</h2>
-        <p>The current workflow is intentionally lightweight. Running <strong>`RAG.py`</strong> scans the local document set, loads the available materials, splits them into chunks, embeds them, and writes the result into a local Chroma directory. Running <strong>`ask.py`</strong> then starts a command-line chat loop on top of that persisted store.</p>
-        <p>At inference time, the retriever selects the top related passages, assembles them into context, and sends the question plus retrieved evidence to the chat model. If the material is insufficient, the prompt is designed to prefer admitting uncertainty over inventing facts.</p>
-        <p>In other words, the current scope is not yet a polished application layer or a deployed product. It is the retrieval core: document ingestion, indexing, retrieval, and grounded answering.</p>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Retrieval First</h3>
+            <p>The system looks for evidence before it speaks, so answer quality is directly coupled to index quality.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Local Persistence</h3>
+            <p>Chroma avoids rebuilding the knowledge base from scratch for every new question.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Optimization Targets</h3>
+            <p>Document quality, chunking, metadata, and top-k retrieval are now explicit variables instead of vague intuition.</p>
+          </div>
+        </div>
 
-        <h2>5. Why This Demo Matters</h2>
-        <p>What makes GreenForest_RAG meaningful is not interface complexity, but reliability. It demonstrates how a small, domain-specific document archive can be reorganized into a usable retrieval system, and how RAG can make project knowledge easier to call back with less hallucination risk than unconstrained generation.</p>
+        <h2>5. Conclusion</h2>
+        <p>GreenForest_RAG already demonstrates that a small domain knowledge base can be turned into a stable knowledge-recall system through RAG. The most important outcome is not interface completeness, but the fact that evidence-grounded answering is already working at the engineering level.</p>
+        <p>That gives later work a reliable base to build on. The project no longer needs to fall back to a folder of scattered files and human memory as the main retrieval mechanism. The reorganization of knowledge is itself the product value.</p>
 
         <div class="link-card">
           <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/GreenForest_RAG" target="_blank" rel="noreferrer">https://github.com/YuEugenio/GreenForest_RAG</a></p>

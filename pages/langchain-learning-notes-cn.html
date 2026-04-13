@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,32 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">LangChain 学习笔记</h1>
-        <p class="article-subtitle">围绕 LangChain 抽象、工作流编排与图结构 orchestration 的一组学习记录，并在页面下方直接展示对应源码的完整内容。</p>
+        <p class="article-subtitle">本文把 LangChain 与 LangGraph 的组件化思路重新组织成“工作流编排”视角，重点说明状态、节点、工具与检索如何被写成一个可调试的应用流程。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>这一部分的重点不是“把模型调起来”本身，而是理解 LangChain 怎么把 prompt、模型、状态、工具和流程拆成可以复用、可以调试的组件。</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">LangChain 学习的重点不是“把模型调通”本身，而是把 prompt、状态、工具、检索和外部搜索组织成可拆、可读、可扩展的工作流。对象一旦从“单轮问答”变成“多步应用”，这种组织层就会变得非常关键。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">核心材料</div>
+              <div class="fact-label"><strong>`langgraphdemo.py`</strong> 与 <strong>`Semantic_Search_langchain/langsmith_test.py`</strong>。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">学习对象</div>
+              <div class="fact-label">从单一 prompt 过渡到显式节点、显式状态和显式工具连接的应用流程。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前产出</div>
+              <div class="fact-label">已经能够构造一个最小图式工作流，并理解工作流层如何承接检索和工具调用。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 学习主题</h2>
+        <p>LangChain 这一阶段的学习主题，是 LLM 应用如何从“一个大 prompt”转向“一个分阶段系统”。只要任务涉及查询理解、外部搜索、检索、整合回答或工具调用，单轮 prompt 往往不再足够清晰。LangChain 和 LangGraph 的价值，就在于把这些步骤变成可见组件。</p>
+        <p>因此，本文关注的对象不是某一个库函数，而是工作流本身。节点怎样切分，状态怎样在节点间流动，工具怎样接入，检索怎样与生成配合，这些问题构成了整个应用层逻辑。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/langchain-workflow.svg" alt="从输入状态、理解节点、检索或搜索节点、状态图、工具层到最终输出的 LangChain 工作流图">
+          <figcaption class="figure-caption">LangChain 学习的关键是把任务看成工作流。状态流、节点边界和工具层必须同时被写清楚，流程才真正可调试。</figcaption>
+        </figure>
+
+        <h2>2. 核心原理</h2>
+        <p>LangChain 的核心原理不是“封装更多调用”，而是“给应用逻辑分层”。prompt、模型、retriever、tools、memory 或 graph node 都被写成明确组件之后，多步任务就不必继续塞进一个黑箱 prompt 中。系统的每一段责任范围因此变得更清楚。</p>
+        <p>LangGraph 进一步把这种分层推进到状态图层面。节点负责局部动作，状态负责节点间信息传递，边负责流程推进方向。只要任务需要分步骤理解、检索和生成，这种写法通常比单体脚本更容易维护。</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>组件化</h3>
+            <p>模型、提示词、检索器和工具被拆成明确对象后，应用逻辑才真正可读。</p>
+          </div>
+          <div class="info-card">
+            <h3>状态流</h3>
+            <p>节点之间共享的不是模糊上下文，而是被显式维护和传递的状态。</p>
+          </div>
+          <div class="info-card">
+            <h3>工作流边界</h3>
+            <p>理解、检索、搜索和回答一旦分层，系统调试会比单脚本 prompt 容易得多。</p>
+          </div>
         </div>
 
-        <h2>1. 我主要在学什么</h2>
-        <p>我把这一阶段当成“LLM 应用工程层”的入门：不是把所有逻辑都塞进一个大 prompt，而是学习怎么把理解问题、调用工具、获取结果、生成回答拆成清晰的步骤。</p>
-        <p>因此，LangChain 对我来说最重要的价值，是让多步任务的结构变得可见。这样当流程变复杂时，代码仍然可以读、可以调、可以继续扩展。</p>
+        <h2>3. 练习实现</h2>
+        <p><strong>`langgraphdemo.py`</strong> 用来练习一个最小图式工作流：先理解用户问题，再执行真实搜索，最后生成回答。<strong>`Semantic_Search_langchain/langsmith_test.py`</strong> 则用来观察一个最小 LangChain agent 如何绑定模型和工具。与此同时，模型配置和 API 信息被迁移到环境变量中，以减少脚本对固定环境的依赖。</p>
+        <p>这两段代码共同说明了一个事实：LangChain 的价值不在于替你“自动完成一切”，而在于它提供了一套更适合把应用逻辑显式写出来的结构。工作流图、工具接口和状态对象一旦被写清楚，后续扩展就会比纯 prompt 脚本自然得多。</p>
 
-        <h2>2. 我具体练了什么</h2>
-        <ul>
-          <li>通过 `langgraphdemo.py` 理解状态图式工作流：把用户问题理解、真实搜索、答案生成拆成独立节点。</li>
-          <li>通过 `langsmith_test.py` 观察一个最小 agent 例子如何绑定工具并完成一次调用。</li>
-          <li>练习把模型配置和 API 信息改成环境变量，减少脚本对固定环境的耦合。</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>图式工作流</h3>
+            <p><strong>`langgraphdemo.py`</strong> 把理解、搜索和回答明确拆成三个节点。</p>
+          </div>
+          <div class="demo-card">
+            <h3>工具绑定</h3>
+            <p><strong>`langsmith_test.py`</strong> 展示最小 agent 如何把模型与工具接口接起来。</p>
+          </div>
+          <div class="demo-card">
+            <h3>可迁移配置</h3>
+            <p>环境变量化的配置方式让脚本更接近真实工程，而不是一次性 notebook 实验。</p>
+          </div>
+        </div>
 
-        <h2>3. 我目前理解到的关键点</h2>
-        <p>我觉得 LangChain 真正有价值的地方，在于任务一旦不再是“单轮问答”，它就能帮助我们把应用逻辑写得更像工程系统，而不是更像一次性 prompt 实验。</p>
-        <p>另外，我也越来越清楚：模型能力本身很重要，但流程设计同样重要。理解、检索、整合这三步如果拆得更清楚，结果往往也会更稳定。</p>
+        <h2>4. 当前产出</h2>
+        <p>这组学习已经给出一个明确结果：当任务涉及多步处理时，LangChain/LangGraph 提供的组件化与状态化组织方式会比单体脚本更有工程价值。流程一旦显式，问题定位、调试和扩展都会更清晰。</p>
+        <p>更重要的是，这种学习把“模型能力”与“应用结构”区分开了。模型负责生成和理解，工作流负责把这些能力放进正确步骤里。二者缺一不可，但它们不再被混成一个大 prompt。</p>
 
-        <h2>4. 完整代码笔记</h2>
-        <p class="source-notice">下面不是节选，而是直接渲染这个学习主题对应的完整源码，方便把“笔记理解”和“代码实现”放在同一页里看。</p>
+        <h2>5. 结论</h2>
+        <p>LangChain 的真正价值，不在于语法糖，而在于工作流编排能力。只要应用不是单轮问答，显式节点、显式状态和显式工具连接就能让系统更像工程对象，而不是一次性演示脚本。</p>
+
+        <h2>6. 完整代码笔记</h2>
+        <div class="code-guide">
+          <h3>阅读这组源码时建议先看三个层面</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>先看状态对象</h3>
+              <p>如果状态边界不清楚，图式工作流只是形式上的拆分。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>再看节点职责</h3>
+              <p>理解、搜索和回答必须各自承担清晰任务，流程才不会重新塌回一个大 prompt。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>最后看工具接口</h3>
+              <p>工具与 retriever 的接入方式决定整个工作流是否真的能够调用外部能力。</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>代码范围：</strong>完整渲染 <strong>`langgraphdemo.py`</strong> 与 <strong>`Semantic_Search_langchain/langsmith_test.py`</strong>，集中展示工作流节点和最小工具绑定。</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -82,13 +154,13 @@
           "path": "langgraphdemo.py",
           "type": "script",
           "title": "langgraphdemo.py",
-          "description": "LangGraph 风格的搜索工作流 demo，包含理解、搜索和答案生成三个节点。"
+          "description": "LangGraph 风格工作流 demo，包含问题理解、真实搜索与答案生成节点。"
         },
         {
           "path": "Semantic_Search_langchain/langsmith_test.py",
           "type": "script",
           "title": "Semantic_Search_langchain/langsmith_test.py",
-          "description": "一个最小 LangChain agent 例子，用来理解模型和工具的绑定方式。"
+          "description": "最小 LangChain agent 例子，用来理解模型与工具接口的绑定。"
         }
       ]
     }

@@ -7,6 +7,7 @@
   <meta name="article:date" content="2026-03-13">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content {
       max-width: 760px;
@@ -36,7 +37,7 @@
     }
 
     .article-title {
-      font-size: 2.12rem;
+      font-size: 2.08rem;
       line-height: 1.28;
       margin-bottom: 0.75rem;
       color: #1a1a1a;
@@ -65,13 +66,6 @@
       font-weight: normal;
     }
 
-    .brief-body h3 {
-      margin: 1.5rem 0 0.7rem;
-      color: #1a1a1a;
-      font-size: 1.08rem;
-      font-weight: normal;
-    }
-
     .brief-body p {
       margin: 0 0 1rem;
     }
@@ -85,7 +79,6 @@
       margin: 0.34rem 0;
     }
 
-    .summary-card,
     .link-card {
       margin: 1.2rem 0;
       padding: 1rem 1.1rem;
@@ -95,7 +88,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
-    .summary-card p,
     .link-card p {
       margin: 0;
     }
@@ -111,7 +103,7 @@
       }
 
       .article-title {
-        font-size: 1.68rem;
+        font-size: 1.66rem;
       }
 
       .article-subtitle {
@@ -127,39 +119,90 @@
 
       <header class="article-header">
         <h1 class="article-title">Cybersoul: A Product Brief</h1>
-        <p class="article-subtitle">A general introduction to the product vision, the current CyberWorld demo, and the implementation scope already running today.</p>
+        <p class="article-subtitle">This article defines the Cybersoul product object, explains the runtime logic of the current CyberWorld demo, summarizes the implemented system chain, and states the technical judgment this stage already supports.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="brief-body">
-        <div class="summary-card">
-          <p>Cybersoul is not designed as a passive chatbot. It is conceived as a long-term companion AI that keeps living in its own cyber world, shares real-world time, and gradually forms continuity through state, memory, rhythm, and behavior.</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Project Article</p>
+          <p class="article-lead">Cybersoul treats companion AI as a continuously running digital life system rather than a session-based chat box. The current repository is a CyberWorld runtime demo with observability, logging, and memory accumulation built into the loop.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Current Scope</div>
+              <div class="fact-label">A CyberWorld demo centered on Mira, not the full outer product shell.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Core Question</div>
+              <div class="fact-label">Whether a companion can sustain presence through time, state drift, and memory traces.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Observable Surface</div>
+              <div class="fact-label">Dashboard views, logs, timeline, emotion changes, and state snapshots are already connected.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>Cybersoul is aimed at long-term companionship. Its central object is not a response generator inside a chat window, but a digital being that lives inside an internal world, updates its state over time, and leaves behind a growing record of memory and behavior. This article discusses the smallest working form of that definition.</p>
+        <p>That working form is the CyberWorld demo. It compresses world state, characters, time, events, and observability into a controlled sandbox so the question “is the companion actually living through time?” can be answered through runtime evidence instead of conversational impression alone.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/cybersoul-runtime.svg" alt="The current Cybersoul runtime loop linking time ticks, world state, companion decisions, memory storage, and dashboard observability">
+          <figcaption class="figure-caption">The current runtime structure. Time ticks drive world updates first, then Mira decides what to do next, and the resulting traces are written back into memory, logs, and the dashboard layer.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The product logic is built on two spaces. The first is an internal CyberWorld that provides locations, time, events, rhythms, and daily context. The second is the real internet, which will later support broader connection and action. The current stage focuses only on the first space because the project must prove continuous existence before it expands outward.</p>
+        <p>This definition leads to three design judgments. First, the foundation of companionship is not one good answer, but sustained lived presence. Second, sustained presence comes from state transitions, world feedback, and memory accumulation rather than isolated prompts. Third, observability must be built alongside the life loop, because the system cannot be debugged or evaluated if its internal transitions remain hidden.</p>
+
+        <div class="callout-box callout-box--muted">
+          <div class="callout-title">Current Boundary</div>
+          <p>This demo does not connect to the real internet yet, and it does not place the user inside a full CyberWorld interaction layer. What it proves is the runtime skeleton, not the complete companionship product surface.</p>
         </div>
 
-        <h2>1. What Cybersoul Is</h2>
-        <p>At the product level, Cybersoul is a romantic-companion oriented digital life system. The core idea is to move beyond “replying well” and toward “living continuously.” Instead of treating companionship as a single chat interface, Cybersoul treats the companion as an entity with its own internal environment, evolving memory, emotional state, and behavioral rhythm.</p>
-        <p>The larger product vision is built around two spaces. The first is the internal CyberWorld, which provides time, place, events, and daily context. The second is the real internet, where the companion can later connect to real platforms and leave visible digital traces. In that sense, the current repository is the core runtime slice rather than the full end-state product.</p>
+        <h2>3. Implementation</h2>
+        <p>The current implementation is intentionally narrowed to <strong>`city_loop_v1`</strong>. The world layer is YAML-driven and includes 5 locations, 10 activities, 12 world-event types, and their rhythm windows. The runtime advances simulated time minute by minute, and each tick applies world effects, checks events, evaluates signals, and updates character state.</p>
+        <p>The companion layer centers on Mira. She is not a one-shot reply function, but a running agent-like character who moves across a small world that includes the apartment, library, cafe, commute route, and riverside park. World-side roles are defined as well so environmental feedback does not collapse into a static backdrop.</p>
+        <p>The system layer already includes a SQLite demo store, an internal message bus, a FastAPI dashboard API, logging, and memory writeback. The dashboard exposes world overview, emotion shifts, timeline, world dynamics, interaction traces, and LLM logs, so the project can be inspected as a runtime instead of a single text box.</p>
 
-        <h2>2. Why the Current Stage Focuses on CyberWorld</h2>
-        <p>The present stage is intentionally narrow: it is meant to prove that a companion AI can sustain a believable life loop before expanding into richer interaction surfaces. The goal is not to show that the model can chat, but that it can keep existing across time with internal continuity.</p>
-        <p>That is why the current implementation centers on a minimal but structured demo world called <strong>`city_loop_v1`</strong>. This demo narrows the scope to a controllable sandbox so the foundational loop can be observed, debugged, and iterated.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>World Layer</h3>
+            <p>Locations, activities, events, and rhythms define a minimal but coherent daily loop.</p>
+          </div>
+          <div class="info-card">
+            <h3>Companion Layer</h3>
+            <p>Mira chooses her next action from world signals, internal state, and memory traces rather than from input text alone.</p>
+          </div>
+          <div class="info-card">
+            <h3>Observation Layer</h3>
+            <p>The dashboard, logs, and store make each transition reviewable, testable, and easier to iterate on.</p>
+          </div>
+        </div>
 
-        <h2>3. What Is Already Implemented</h2>
-        <ul>
-          <li>A YAML-driven CyberWorld configuration with 5 locations, 10 activities, 12 event types, and rhythm windows that shape the day-night flow.</li>
-          <li>A runnable Python runtime that advances the world minute by minute and continuously updates location, activity, energy, emotion, and state transitions.</li>
-          <li>A companion runtime for Mira, plus world-side role definitions that provide signals and environmental feedback inside the demo loop.</li>
-          <li>A SQLite-backed demo store, an internal message bus, a FastAPI dashboard API, and a browser control panel for observing the system.</li>
-          <li>A memory writeback loop and logging pipeline so the demo can accumulate traces instead of resetting to a purely stateless interaction.</li>
-        </ul>
+        <h2>4. Demo Results</h2>
+        <p>The demo can already start from a defined morning state and be stepped forward through the control panel. Each tick produces visible change: location updates, activity switches, emotional drift, event triggers, and runtime logs. The output object is therefore no longer just text, but a continuing slice of life.</p>
+        <p>Just as importantly, this setup exposes real runtime questions. It becomes possible to test whether a behavior was triggered by world conditions, whether a memory should persist, and whether a state transition feels smooth enough. That makes the demo valuable as an engineering artifact, not only as a concept presentation.</p>
 
-        <h2>4. The Current CyberWorld Demo</h2>
-        <p>The current demo is best understood as an observer-facing prototype. After bootstrap, the world starts from a defined morning state and can be stepped forward manually through the control panel. Each tick advances simulated time by one minute, applies world effects, checks for event triggers, evaluates world-side signals, and asks the companion runtime whether it should continue, move, reflect, or switch activities.</p>
-        <p>In practical terms, the demo already supports a life loop built around Mira, the main companion, moving through a small world of places such as the apartment, library, cafe, commute path, and riverside park. The dashboard shows state overview, emotional changes, timeline, world dynamics, interaction records, and LLM logs, so the system can be inspected as a living runtime rather than as a single response box.</p>
-        <p>Just as importantly, the current scope is honest about what it does not include yet. This stage does not connect to the real internet, does not expose a full user-chat experience inside the CyberWorld itself, and does not claim to be the complete Cybersoul MVP. It is the core demo for making the “living companion” loop real first.</p>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>State Trace</h3>
+            <p>Location, activity, energy, and mood evolve over time and form a replayable day-level trajectory.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Event-Driven Behavior</h3>
+            <p>World events and rhythms influence action choice instead of leaving behavior to unconstrained one-turn generation.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Memory Writeback</h3>
+            <p>Logs and stored traces make the companion accumulate life evidence instead of resetting after every exchange.</p>
+          </div>
+        </div>
 
-        <h2>5. Why This Demo Matters</h2>
-        <p>What makes this demo meaningful is that it reframes companion AI from session-based conversation into continuous runtime design. The key output is not only text quality, but whether a companion can maintain presence through time, state drift, memory accumulation, and world-conditioned action. For Cybersoul, that is the real technical foundation of companionship.</p>
+        <h2>5. Conclusion</h2>
+        <p>The current Cybersoul stage already supports one clear conclusion: the core technical object of companion AI can be reframed from a chat interface into a world-conditioned continuous runtime. Starting with a small but complete CyberWorld is therefore the correct route, because later internet integration and product design need a stable life loop underneath them.</p>
+        <p>The contribution of this demo is not feature count. Its contribution is object definition made operational. It compresses long-term companionship into a runtime problem that can be inspected, compared, and expanded with discipline.</p>
 
         <div class="link-card">
           <p><strong>GitHub Repository.</strong> <a href="https://github.com/YuEugenio/Cybersoul" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Cybersoul</a></p>

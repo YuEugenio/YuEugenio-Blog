@@ -1,0 +1,33 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F4F7F4"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFEFB" stroke="#DCE5DB" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">Semantic Search Pipeline</text>
+  <text x="90" y="146" fill="#5B655D" font-family="Georgia, serif" font-size="20">The notebook turns raw files into a retrievable semantic memory space.</text>
+  <rect x="102" y="218" width="176" height="96" rx="20" fill="#F8F1E8" stroke="#E8D9C8" stroke-width="2"/>
+  <text x="146" y="258" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Documents</text>
+  <text x="141" y="288" fill="#695D4F" font-family="Arial, sans-serif" font-size="17">Source materials</text>
+  <rect x="340" y="218" width="178" height="96" rx="20" fill="#EEF4FA" stroke="#D4DEEA" stroke-width="2"/>
+  <text x="389" y="258" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Chunks</text>
+  <text x="380" y="288" fill="#556170" font-family="Arial, sans-serif" font-size="17">Split for retrieval</text>
+  <rect x="580" y="218" width="198" height="96" rx="20" fill="#F3F7EF" stroke="#D7E2CF" stroke-width="2"/>
+  <text x="627" y="258" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Embeddings</text>
+  <text x="637" y="288" fill="#586256" font-family="Arial, sans-serif" font-size="17">Vector space</text>
+  <rect x="840" y="218" width="206" height="96" rx="20" fill="#F6F2FA" stroke="#DED7E9" stroke-width="2"/>
+  <text x="887" y="258" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Vector Store</text>
+  <text x="906" y="288" fill="#60596A" font-family="Arial, sans-serif" font-size="17">Persistent index</text>
+  <rect x="248" y="406" width="210" height="104" rx="22" fill="#F4F8F2" stroke="#DCE7D8" stroke-width="2"/>
+  <text x="285" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Query Vector</text>
+  <text x="283" y="482" fill="#596258" font-family="Arial, sans-serif" font-size="18">Embed the question</text>
+  <rect x="510" y="406" width="228" height="104" rx="22" fill="#FBF6ED" stroke="#E6DAC8" stroke-width="2"/>
+  <text x="542" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Similarity Search</text>
+  <text x="558" y="482" fill="#675B4F" font-family="Arial, sans-serif" font-size="18">Top-k nearest chunks</text>
+  <rect x="790" y="406" width="236" height="104" rx="22" fill="#EEF4FA" stroke="#D3DEEB" stroke-width="2"/>
+  <text x="831" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Retrieved Context</text>
+  <text x="827" y="482" fill="#556170" font-family="Arial, sans-serif" font-size="18">Ready for QA or RAG</text>
+  <path d="M278 266H340" stroke="#859084" stroke-width="4" stroke-linecap="round"/>
+  <path d="M518 266H580" stroke="#859084" stroke-width="4" stroke-linecap="round"/>
+  <path d="M778 266H840" stroke="#859084" stroke-width="4" stroke-linecap="round"/>
+  <path d="M943 314V360H353V406" stroke="#859084" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M458 458H510" stroke="#859084" stroke-width="4" stroke-linecap="round"/>
+  <path d="M738 458H790" stroke="#859084" stroke-width="4" stroke-linecap="round"/>
+</svg>

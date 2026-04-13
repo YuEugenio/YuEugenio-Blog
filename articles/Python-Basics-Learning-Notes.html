@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,35 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Python Basics Learning Notes</h1>
-        <p class="article-subtitle">A record of my foundational Python practice across syntax, functions, classes, and NumPy-oriented numerical work.</p>
+        <p class="article-subtitle">This article reorganizes variables, control flow, functions, classes, and NumPy basics into one continuous programming thread, with an emphasis on the role each layer plays in later AI engineering work.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This study track strengthens the programming base behind my later AI projects by focusing on core Python language features and basic scientific-computing habits.</p>
+        <section class="article-hero article-hero--amber">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">Python basics matter not because syntax drills are difficult, but because every later RAG, agent, and API script depends on these building blocks. The real target is the ability to organize logic clearly.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`CodingBasis/`</strong> notebooks covering syntax, functions, classes, and NumPy.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">A continuous path from basic syntax to reusable program structure.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">A stable foundation for writing readable scripts, separating logic, and using basic array computation.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>The theme of Python basics is not how many syntax rules can be memorized. It is the construction of a programming base that can support later engineering work. Variables, lists, dictionaries, loops, and conditionals handle the lowest layer of data representation and control flow. Functions, classes, and NumPy then determine how that logic can be abstracted, reused, and extended.</p>
+        <p>This gives the study track a natural hierarchy. Syntax and data structures provide the raw language material. Functions and classes organize that material into maintainable programs. NumPy extends the same base into the array-oriented numerical environment that appears constantly in later AI work.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/python-foundation-map.svg" alt="A Python foundation map from syntax, collections, and control flow to functions, classes, and NumPy">
+          <figcaption class="figure-caption">These notebooks are not isolated exercises. They form a path from “being able to write code” to “being able to organize code.”</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>Basic syntax addresses program expression. Data types and collections determine how information is stored. Conditionals and loops determine how logic advances. Functions address reuse and interface design by letting a block of logic be named, called, and returned. Classes organize state and behavior inside the same object. NumPy extends scalar and list-based operations into array-oriented habits.</p>
+        <p>These layers are not independent topics. They are stages of abstraction. Without the lower layers, later structure becomes hollow. Without the higher layers, earlier syntax remains a pile of disconnected exercises that cannot support more complex work.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Syntax and Data</h3>
+            <p>Variables, collections, and control flow provide the raw material for every later script.</p>
+          </div>
+          <div class="info-card">
+            <h3>Abstraction and Reuse</h3>
+            <p>Functions and classes turn runnable code into code that can be maintained and extended.</p>
+          </div>
+          <div class="info-card">
+            <h3>Numerical Base</h3>
+            <p>NumPy connects the language foundation to the array-centric workflows common in AI work.</p>
+          </div>
         </div>
 
-        <h2>1. What I Covered</h2>
-        <p>The notebooks under <strong>`CodingBasis/`</strong> helped me move from language basics to more structured programming. The materials cover variables, control flow, collection types, functions, class-based organization, and introductory NumPy usage.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p>The current notebooks divide the work clearly. <strong>`pythonbasis.ipynb`</strong> covers variables, types, collections, and control flow. <strong>`functions_in_python.ipynb`</strong> focuses on parameters, return values, and function packaging. <strong>`class_in_python.ipynb`</strong> covers initialization, inheritance, and composition. <strong>`numpybasis.ipynb`</strong> extends the same base into arrays and introductory numerical operations.</p>
+        <p>The most important part of this practice is not simply finishing each notebook. It is the gradual formation of structural judgment: when logic should become a function, when state should be held inside a class, and when plain Python containers should give way to array-based computation. Those judgments are part of later engineering ability.</p>
 
-        <h2>2. What I Practiced</h2>
-        <ul>
-          <li>Writing and debugging basic Python syntax in a notebook workflow.</li>
-          <li>Understanding how functions package reusable logic and improve readability.</li>
-          <li>Learning how classes help model objects and organize stateful behavior.</li>
-          <li>Using NumPy arrays for more efficient numerical operations compared with plain Python lists.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>From Syntax to Logic</h3>
+            <p>Basic data structures and control flow decide whether a program can express the task reliably at all.</p>
+          </div>
+          <div class="demo-card">
+            <h3>From Logic to Structure</h3>
+            <p>Functions and classes decide whether code stays reusable and maintainable instead of becoming a pile of fragments.</p>
+          </div>
+          <div class="demo-card">
+            <h3>From Structure to Computation</h3>
+            <p>NumPy provides the natural bridge into the data-heavy style used in later model work.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The biggest takeaway is that clean fundamentals pay off later. Many LLM, retrieval, and agent scripts look advanced on the surface, but they still rely on the same basics: variables, loops, functions, modules, and data structures used in a disciplined way.</p>
-        <p>I also learned that object-oriented thinking is useful even in small AI demos, because it helps separate responsibilities instead of letting one script accumulate too many unrelated tasks.</p>
+        <h2>4. Current Output</h2>
+        <p>This study track already provides a stable Python entry foundation. Basic syntax and data structures no longer stand as isolated facts. They can already be combined with functions, classes, and array operations to support more complete scripts and notebook experiments.</p>
+        <p>The more important gain is sensitivity to code organization. Even when later work becomes much more complex, it still rests on the same building blocks. The clearer the basics are, the less likely later experiments are to collapse because the scripts themselves are disordered.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>My Python learning outcome is a much more stable base for building later experiments. I now have a clearer understanding of how to write readable scripts, organize logic into reusable pieces, and connect Python with AI-related libraries more comfortably.</p>
+        <h2>5. Conclusion</h2>
+        <p>The real result of Python basics study is not only syntax familiarity. It is the ability to organize programs. Variables, control flow, functions, classes, and array-based computation together form the structural habits underneath all later model-application code.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">Below is the full notebook code for this topic, including the basic syntax notebook, function practice, class practice, and NumPy study notebook.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>A useful reading order for this notebook set</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with data and control flow</h3>
+              <p>These are the base materials for every later abstraction and modularization step.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect functions and classes</h3>
+              <p>This is where scripts begin to move from ad hoc code toward maintainable program structure.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with NumPy</h3>
+              <p>Array operations are the natural bridge from language basics to later data and model work.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders <strong>`pythonbasis.ipynb`</strong>, <strong>`functions_in_python.ipynb`</strong>, <strong>`class_in_python.ipynb`</strong>, and <strong>`numpybasis.ipynb`</strong> in full.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -85,25 +154,25 @@
           "path": "CodingBasis/pythonbasis.ipynb",
           "type": "notebook",
           "title": "CodingBasis/pythonbasis.ipynb",
-          "description": "Variables, control flow, collections, and basic syntax exercises."
+          "description": "Variables, collections, control flow, and basic syntax exercises."
         },
         {
           "path": "CodingBasis/functions_in_python.ipynb",
           "type": "notebook",
           "title": "CodingBasis/functions_in_python.ipynb",
-          "description": "Function definitions, return values, and parameter practice."
+          "description": "Function definitions, parameters, return values, and packaging practice."
         },
         {
           "path": "CodingBasis/class_in_python.ipynb",
           "type": "notebook",
           "title": "CodingBasis/class_in_python.ipynb",
-          "description": "Class initialization, inheritance, and composition-oriented practice."
+          "description": "Notebook practice on classes, initialization, inheritance, and composition."
         },
         {
           "path": "CodingBasis/numpybasis.ipynb",
           "type": "notebook",
           "title": "CodingBasis/numpybasis.ipynb",
-          "description": "Introductory NumPy experiments for array-based numerical work."
+          "description": "Introductory NumPy notebook on arrays and basic numerical operations."
         }
       ]
     }

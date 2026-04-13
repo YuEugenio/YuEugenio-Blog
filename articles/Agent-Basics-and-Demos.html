@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,34 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Agent Basics and Demos</h1>
-        <p class="article-subtitle">A study summary built from my early agent experiments around tool use, multi-step execution, search orchestration, and streamed reasoning output.</p>
+        <p class="article-subtitle">This article places tool use, observation loops, streamed interaction, and ReAct-style execution inside one agent perspective, and explains why an agent is fundamentally a structured execution system rather than a better prompt.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This study track is where I moved from simple chat calls to agent-like systems that can plan steps, use tools, and complete tasks through iterative execution.</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">The key difference of an agent is not stronger personality. It is clearer execution structure. Once a task is split into thought, action, observation, and final response, the model begins to act like a system that can work step by step rather than a one-shot generator.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`draft.py`</strong> and <strong>`travelassistant.py`</strong>, covering streamed interaction and tool-use loops.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">The shift from a single completion call to an explicit tool-using execution loop.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">A minimal ReAct-style agent is already working, and control logic is clearly more important than prompt size alone.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>The object of this article is not the label “agent” by itself. It is the point at which a model stops only answering and starts executing a task. As soon as a system must decide whether to call a tool, how to read an observation, whether to continue iterating, and when to stop, it is no longer a plain completion call. It is a minimal execution framework.</p>
+        <p>The learning focus is therefore not on style or personality. It is on making steps explicit. Once the execution loop is written clearly, the system becomes easier to debug, easier to extend, and easier to diagnose when failure comes from planning, tool use, or result integration.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/agent-react-loop.svg" alt="An agent execution loop from user task to planner, tool call, observation, and final answer">
+          <figcaption class="figure-caption">The core of agent study is not a longer prompt. It is the explicit organization of user tasks, tool actions, observations, and final answers into one loop.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The central principle of an agent is stateful execution. The model does not only read input and answer. It first decides whether an external action is needed, then writes tool output back as a new observation, and only then continues the decision process. Capability therefore comes not only from model parameters, but also from action format, tool interfaces, and loop control.</p>
+        <p>ReAct is especially useful as an entry framework because Thought, Action, and Observation are explicitly separated. Even in a simplified implementation, that structure already shows the essential difference between an agent and a plain chat call.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Explicit Actions</h3>
+            <p>Once tool calls are separated from answer text, system behavior is no longer controlled only by the final response.</p>
+          </div>
+          <div class="info-card">
+            <h3>Observation Writeback</h3>
+            <p>Tool results become inputs to the next decision step, which is what gives the loop iterative power.</p>
+          </div>
+          <div class="info-card">
+            <h3>Control Logic</h3>
+            <p>Action parsing, format constraints, and stop rules often matter more than one large prompt.</p>
+          </div>
         </div>
 
-        <h2>1. What I Explored</h2>
-        <p>I used several small demos to understand what makes an agent different from a plain completion call. The core difference is not personality, but process: an agent can decompose work, call external tools, inspect observations, and continue based on intermediate results.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p><strong>`draft.py`</strong> focuses on streamed output and the separation between reasoning-style display and the visible answer. <strong>`travelassistant.py`</strong> connects tool calls, weather lookup, and attraction search inside a simplified ReAct loop so Thought, Action, and Observation can occur in sequence.</p>
+        <p>These two scripts expose two major sides of agent behavior. The first is interaction-layer design, where internal progress and visible output may not be the same thing. The second is task-layer design, where the model takes on coordination responsibility because tools and observations have been built into the loop.</p>
 
-        <h2>2. Representative Demos</h2>
-        <ul>
-          <li><strong>`travelassistant.py`</strong> explores a ReAct-style loop in which the model decides when to call weather and attraction tools before finishing with a final answer.</li>
-          <li><strong>`draft.py`</strong> experiments with streamed responses and the separation between visible answer text and reasoning-style output.</li>
-          <li><strong>`langgraphdemo.py`</strong> shows a more structured multi-node workflow where search and answer generation are explicitly separated.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Streamed Interaction</h3>
+            <p><strong>`draft.py`</strong> shows that visible output and internal execution are not necessarily the same layer.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Tool Loop</h3>
+            <p><strong>`travelassistant.py`</strong> runs a minimal ReAct structure with weather and attraction tools.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Failure Diagnosis</h3>
+            <p>Explicit actions and observations make it possible to blame failures on format, tools, or state handling instead of vaguely blaming the model.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The biggest lesson is that agents are easier to understand when their steps are explicit. Once tool calls and intermediate observations are made visible, it becomes much easier to debug failure cases and improve the workflow.</p>
-        <p>I also learned that agent quality depends heavily on control logic. A good prompt alone is not enough; parsing actions, constraining formats, and handling tool results all matter.</p>
+        <h2>4. Current Output</h2>
+        <p>This study already supports one clear judgment: agent capability mainly comes from process design rather than from abstract “smartness.” Once actions, tools, observations, and finish conditions are organized clearly, even a very small demo can show the difference between task execution and one-turn answering.</p>
+        <p>That also means future progress will not mainly come from writing a larger prompt. It will come from designing cleaner execution structure as retrieval, state graphs, memory, and external system integration are added.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>My current agent-learning outcome is a practical grasp of the basics: I can already build small loops that combine models with tools, retrieval, or search, and I understand more clearly how agent behavior emerges from structured execution rather than from model magic alone.</p>
+        <h2>5. Conclusion</h2>
+        <p>An agent is not a model shell that chats better. It is a system that organizes reasoning, action, observation, and answering into an execution loop. Once that perspective is established, later topics such as tool orchestration, workflow graphs, and multi-step task design become much easier to interpret.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">The complete code below covers my current agent-practice files: a streaming interaction experiment and a ReAct-style tool-using travel assistant.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>Three things to focus on while reading the source</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with the action format</h3>
+              <p>If the boundary between thought and action is unclear, tool calling will not stay stable.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect tool return handling</h3>
+              <p>Observation writeback determines whether the agent can take a meaningful next step.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with stop conditions</h3>
+              <p>The controllability of a minimal agent usually depends more on how it stops than on how it starts.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders <strong>`draft.py`</strong> and <strong>`travelassistant.py`</strong> in full so interaction-layer and tool-layer logic can be compared side by side.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -84,13 +154,13 @@
           "path": "draft.py",
           "type": "script",
           "title": "draft.py",
-          "description": "A streaming experiment that separates visible answer text from reasoning-style output."
+          "description": "A streaming experiment that separates visible output from reasoning-style display."
         },
         {
           "path": "travelassistant.py",
           "type": "script",
           "title": "travelassistant.py",
-          "description": "A simple ReAct-style agent demo with weather and attraction tools."
+          "description": "A minimal ReAct-style agent demo with weather and attraction tools."
         }
       ]
     }

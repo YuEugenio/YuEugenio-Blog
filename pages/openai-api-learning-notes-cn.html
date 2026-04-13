@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,32 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">OpenAI API 学习笔记</h1>
-        <p class="article-subtitle">围绕聊天补全、多模态、异步调用、多轮对话与流式输出的一组 API 实践记录，并附完整 notebook 代码。</p>
+        <p class="article-subtitle">本文把消息结构、流式输出、异步请求、多轮对话与多模态输入放回统一接口视角中，说明 API 层为什么会直接决定模型应用的工程质量。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>这一部分对我来说，是把“模型能力”真正变成“代码接口能力”的阶段。只有进入 API 层，很多抽象的能力才会变成可以被产品和脚本真正调用的对象。</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">这一组笔记的重点不是“把 prompt 发出去”，而是把模型能力变成可控接口。只要进入 API 层，消息组织、返回处理、流式交互、异步并发和多轮状态管理都会变成真实的工程问题。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">核心材料</div>
+              <div class="fact-label"><strong>`openai_apis.ipynb`</strong>，覆盖基础调用、多轮、流式、异步与多模态练习。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">学习对象</div>
+              <div class="fact-label">模型接口如何从一次调用变成可复用的应用层能力。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前产出</div>
+              <div class="fact-label">已经能够用 notebook 验证消息设计、返回解析和交互模式对产品体验的影响。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 学习主题</h2>
+        <p>OpenAI API 学习的真正对象，是接口层如何承接模型能力。模型本身可以生成文本、处理多模态输入或进行多轮交互，但这些能力只有通过明确的请求结构和返回处理方式，才会变成可使用的产品功能。</p>
+        <p>因此，本文不把 API 理解成一个简单的“调用入口”，而把它看成模型系统的控制面。消息历史怎样组织、流式返回如何展示、异步请求怎样并发、异常如何处理，都会直接改变用户看到的体验与开发者维护的成本。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/openai-api-flow.svg" alt="从应用层、消息结构、模型 API 到流式输出、异步调用和多模态响应的接口流程图">
+          <figcaption class="figure-caption">API 学习的重点是把应用层、请求结构和响应模式放进同一条链路里理解，而不是只盯着模型返回的最终文本。</figcaption>
+        </figure>
+
+        <h2>2. 核心原理</h2>
+        <p>接口层的核心原理可以压缩成三个对象。第一是输入对象，也就是 messages、system 约束、用户内容和多模态负载如何被组织。第二是运行对象，也就是模型配置、流式模式、异步并发和会话状态如何影响执行方式。第三是输出对象，也就是结果如何被解析、展示、缓存或继续送入下一轮逻辑。</p>
+        <p>只要这三个对象没有被设计清楚，模型应用就会显得脆弱。单轮演示看起来也许能跑，但一旦进入真实交互，历史维护、异常处理和响应节奏就会迅速暴露问题。因此，接口设计和模型能力本身同样重要。</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>输入组织</h3>
+            <p>messages 不是文本拼接，而是对角色、上下文和输入载荷的结构化表达。</p>
+          </div>
+          <div class="info-card">
+            <h3>运行方式</h3>
+            <p>流式、异步和多轮状态管理决定了调用是实验脚本还是可交互系统。</p>
+          </div>
+          <div class="info-card">
+            <h3>输出处理</h3>
+            <p>返回值如何被解析和展示，会直接影响可用性、可调试性与失败恢复能力。</p>
+          </div>
         </div>
 
-        <h2>1. 我主要在学什么</h2>
-        <p>`openai_apis.ipynb` 是我这一部分的核心练习载体。我主要在理解：消息结构怎么写、不同调用方式差别在哪里、什么情况下需要流式输出或异步调用，以及多轮对话为什么必须显式维护历史。</p>
+        <h2>3. 练习实现</h2>
+        <p>当前 notebook 通过几类小实验把接口问题拆开。基础调用部分用于理解请求结构和消息组织方式；多轮对话部分用于验证为什么历史必须显式维护；流式输出部分关注响应节奏与展示方式；异步部分关注并发调用场景；多模态部分则把文本输入扩展到更一般的内容载荷。</p>
+        <p>这些练习虽然看上去分散，但它们共同回答的是一个问题：同一模型能力在不同接口组织方式下，会呈现出完全不同的产品表现。API 学习的真正价值就在这里，它让“模型能做什么”转化成“应用应该怎样调用”。</p>
 
-        <h2>2. 我具体练了什么</h2>
-        <ul>
-          <li>基础 chat completion 调用。</li>
-          <li>多模态输入的组织方式。</li>
-          <li>异步请求的写法和并发调用场景。</li>
-          <li>多轮对话的历史维护方式。</li>
-          <li>流式输出以及“思考过程样式展示”的实验。</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>消息结构</h3>
+            <p>同样的问题，在不同历史组织方式下会得到不同结果，说明接口上下文本身就是控制变量。</p>
+          </div>
+          <div class="demo-card">
+            <h3>流式与异步</h3>
+            <p>响应速度感和并发能力不来自模型幻觉，而来自客户端如何处理调用过程。</p>
+          </div>
+          <div class="demo-card">
+            <h3>多模态输入</h3>
+            <p>一旦输入从纯文本扩展到更一般的载荷，接口设计的重要性会进一步放大。</p>
+          </div>
+        </div>
 
-        <h2>3. 我目前的理解</h2>
-        <p>我现在更清楚地意识到，API 不是“把 prompt 发出去”这么简单。真正做应用时，消息历史、返回处理、异常处理、流式输出、模型参数配置，都会直接影响交互体验和工程可维护性。</p>
+        <h2>4. 当前产出</h2>
+        <p>这组学习已经形成了一个比较完整的接口认识：请求结构、消息历史、流式返回、并发调用和多模态输入都可以被明确拆解并逐项实验。模型不再是一个“黑箱回答器”，而是开始以工程接口的形式被理解。</p>
+        <p>这对后续所有项目都很关键。无论是 RAG、Agent 还是一般应用，真正决定体验的往往不是模型单次分数，而是调用链路是否稳定、是否可控、是否容易继续扩展。</p>
 
-        <h2>4. 完整代码笔记</h2>
-        <p class="source-notice">下面直接完整展示这个 notebook 中的所有代码单元，因此可以连续看到从基础调用到多轮与流式输出的整个练习过程。</p>
+        <h2>5. 结论</h2>
+        <p>API 层是模型能力进入产品世界的入口。只要进入应用场景，消息设计、状态管理和响应处理就不再是附属细节，而是系统行为的一部分。理解这一层，才算真正开始做模型应用。</p>
+
+        <h2>6. 完整代码笔记</h2>
+        <div class="code-guide">
+          <h3>阅读 notebook 时建议优先看三组内容</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>先看 messages</h3>
+              <p>输入结构决定了模型看到的上下文，也决定了多轮行为是否可控。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>再看响应模式</h3>
+              <p>流式与异步不是附加功能，而是交互体验和并发设计的一部分。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>最后看状态维护</h3>
+              <p>多轮对话如果不显式管理历史，系统行为很快就会失去连续性。</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>代码范围：</strong>完整渲染 <strong>`openai_apis.ipynb`</strong>，涵盖基础调用、流式、多轮、异步与多模态实验。</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -82,7 +154,7 @@
           "path": "openai_apis.ipynb",
           "type": "notebook",
           "title": "openai_apis.ipynb",
-          "description": "聊天补全、多模态、异步、多轮和流式输出相关 API 练习 notebook。"
+          "description": "围绕消息结构、流式输出、多轮、异步请求与多模态输入的 API 练习 notebook。"
         }
       ]
     }

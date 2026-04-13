@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,32 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">语义搜索学习笔记</h1>
-        <p class="article-subtitle">围绕文档加载、切分、向量化、向量库、检索与最小 RAG 的一组学习记录，并完整展示 notebook 代码单元。</p>
+        <p class="article-subtitle">本文把文档加载、切块、向量化、向量存储与检索问答重新组织成一条完整链路，并说明 notebook 中每一步到底在解决什么问题。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>这部分学习对我来说很关键，因为它把“原始资料”变成了“可调用知识”。语义搜索本身就是很多 RAG 系统的真正入口。</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">语义搜索的核心不是 embedding 模型本身，而是“文档怎样被整理成可检索语义记忆”。这组笔记围绕这一点展开，从原始资料进入系统开始，一直走到最小 RAG 问答。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">核心材料</div>
+              <div class="fact-label"><strong>`Semantic_Search_langchain/SS.ipynb`</strong>，覆盖 loader、splitter、embedding、vector store 与 retriever。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">学习对象</div>
+              <div class="fact-label">从原始文档到可检索上下文的整条检索链路。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前产出</div>
+              <div class="fact-label">已经能够搭起一个最小语义搜索系统，并把它接到基础 RAG 场景。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 学习主题</h2>
+        <p>语义搜索要解决的问题，不是“如何找完全相同的词”，而是“如何找语义上相关的内容”。因此，学习对象天然是一条流水线：文档如何被导入、怎样被切成合适片段、如何被映射到向量空间、又如何在提问时被重新取回。</p>
+        <p>只看 embedding 模型远远不够。只要文档质量、切块策略或 metadata 组织方式出现偏差，最后的检索质量就会显著下降。语义搜索因此更像一个系统设计问题，而不是单点模型问题。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/semantic-search-loop.svg" alt="从文档、切块、向量化、向量数据库到查询向量和相似度检索的语义搜索流程图">
+          <figcaption class="figure-caption">这类学习最重要的是把“文档处理”与“查询召回”放进同一张图里看。召回质量来自整条链路，而不是某一个孤立组件。</figcaption>
+        </figure>
+
+        <h2>2. 核心原理</h2>
+        <p>语义搜索的基本逻辑可以分成四个对象。第一是文档对象，它决定系统最初拿到什么信息。第二是 chunk 对象，它决定召回单位到底多大。第三是 embedding 空间，它把文本从字符串映射成可比较的向量。第四是检索器，它在查询到来时负责把最相关的片段取回。</p>
+        <p>这四个对象彼此耦合。chunk 太大，召回会混入噪声；chunk 太小，语义会被切碎。metadata 不干净，后续过滤与引用会变得困难。retriever 参数设置不合理，向量表示再好也未必能返回真正有用的上下文。</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>文档组织</h3>
+            <p>loader 和原始资料质量决定了系统最开始能否拿到结构清晰的文本对象。</p>
+          </div>
+          <div class="info-card">
+            <h3>检索单位</h3>
+            <p>切块策略决定召回粒度，也决定后续回答能否既准确又保留上下文。</p>
+          </div>
+          <div class="info-card">
+            <h3>召回控制</h3>
+            <p>embedding、vector store 和 retriever 参数共同决定 top-k 结果是否真正可用。</p>
+          </div>
         </div>
 
-        <h2>1. 我主要在学什么</h2>
-        <p>我主要是在理解一条完整链路：文档怎么读进来、为什么要切块、embedding 是如何把文本变成向量、向量库怎么存，以及 retrieval 最后怎么接到问答链路上。</p>
+        <h2>3. 练习实现</h2>
+        <p>当前 notebook 先用 LangChain loader 读取文档，再用 text splitter 把长文本切成可索引的片段，之后生成 embedding 并写入向量存储。系统完成这些准备后，会通过 similarity search 和 retriever 接口把相关上下文取回，最后再接到一个最小 RAG 问答流程上。</p>
+        <p>这一实现路径的价值在于，它把“检索”从抽象名词变成了明确的代码对象。每一步都可以被拆开检查：文档有没有读干净，chunk 有没有切得过碎，metadata 是否保留，向量库是否真的写入成功，召回的 top-k 结果是否与问题匹配。</p>
 
-        <h2>2. 我具体练了什么</h2>
-        <ul>
-          <li>用 LangChain 的 loader 加载文档。</li>
-          <li>用 text splitter 把长文档变成适合检索的片段。</li>
-          <li>生成 embedding 并写入向量存储。</li>
-          <li>通过 similarity search 和 retriever 取回相关上下文。</li>
-          <li>把检索结果进一步用于最小 RAG 实验。</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>导入与切块</h3>
+            <p>文档是否能被干净切成语义片段，直接决定后续召回上限。</p>
+          </div>
+          <div class="demo-card">
+            <h3>向量化与存储</h3>
+            <p>embedding 和 vector store 把文本从静态文件转成了可以被检索系统调用的记忆单元。</p>
+          </div>
+          <div class="demo-card">
+            <h3>检索到回答</h3>
+            <p>最小 RAG 实验的意义，是验证召回结果能否真正为后续问答提供有效上下文。</p>
+          </div>
+        </div>
 
-        <h2>3. 我目前的理解</h2>
-        <p>我现在比较明确的一点是：语义搜索从来不只是 embedding 模型的问题。文档质量、切块策略、metadata、召回参数，都会显著影响最后的检索质量。</p>
+        <h2>4. 当前产出</h2>
+        <p>这组学习已经形成一个完整的最小系统：原始文档能够被导入、切块、向量化、写入向量数据库，并在查询时通过 similarity search 被取回。对一个入门阶段的 RAG 学习来说，这条链路已经足够说明核心机制。</p>
+        <p>更关键的收获是，对检索质量的判断不再停留在“感觉好不好”。chunk 大小、metadata、检索参数和召回结果都已经成为可观察、可比较、可继续优化的对象。</p>
 
-        <h2>4. 完整代码笔记</h2>
-        <p class="source-notice">下面完整展示这部分 notebook 中的所有代码单元，因此可以直接顺着代码看到“从文档到检索再到 RAG”的整个过程。</p>
+        <h2>5. 结论</h2>
+        <p>语义搜索真正改变的，是知识被调用的方式。文档不再只是静态文件，而是可以被切分、索引、召回并重新组合的上下文资源。RAG 的很多效果，最终都建立在这条检索链路是否可靠之上。</p>
+
+        <h2>6. 完整代码笔记</h2>
+        <div class="code-guide">
+          <h3>看 notebook 时建议先抓住三个节点</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>先看 chunk</h3>
+              <p>召回质量往往先坏在切块阶段，而不是坏在最后的问答阶段。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>再看向量库</h3>
+              <p>如果索引没有真正写入或 metadata 丢失，retriever 表面可用也很难稳定。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>最后看 RAG 接口</h3>
+              <p>最小问答链路的价值，是验证召回结果是否真的能支撑回答。</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>代码范围：</strong>完整渲染 <strong>`Semantic_Search_langchain/SS.ipynb`</strong>，便于把检索链路和最小 RAG 放在一页里查看。</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -82,7 +154,7 @@
           "path": "Semantic_Search_langchain/SS.ipynb",
           "type": "notebook",
           "title": "Semantic_Search_langchain/SS.ipynb",
-          "description": "关于 loader、splitter、embedding、vector store、retriever 和最小 RAG 的 notebook。"
+          "description": "围绕文档加载、切块、embedding、向量存储、retriever 与最小 RAG 的 notebook。"
         }
       ]
     }

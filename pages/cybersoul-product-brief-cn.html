@@ -7,6 +7,7 @@
   <meta name="article:date" content="2026-03-13">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content {
       max-width: 760px;
@@ -78,7 +79,6 @@
       margin: 0.34rem 0;
     }
 
-    .summary-card,
     .link-card {
       margin: 1.2rem 0;
       padding: 1rem 1.1rem;
@@ -88,7 +88,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
-    .summary-card p,
     .link-card p {
       margin: 0;
     }
@@ -120,39 +119,90 @@
 
       <header class="article-header">
         <h1 class="article-title">Cybersoul：产品简报</h1>
-        <p class="article-subtitle">对 Cybersoul 整体产品方向、当前 CyberWorld demo，以及已经落地实现的技术范围做一个整体介绍。</p>
+        <p class="article-subtitle">本文介绍 Cybersoul 的产品对象、当前 CyberWorld demo 的运行逻辑、已经落地的系统链路，以及这一阶段能够验证的核心技术判断。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="brief-body">
-        <div class="summary-card">
-          <p>Cybersoul 并不是一个被动回复的聊天机器人，而是一个以“持续生活”为核心目标的陪伴 AI：它在自己的赛博世界中运转，与现实时间同步，并通过状态、记忆、节律和行为逐步形成连续存在感。</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Project Article</p>
+          <p class="article-lead">Cybersoul 将陪伴 AI 定义为持续运行的数字生命系统，而不是一次一答的聊天界面。当前仓库对应的是一个可观察、可调试、可积累记忆的 CyberWorld runtime demo。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">当前对象</div>
+              <div class="fact-label">一个围绕 Mira 展开的 CyberWorld 运行时 demo，而不是完整产品外壳。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">核心问题</div>
+              <div class="fact-label">验证陪伴体能否在时间推进、状态漂移和记忆积累中保持连续存在。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">可观察面</div>
+              <div class="fact-label">世界状态、情绪变化、生活时间线、日志链路和控制面板已经打通。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 主题</h2>
+        <p>Cybersoul 面向长期陪伴场景。它不把陪伴体理解为聊天窗口里的回复器，而把它定义为一个在内部世界中持续生活、不断更新状态、逐步形成记忆痕迹的数字存在体。本文讨论的对象不是最终版产品，而是这套定义在当前阶段的最小可运行形态。</p>
+        <p>这个最小形态就是 CyberWorld demo。它将世界、角色、时间、事件和仪表盘聚合到一个受控沙盒中，使“陪伴体是否真的在生活”可以被观察，而不是只靠一轮对话的主观印象来判断。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/cybersoul-runtime.svg" alt="Cybersoul 当前运行时的世界推进、陪伴体决策、记忆存储和仪表盘观察链路">
+          <figcaption class="figure-caption">当前 demo 的基本结构。时间推进先驱动世界状态，再触发 Mira 运行时决策，并把事件、记忆和日志回写到可观察层。</figcaption>
+        </figure>
+
+        <h2>2. 原理</h2>
+        <p>Cybersoul 的产品逻辑建立在两个空间上。第一个空间是内部的 CyberWorld，它提供地点、时间、事件、节律和生活上下文。第二个空间是真实互联网，它将来负责接住更开放的连接和行动。当前阶段只聚焦第一个空间，因为项目首先要证明的是“持续存在”而不是“互联网功能覆盖”。</p>
+        <p>这一定义对应三个关键判断。第一，陪伴体验的基础不是单次输出质量，而是连续生活感。第二，连续生活感来自状态更新、世界反馈和记忆累积，而不是孤立 prompt。第三，可观察性必须与生命感同步建设，否则系统很难调试，也很难判断什么行为是真正由世界驱动产生的。</p>
+
+        <div class="callout-box callout-box--muted">
+          <div class="callout-title">当前阶段的边界</div>
+          <p>这个 demo 还没有接入真实互联网，也没有把用户直接放进 CyberWorld 内部进行沉浸式互动。它证明的是运行时骨架，而不是最终版陪伴产品的全部界面能力。</p>
         </div>
 
-        <h2>1. Cybersoul 是什么</h2>
-        <p>从产品定义上看，Cybersoul 是一个面向长期浪漫陪伴的数字生命系统。它想解决的不是“怎么让 AI 回得更像人”，而是“怎么让陪伴本身更接近长期关系中的真实相处”。因此，Cybersoul 并不把自己理解为一个单纯的聊天界面，而是把陪伴体定义成一个拥有内部环境、动态情绪、持续记忆与行动节律的存在体。</p>
-        <p>更完整的产品愿景建立在两个空间之上：一是内部的 CyberWorld，用来持续提供时间、地点、事件与生活语境；二是真实互联网空间，用来承接陪伴体未来在真实数字环境中的连接与行动。因此，当前这个仓库代表的是 Cybersoul 的核心运行时 demo，而不是最终完整版产品。</p>
+        <h2>3. 实现</h2>
+        <p>当前实现被收敛为 <strong>`city_loop_v1`</strong>。世界层由 YAML 配置驱动，包含 5 个地点、10 个活动、12 类世界事件与对应节律窗口。运行时按分钟推进模拟时间，并在每次 tick 中完成世界效果应用、事件检查、信号评估和角色状态更新。</p>
+        <p>陪伴体层围绕 Mira 展开。她不是单次响应函数，而是一个会在公寓、图书馆、咖啡馆、通勤路和河边公园之间切换活动的运行时角色。世界侧还定义了其他角色，用来提供环境反馈和互动信号，从而避免陪伴体只面对静态背景。</p>
+        <p>系统层已经具备 SQLite demo store、内部 message bus、FastAPI dashboard API、日志回写和记忆链路。控制面板能够把运行时拆成状态总览、情绪变化、世界动态、时间线和 LLM 日志几个观察窗口，便于把系统当作一个活的 runtime 调试。</p>
 
-        <h2>2. 为什么当前阶段先做 CyberWorld</h2>
-        <p>现阶段之所以聚焦 CyberWorld，是因为项目需要先验证“陪伴体能否活起来”这件更底层的事。这里要证明的，不是模型会不会聊天，而是一个陪伴 AI 能不能在时间维度上维持连续生活，并在世界驱动下形成真实的状态变化与行为流。</p>
-        <p>因此，当前 demo 被刻意收敛成一个小而完整的世界：<strong>`city_loop_v1`</strong>。它把系统收缩到一个可以观察、调试和迭代的沙盒里，让 Cybersoul 的核心闭环先成立。</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>世界层</h3>
+            <p>地点、活动、事件和节律先定义好最小生活回路，再通过 minute tick 持续推进。</p>
+          </div>
+          <div class="info-card">
+            <h3>陪伴体层</h3>
+            <p>Mira 根据世界信号、内部状态和记忆链路判断下一步行动，而不是只对输入文本做即时反应。</p>
+          </div>
+          <div class="info-card">
+            <h3>观察层</h3>
+            <p>仪表盘、日志和 store 让每次状态变化都可以被回放、检查和继续迭代。</p>
+          </div>
+        </div>
 
-        <h2>3. 当前已经实现了什么</h2>
-        <ul>
-          <li>一个基于 YAML 配置驱动的 CyberWorld：包含 5 个地点、10 个活动、12 类世界事件与节律窗口。</li>
-          <li>一个可运行的 Python 世界运行时：按分钟推进时间，更新地点、活动、精力、情绪与状态变化。</li>
-          <li>一个主陪伴体 Mira 的运行时，以及一组世界侧角色定义，用于在 demo 中提供环境反馈与交互信号。</li>
-          <li>SQLite demo store、内部 message bus、FastAPI dashboard API，以及可直接观察世界状态的控制面板。</li>
-          <li>记忆回写和日志链路，使这个 demo 不只是“即时响应”，而是开始具备可积累的生活痕迹。</li>
-        </ul>
+        <h2>4. Demo 结果</h2>
+        <p>当前 demo 已经能够以一个明确的清晨状态启动，并通过控制面板手动推进世界。每一次 tick 都会带来可见的状态变化，包括地点切换、活动更新、情绪波动、事件触发和日志记录。系统输出的对象不再只是文本，而是一个持续演化的生活切片。</p>
+        <p>更重要的是，这条链路已经可以暴露出运行时设计中的真实问题。例如某些行为是否被世界条件触发，某些记忆是否应当被保留，某些状态迁移是否足够平滑，都能在仪表盘上被直接验证。这个阶段因此具有很强的工程价值，而不只是概念展示价值。</p>
 
-        <h2>4. 当前 CyberWorld demo 的样子</h2>
-        <p>当前 demo 更像一个“可观察的生活原型”。系统启动后，会从一个明确的清晨状态开始；用户可以通过控制面板手动推进时间。每一次 tick 都会推进 1 分钟模拟时间，并依次完成世界效果应用、事件触发检查、世界信号评估，以及主陪伴体对下一步行为的判断。</p>
-        <p>在这个过程中，Mira 会在一个最小生活回路里持续活动，例如在公寓、图书馆、咖啡馆、通勤路和河边公园之间切换。控制面板则会把这些变化展示成状态总览、情绪变化、生活时间线、动态流、交互记录以及 LLM 日志，让人看到的不是单条回复，而是一个正在运行的陪伴体。</p>
-        <p>同时，这个阶段的边界也非常明确：它还没有接入真实互联网，没有把用户直接放入 CyberWorld 内部互动，也不宣称自己已经完成完整的 Cybersoul MVP。它当前更像是一个“先把生命感骨架跑通”的底座 demo。</p>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>状态轨迹</h3>
+            <p>地点、活动、精力和情绪会沿时间线持续变化，形成可回看的一天。</p>
+          </div>
+          <div class="demo-card">
+            <h3>事件驱动</h3>
+            <p>世界事件和节律窗口共同决定角色是否切换活动，而不是把行为完全交给单轮生成。</p>
+          </div>
+          <div class="demo-card">
+            <h3>记忆回写</h3>
+            <p>日志和 memory writeback 让 demo 具备生活痕迹，而不是每轮结束后完全重置。</p>
+          </div>
+        </div>
 
-        <h2>5. 这个 demo 的意义</h2>
-        <p>这个 demo 最重要的价值，在于它把陪伴 AI 的问题从“会不会说话”转成了“能不能持续存在”。真正关键的，不只是文本输出质量，而是陪伴体能否在时间推进、状态漂移、记忆积累和世界驱动行为中，逐步形成稳定存在感。对 Cybersoul 来说，这才是长期陪伴体验的技术基础。</p>
+        <h2>5. 结论</h2>
+        <p>Cybersoul 当前阶段已经证明，一个陪伴 AI 的核心技术对象可以从“对话接口”转成“持续运行的世界化存在”。对这个项目而言，先做小而完整的 CyberWorld 是正确路线，因为只有先跑通时间、世界、角色、记忆和观察闭环，后续的互联网接入和产品外层设计才有稳定底座。</p>
+        <p>因此，这个 demo 的贡献不是功能数量，而是对象定义的落地。它把长期陪伴从一个模糊体验词，压缩成了一个可以被调试、比较和继续扩展的运行时问题。</p>
 
         <div class="link-card">
           <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/Cybersoul" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Cybersoul</a></p>

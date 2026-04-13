@@ -1,0 +1,32 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="680" rx="32" fill="#F3F7F5"/>
+  <rect x="54" y="52" width="1092" height="576" rx="28" fill="#FFFEFC" stroke="#DAE5DF" stroke-width="2"/>
+  <text x="90" y="110" fill="#1F1F1F" font-family="Georgia, serif" font-size="38">LangChain Workflow Composition</text>
+  <text x="90" y="146" fill="#5A645D" font-family="Georgia, serif" font-size="20">The study track focuses on stateful orchestration rather than a single prompt.</text>
+  <rect x="96" y="244" width="182" height="98" rx="20" fill="#F8F1E8" stroke="#E8D9C8" stroke-width="2"/>
+  <text x="147" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Input State</text>
+  <text x="133" y="314" fill="#685D50" font-family="Arial, sans-serif" font-size="17">Question and config</text>
+  <rect x="340" y="170" width="206" height="116" rx="22" fill="#EEF4FA" stroke="#D4DEEB" stroke-width="2"/>
+  <text x="389" y="219" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Node 1</text>
+  <text x="372" y="252" fill="#556170" font-family="Arial, sans-serif" font-size="18">Understand or route</text>
+  <text x="405" y="276" fill="#556170" font-family="Arial, sans-serif" font-size="18">the task</text>
+  <rect x="340" y="396" width="206" height="116" rx="22" fill="#F4F8F2" stroke="#DCE7D8" stroke-width="2"/>
+  <text x="389" y="445" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Node 2</text>
+  <text x="382" y="478" fill="#586258" font-family="Arial, sans-serif" font-size="18">Retrieve or search</text>
+  <text x="401" y="502" fill="#586258" font-family="Arial, sans-serif" font-size="18">with tools</text>
+  <rect x="634" y="244" width="226" height="98" rx="20" fill="#F3F7EF" stroke="#D7E2CF" stroke-width="2"/>
+  <text x="700" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">State Graph</text>
+  <text x="675" y="314" fill="#596256" font-family="Arial, sans-serif" font-size="17">Explicit transitions</text>
+  <rect x="922" y="244" width="188" height="98" rx="20" fill="#F9F2EA" stroke="#E8DACC" stroke-width="2"/>
+  <text x="980" y="284" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="24">Output</text>
+  <text x="963" y="314" fill="#685D51" font-family="Arial, sans-serif" font-size="17">Synthesized answer</text>
+  <rect x="634" y="406" width="226" height="106" rx="22" fill="#F6F2FA" stroke="#DED8EA" stroke-width="2"/>
+  <text x="680" y="451" fill="#1F1F1F" font-family="Arial, sans-serif" font-size="26">Tools / Retriever</text>
+  <text x="688" y="484" fill="#60596A" font-family="Arial, sans-serif" font-size="18">External capability layer</text>
+  <path d="M278 293H340" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+  <path d="M546 228H634" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+  <path d="M860 293H922" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+  <path d="M747 342V406" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+  <path d="M546 454H634" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+  <path d="M442 286V396" stroke="#839086" stroke-width="4" stroke-linecap="round"/>
+</svg>

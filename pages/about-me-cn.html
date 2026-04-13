@@ -95,13 +95,6 @@
       font-weight: 700;
     }
 
-    .mini-title {
-      margin: 0.04rem 0 0.12rem;
-      color: #1a1a1a;
-      font-size: 0.87rem;
-      font-weight: 700;
-    }
-
     .entry {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -157,9 +150,7 @@
       text-align: left;
     }
 
-    .tag-line,
-    .summary-text,
-    .section-note {
+    .tag-line {
       margin: 0;
       color: #333;
       font-size: 0.83rem;
@@ -249,15 +240,18 @@
       text-decoration: underline;
     }
 
-    .section-card--wide {
-      width: 100%;
+    .link-title {
+      display: inline-block;
+      color: #1a1a1a;
+      text-decoration: none;
     }
 
-    .section-intro {
-      margin: 0 0 0.2rem;
-      color: #555;
-      font-size: 0.8rem;
-      line-height: 1.34;
+    .link-title:hover {
+      text-decoration: underline;
+    }
+
+    .section-card--wide {
+      width: 100%;
     }
 
     @page {
@@ -336,203 +330,212 @@
       <main class="resume-page">
         <div class="resume-layout">
           <aside class="resume-column">
-          <section class="section-card">
-            <h2>目标岗位</h2>
-            <p class="tag-line">AI 产品经理</p>
-          </section>
-
-          <section class="section-card">
-            <h2>教育背景</h2>
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">中山大学 | 计算机学院</p>
-                <p class="entry-sub no-wrap">保密管理专业 · 管理学学士</p>
-              </div>
-              <div class="entry-meta">广州，中国</div>
-            </div>
-            <ul class="info-list">
-              <li>GPA：3.3 / 5.0（83 / 100）</li>
-              <li>核心课程：管理学原理、管理统计学、知识产权法、商业秘密保护、人工智能、人工神经网络、模式识别。</li>
-            </ul>
-          </section>
-
-          <section class="section-card">
-            <h2>技术栈</h2>
-            <dl class="skills-grid">
-              <dt>编程语言</dt>
-              <dd>C++、Python</dd>
-
-              <dt>AI 框架</dt>
-              <dd>PyTorch、LangChain</dd>
-
-              <dt>系统开发</dt>
-              <dd>Linux、OpenAI API</dd>
-
-              <dt>AI 理论</dt>
-              <dd>
-                <div class="skill-wrap">
-                  <span>Deep Learning</span>
-                  <span>Neural Networks</span>
-                  <span>Transformer / LLM</span>
-                  <span>Diffusion Models</span>
-                  <span>SFT</span>
-                  <span>LoRA</span>
-                  <span>Reinforcement Learning</span>
-                </div>
-              </dd>
-            </dl>
-          </section>
-
-          <div class="award-stack">
             <section class="section-card">
-              <h2>竞赛</h2>
-              <div class="award-list">
-                <div class="entry">
-                  <div class="entry-main">
-                    <p class="entry-title">CUMCM 广东赛区二等奖</p>
-                  </div>
-                  <div class="entry-meta"><em>2023 年 1 月</em></div>
-                </div>
-
-                <div class="entry">
-                  <div class="entry-main">
-                    <p class="entry-title">CUMCM 广东赛区二等奖</p>
-                  </div>
-                  <div class="entry-meta"><em>2023 年 12 月</em></div>
-                </div>
-
-                <div class="entry">
-                  <div class="entry-main">
-                    <p class="entry-title">COMAP ICM M奖</p>
-                  </div>
-                  <div class="entry-meta"><em>2024</em></div>
-                </div>
-              </div>
+              <h2>目标岗位</h2>
+              <p class="tag-line">AI产品 / 售前 / 解决方案 / 咨询 / 运营 / 管培</p>
             </section>
 
-            <div class="award-stack-secondary">
-              <section class="section-card section-card--award-fill">
-                <h2>英语能力</h2>
-                <ul class="info-list">
-                  <li>TOEFL iBT：94</li>
-                  <li>CET-4：600 · CET-6：527</li>
-                </ul>
+            <section class="section-card">
+              <h2>教育背景</h2>
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">中山大学 | 计算机学院</p>
+                  <p class="entry-sub no-wrap">保密管理专业 · 管理学学士</p>
+                </div>
+                <div class="entry-meta">2022 年 - 2026 年</div>
+              </div>
+              <ul class="info-list">
+                <li>GPA：3.3 / 5.0（83 / 100）</li>
+                <li>核心课程：管理学原理、管理统计学、知识产权法、商业秘密保护、人工智能、人工神经网络、模式识别。</li>
+              </ul>
+            </section>
+
+            <section class="section-card">
+              <h2>技术栈</h2>
+              <dl class="skills-grid">
+                <dt>编程语言</dt>
+                <dd>C++、Python</dd>
+
+                <dt>AI 框架</dt>
+                <dd>PyTorch、LangChain</dd>
+
+                <dt>系统开发</dt>
+                <dd>Linux、OpenAI API</dd>
+
+                <dt>Agent 理论</dt>
+                <dd>
+                  <div class="skill-wrap">
+                    <span>Agent 基本范式</span>
+                    <span>|</span>
+                    <span>Harness</span>
+                    <span>|</span>
+                    <span>提示词工程</span>
+                    <span>|</span>
+                    <span>Skills</span>
+                    <span>|</span>
+                    <span>上下文工程</span>
+                    <span>|</span>
+                    <span>记忆系统</span>
+                  </div>
+                </dd>
+
+                <dt>深度学习理论</dt>
+                <dd>
+                  <div class="skill-wrap">
+                    <span>LLM / Transformer</span>
+                    <span>|</span>
+                    <span>扩散模型</span>
+                    <span>|</span>
+                    <span>SFT/LoRA</span>
+                    <span>|</span>
+                    <span>偏好对齐与强化学习</span>
+                  </div>
+                </dd>
+              </dl>
+            </section>
+
+            <div class="award-stack">
+              <section class="section-card">
+                <h2>竞赛</h2>
+                <div class="award-list">
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">CUMCM 广东赛区二等奖</p>
+                    </div>
+                    <div class="entry-meta"><em>2023 年 1 月</em></div>
+                  </div>
+
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">CUMCM 广东赛区二等奖</p>
+                    </div>
+                    <div class="entry-meta"><em>2023 年 12 月</em></div>
+                  </div>
+
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title">COMAP ICM M奖</p>
+                    </div>
+                    <div class="entry-meta"><em>2024 年</em></div>
+                  </div>
+                </div>
               </section>
 
-              <section class="section-card section-card--award-fill">
-                <h2>AI技术研究博客</h2>
-                <a class="blog-link" href="https://yueugenio.github.io/YuEugenio-Blog/" target="_blank" rel="noreferrer">https://yueugenio.github.io/YuEugenio-Blog/</a>
-              </section>
+              <div class="award-stack-secondary">
+                <section class="section-card section-card--award-fill">
+                  <h2>英语能力</h2>
+                  <ul class="info-list">
+                    <li>TOEFL iBT：94</li>
+                    <li>CET-4：600 · CET-6：527</li>
+                  </ul>
+                </section>
+
+                <section class="section-card section-card--award-fill">
+                  <h2>相关链接</h2>
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title"><a class="link-title" href="https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html" target="_blank" rel="noreferrer">AIGC 艺术生成研究综述</a></p>
+                    </div>
+                  </div>
+                  <a class="blog-link" href="https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html" target="_blank" rel="noreferrer">https://yueugenio.github.io/YuEugenio-Blog/articles/From-Image-Generator-to-Artistic-Creator.html</a>
+
+                  <div class="entry">
+                    <div class="entry-main">
+                      <p class="entry-title"><a class="link-title" href="https://github.com/YuEugenio/Cybersoul-2" target="_blank" rel="noreferrer">Cybersoul AI 赛博世界项目仓库</a></p>
+                    </div>
+                  </div>
+                  <a class="blog-link" href="https://github.com/YuEugenio/Cybersoul-2" target="_blank" rel="noreferrer">https://github.com/YuEugenio/Cybersoul-2</a>
+                </section>
+              </div>
             </div>
+          </aside>
+
+          <div class="resume-column">
+            <section class="section-card">
+              <h2>综合画像</h2>
+              <ul class="info-list">
+                <li>AI Native，重度使用 AI 工具，持续跟踪前沿 AI 技术、开源生态与研究进展，能快速复现验证论文研究。</li>
+                <li>对 AIGC、Agent 与 LLM 技术生态具备系统理解，具备强烈好奇心与快速自学能力。</li>
+                <li>具备创业执行、产品管理与跨团队项目推进经验，拥有良好的英文技术阅读与写作能力。</li>
+              </ul>
+            </section>
+
+            <section class="section-card">
+              <h2>实习 / 创业</h2>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">北京智信天一</p>
+                  <div class="role-line">
+                    <p class="entry-sub">AIPM 实习生</p>
+                    <p class="entry-meta">中国北京 · 2024 年 7 月 - 2024 年 8 月</p>
+                  </div>
+                </div>
+              </div>
+              <ul class="info-list">
+                <li>参与企业内部员工培训 RAG 系统的方案选型、需求分析、系统架构讨论，及企业知识库设计与切分流程规划。</li>
+                <li>基于 LangChain 搭建 MVP，完成检索增强问答链路验证，并围绕切分策略、召回效果、答案准确性与可追溯性测试企业场景中准确率、成本与可维护性的权衡。</li>
+              </ul>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">聚力校元（广州）文化科技有限公司</p>
+                  <div class="role-line">
+                    <p class="entry-sub">联合创始人</p>
+                    <p class="entry-meta">中国广州 · 2024 年 2 月 - 至今</p>
+                  </div>
+                </div>
+              </div>
+              <ul class="info-list">
+                <li>负责产品与技术方向，撰写商业计划，并搭建和维护企业知识库系统。</li>
+                <li>担任企业小程序产品负责人，推动产品规划、需求设计与跨团队协作，并通过 Vibe Coding 支撑 MVP 迭代交付。</li>
+              </ul>
+            </section>
+
+            <section class="section-card">
+              <h2>核心项目</h2>
+
+              <div class="entry">
+                <div class="entry-main">
+                  <p class="entry-title">Cybersoul：基于智能体的 AI 赛博世界 / AI 陪伴系统</p>
+                  <p class="entry-sub">产品设计 + Agent Runtime 设计 · Python / OpenAI API / Prompt Runtime</p>
+                </div>
+              </div>
+              <ul class="info-list">
+                <li>独立构思并推进 AI 陪伴项目 Cybersoul，从“如何让数字陪伴体形成持续存在感”出发，而非停留在传统聊天机器人的被动问答范式。</li>
+                <li>将产品核心问题抽象为“存在”与“感知”两层：存在层负责时间、世界、关系与行动驱动，感知层负责让陪伴体在网络空间留下可感知的痕迹。</li>
+                <li>围绕赛博世界、时钟驱动、主动性、关系连续性等问题设计 Agent Runtime，探索陪伴体在非用户触发下持续运行与生活的机制。</li>
+                <li>采用模块化架构拆分 LLM 主脑、Agent 模块、世界模块与实例化配置，使模型切换、人设替换、世界扩展具备更强的可拓展性。</li>
+                <li>当前重点验证世界驱动语义、heartbeat 主动性与“从聊天产品走向存在产品”的可行性，并持续撰写 PRD、MVP 与技术文档。</li>
+              </ul>
+            </section>
           </div>
-        </aside>
-
-        <div class="resume-column">
-          <section class="section-card">
-            <h2>综合画像</h2>
-            <ul class="info-list">
-              <li>AI Native，重度使用 AI 工具，持续跟踪前沿 AI 技术、开源生态与研究进展。</li>
-              <li>对 AIGC、Agent 与 LLM 技术生态具备系统理解，具备强烈好奇心与快速自学能力。</li>
-              <li>具备创业执行、产品管理与跨团队项目推进经验，拥有良好的英文技术阅读与写作能力。</li>
-            </ul>
-          </section>
-
-          <section class="section-card">
-            <h2>实习 / 创业</h2>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">北京智信天一</p>
-                <div class="role-line">
-                  <p class="entry-sub">AIPM 实习生</p>
-                  <p class="entry-meta">中国北京 · 2024</p>
-                </div>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>参与企业内部员工培训 RAG 系统的技术方案设计。</li>
-              <li>参与需求分析、系统架构讨论、企业知识库设计与检索流程规划。</li>
-            </ul>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">聚力校元（广州）文化科技有限公司</p>
-                <div class="role-line">
-                  <p class="entry-sub">联合创始人</p>
-                  <p class="entry-meta">中国广州 · 2024 年 2 月 - 至今</p>
-                </div>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>负责产品与技术方向，撰写商业计划，并搭建和维护企业知识库系统。</li>
-              <li>担任企业小程序产品负责人，推动产品规划、需求设计与跨团队执行。</li>
-              <li>通过 Vibe Coding 支撑 MVP 开发与迭代交付。</li>
-            </ul>
-          </section>
-
-          <section class="section-card">
-            <h2>项目</h2>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">基于LangChain的RAG系统</p>
-                <p class="entry-sub">增强检索生成框架 · LangChain</p>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>通过 Agent + RAG 的增强检索生成范式，提供了更可靠的知识召回。</li>
-            </ul>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">文生图系统</p>
-                <p class="entry-sub">生成模型工程 · Anima Base Model + Python</p>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>完成端到端文生图流程搭建，并实现 LoRA 微调与部署。</li>
-            </ul>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">基于智能体的赛博世界</p>
-                <p class="entry-sub">基于Python与OpenAI API的Agent系统</p>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>实现世界模型中的Agent自主化生活，作为陪伴AI的技术模块demo实践。</li>
-            </ul>
-
-            <div class="entry">
-              <div class="entry-main">
-                <p class="entry-title">OpenClaw 私有化部署</p>
-                <p class="entry-sub">系统部署与验证 · 本地化实践</p>
-              </div>
-            </div>
-            <ul class="info-list">
-              <li>完成 OpenClaw 的私有化部署与实践验证。</li>
-            </ul>
-          </section>
-
-        </div>
         </div>
 
         <section class="section-card section-card--wide">
-          <h2>研究与课程项目</h2>
-                    <div class="entry">
+          <h2>研究经历</h2>
+          <div class="entry">
             <div class="entry-main">
               <p class="entry-title">本科毕业设计</p>
               <p class="entry-sub">基于深度学习的 PES 上颌前牙种植红色美学智能评估方法</p>
             </div>
           </div>
           <ul class="info-list">
-            <li>基于深度学习的医学图像分类问题，通过优化模型架构、输入范式、特征工程、特征融合与神经网络，在极少样本条件下解决了已有 Baseline 的过拟合问题，提升了模型5%的性能表现，使 AUC 收敛至 0.7。</li>
+            <li>优化输入范式、基座模型与网络结构，在极少样本条件下缓解 Baseline 过拟合问题。</li>
+            <li>基于深度学习的分类方法下提升模型整体表现，使 AUC 稳定收敛至 0.7。</li>
+            <li>通过目标检测与图像分割方法，在医学语义上进行几何建模，使单项任务 ACC 提升至 0.7。</li>
           </ul>
 
-          <h3 class="mini-title">相关课程项目</h3>
+          <div class="entry">
+            <div class="entry-main">
+              <p class="entry-title">AIGC 艺术生成研究综述</p>
+              <p class="entry-sub">From Image Generator to Artistic Creator</p>
+            </div>
+          </div>
           <ul class="info-list">
-            <li><strong>Transformer 中英机器翻译：</strong>实现基于 Transformer 的中英翻译系统。</li>
-            <li><strong>ResNet 细粒度分类：</strong>在 CUB-200-2011 数据集上完成基于 ResNet 的细粒度分类任务。</li>
+            <li>围绕“文生图系统如何从图像生成器走向艺术创作家”进行系统性调研与综述，重点关注动漫与高细粒度风格生成场景中的风格同质化、语义缺失与审美对齐问题。</li>
+            <li>调研预训练、监督微调与强化对齐三类技术路径，分析 caption 质量、结构化语义、LoRA 个性化学习、偏好对齐等机制在艺术级 AIGC 中的作用与局限。</li>
+            <li>从产品与技术结合的角度提出判断：AIGC 要接近“艺术创作家”，关键不只是模型规模，而在于艺术语义工程、个性化学习与多目标偏好对齐的协同设计。</li>
           </ul>
         </section>
       </main>

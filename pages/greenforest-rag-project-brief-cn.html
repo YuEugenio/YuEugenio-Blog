@@ -7,6 +7,7 @@
   <meta name="article:date" content="2026-03-13">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -19,8 +20,8 @@
     .brief-body p { margin: 0 0 1rem; }
     .brief-body ul { margin: 0.45rem 0 1rem 1.25rem; padding: 0; }
     .brief-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -36,39 +37,90 @@
 
       <header class="article-header">
         <h1 class="article-title">GreenForest_RAG：项目简报</h1>
-        <p class="article-subtitle">对一个基于 LangChain 的园艺知识库、当前检索问答 demo，以及已经实现的技术范围做一个整体介绍。</p>
+        <p class="article-subtitle">本文介绍 GreenForest_RAG 的任务对象、检索增强链路、当前 demo 的实现范围，以及这个小型垂直知识库已经证明的工程结论。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="brief-body">
-        <div class="summary-card">
-          <p>GreenForest_RAG 是一个围绕“萃意生机”生态阳台项目搭建的小型检索增强生成原型。它把分散在 PDF、DOCX 和 CSV 中的资料整理成一个可检索知识库，用来支持更可靠、更有依据的问题回答。</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Project Article</p>
+          <p class="article-lead">GreenForest_RAG 把园艺与项目运营资料整理为一个可检索的本地知识库。当前重点不是做复杂界面，而是先把“资料导入、索引构建、检索召回、基于证据回答”这条主链路跑通。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">知识来源</div>
+              <div class="fact-label">PDF、DOCX、CSV 等混合格式资料，覆盖植物养护、商业策划、运营记录与数据表。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">核心目标</div>
+              <div class="fact-label">把分散文档重组为可追溯的知识召回系统，而不是依赖无依据生成。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前接口</div>
+              <div class="fact-label">一个基于 LangChain 与 Chroma 的本地 CLI 检索问答 demo。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 主题</h2>
+        <p>GreenForest_RAG 是一个面向垂直资料调用的 RAG 原型。它处理的对象不是开放网页，而是围绕“萃意生机”生态阳台项目积累下来的本地文档。资料本身既有植物知识，也有商业和运营信息，因此更接近真实项目中的混合知识环境。</p>
+        <p>本文关注的不是某一个模型参数，而是一个小型知识库如何从“文件堆”变成“可检索、可引用、可回答”的工程对象。换句话说，GreenForest_RAG 讨论的是知识组织方式，而不只是生成结果。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/greenforest-rag-pipeline.svg" alt="GreenForest_RAG 当前从混合文档加载到 Chroma 存储，再到检索问答的流程图">
+          <figcaption class="figure-caption">当前 demo 的主链路。文档先被加载与切分，再转成向量写入本地存储，最后通过检索器将证据片段送回问答环节。</figcaption>
+        </figure>
+
+        <h2>2. 原理</h2>
+        <p>这个项目的原理并不复杂，但对象很明确。RAG 的关键不是“让模型更会说”，而是“让回答建立在可取回的证据上”。对于资料分散、格式混杂的项目环境，这种组织方式比直接聊天更可靠，也比依赖人工翻找文件更高效。</p>
+        <p>因此，GreenForest_RAG 的方法逻辑分成四步。第一步是把不同格式的本地资料读成统一文档对象。第二步是把长文本切成适合检索的语义片段。第三步是将这些片段转成向量并持久化存储。第四步是在用户提问时先检索，再要求模型只依据召回内容回答。</p>
+
+        <div class="callout-box callout-box--soft">
+          <div class="callout-title">方法边界</div>
+          <p>这个 demo 目前解决的是“知识是否能够被可靠召回”。它还不是完整部署系统，也没有覆盖权限管理、网页界面、批量更新调度或线上服务监控等产品层问题。</p>
         </div>
 
-        <h2>1. GreenForest_RAG 是什么</h2>
-        <p>从项目定位上看，GreenForest_RAG 是一个面向垂直领域知识调用的实验。它处理的并不是通用网页文本，而是一组本地项目资料：其中既包含植物养护手册、植物数据库，也包含商业计划书、市场调研、私域运营资料、会议记录和工作表格。</p>
-        <p>这让它成为一个很典型的 RAG 场景：知识来源分散、文档格式混杂，而目标并不是泛泛聊天，而是让系统能够基于现有资料给出更扎实、更可追溯的回答。</p>
+        <h2>3. 实现</h2>
+        <p>当前实现使用 <strong>LangChain UnstructuredLoader</strong> 读取本地 PDF、DOCX 和 CSV 资料，用 <strong>RecursiveCharacterTextSplitter</strong> 做文本切分，再通过兼容 OpenAI 接口的 embedding 配置生成向量表示。模型和接口参数已经被迁移到环境变量中，以降低脚本对固定环境的耦合。</p>
+        <p>向量存储使用 <strong>Chroma</strong>，目的是让知识库可以构建一次、重复调用。运行 <strong>`RAG.py`</strong> 时，系统会完成文档扫描、加载、切分、向量化与持久化；运行 <strong>`ask.py`</strong> 时，则会在已有索引上进入命令行问答循环。</p>
+        <p>问答阶段的关键约束是“先检索，再回答”。召回器会先选出最相关的若干文本片段，连同 metadata 一起组织成上下文，再送入聊天模型。如果当前资料不能支撑回答，提示词会优先要求系统承认不知道，而不是补全未经证实的信息。</p>
 
-        <h2>2. 为什么要做这个项目</h2>
-        <p>这个项目最核心的动机，是把“萃意生机”相关资料变成更容易被调用的知识资产。当信息分别散落在手册、SOP、表格和策划文档里时，直接检索并整合上下文，显然比人工逐个打开文件更高效，也比单纯依赖记忆更可靠。</p>
-        <p>因此，当前版本聚焦于一个很明确的问题：面对一个园艺与商业信息交织的垂直场景，小型本地知识库能不能提供更可靠的知识召回？</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>导入层</h3>
+            <p>重点解决混合格式资料的统一读取问题，让本地项目文档先进入同一种处理接口。</p>
+          </div>
+          <div class="info-card">
+            <h3>索引层</h3>
+            <p>文本切分、向量生成与 Chroma 持久化共同构成最小知识底座。</p>
+          </div>
+          <div class="info-card">
+            <h3>问答层</h3>
+            <p>问题先走召回，再把证据片段和问题一起交给模型，减少无依据生成。</p>
+          </div>
+        </div>
 
-        <h2>3. 当前已经实现了什么</h2>
-        <ul>
-          <li>使用 <strong>LangChain UnstructuredLoader</strong> 读取本地 PDF、DOCX、CSV 等混合格式资料。</li>
-          <li>使用 <strong>RecursiveCharacterTextSplitter</strong> 进行文本切分，把长文档整理成更适合检索的语义片段。</li>
-          <li>通过兼容 OpenAI 接口的 embedding 配置生成向量表示，并改为使用环境变量管理模型参数。</li>
-          <li>使用 <strong>Chroma</strong> 做本地持久化向量存储，使知识库可以一次构建、重复调用。</li>
-          <li>提供一个简洁的命令行问答循环：先检索上下文，再在“仅基于检索结果回答”的约束下生成回复。</li>
-        </ul>
+        <h2>4. Demo 结果</h2>
+        <p>当前 demo 已经完整跑通了“本地资料导入到 grounded answer”的链路。它能够把原本散落在手册、计划书、表格和会议记录中的内容重新组织为可检索知识，并在用户提问时快速返回相关片段。</p>
+        <p>对这个项目而言，最关键的观察不是回答是否华丽，而是回答是否能回到资料本身。只要检索片段是可追溯的，后续就可以继续优化切块策略、metadata 组织、召回参数和问答提示词。这个 demo 因而已经具备明确的迭代对象。</p>
 
-        <h2>4. 当前 demo 的样子</h2>
-        <p>当前工作流被有意做得很轻：运行 <strong>`RAG.py`</strong> 后，系统会扫描本地资料、加载文档、切分文本、生成向量，并把结果写入本地 Chroma 目录；运行 <strong>`ask.py`</strong> 后，则可以直接在这个持久化知识库之上进入命令行问答。</p>
-        <p>在问答阶段，检索器会先选出最相关的若干文本片段，把它们整理成上下文，再连同问题一起送入聊天模型。如果当前资料不足以回答，提示词会优先要求系统承认不知道，而不是编造内容。</p>
-        <p>所以，现阶段的 GreenForest_RAG 还不是一个完整产品界面，也不是部署好的知识服务，而是把资料导入、索引构建、检索召回和有依据回答这条核心链路先跑通。</p>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>召回优先</h3>
+            <p>系统先找证据，再生成回答。回答质量因此与索引质量直接绑定。</p>
+          </div>
+          <div class="demo-card">
+            <h3>本地持久化</h3>
+            <p>Chroma 让知识库不必每次重建，适合对同一批资料持续提问和迭代。</p>
+          </div>
+          <div class="demo-card">
+            <h3>可继续优化</h3>
+            <p>文档质量、切块策略、metadata 和 top-k 参数都已经成为可测量、可调整的变量。</p>
+          </div>
+        </div>
 
-        <h2>5. 这个 demo 的意义</h2>
-        <p>GreenForest_RAG 的价值不在于界面复杂度，而在于可靠性验证。它证明了一个小型垂直资料库可以被重组为可用的知识检索系统，也说明了 RAG 的确能够让项目知识的调用更高效，同时比无约束生成更少依赖幻觉式补全。</p>
+        <h2>5. 结论</h2>
+        <p>GreenForest_RAG 已经证明，一个小型垂直知识库完全可以通过 RAG 被改造成稳定的知识调用系统。当前项目最重要的结果不是界面完成度，而是“可追溯回答”这件事已经在工程上成立。</p>
+        <p>这意味着后续工作可以从可靠底座继续扩展，而不必再回到“资料散落在文件夹里、调用主要靠人工记忆”的状态。对真实项目而言，这种知识重组能力本身就是价值。</p>
 
         <div class="link-card">
           <p><strong>GitHub 仓库：</strong><a href="https://github.com/YuEugenio/GreenForest_RAG" target="_blank" rel="noreferrer">https://github.com/YuEugenio/GreenForest_RAG</a></p>

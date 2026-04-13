@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,36 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Attention Mechanism Learning Notes</h1>
-        <p class="article-subtitle">A study summary based on my notebook around Attention Is All You Need, from intuition to the Transformer’s core architectural blocks.</p>
+        <p class="article-subtitle">This article reorganizes self-attention, multi-head attention, positional encoding, and Transformer blocks into one coherent learning thread, then places the notebook implementation back inside that method logic.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This learning track is about understanding why attention became the key mechanism behind modern sequence modeling and why Transformers replaced earlier recurrent structures in so many settings.</p>
+        <section class="article-hero article-hero--amber">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">The object of this note set is the attention mechanism as a structured method, not as a pile of isolated formulas. The main task is to understand why sequence modeling moved from stepwise state passing to direct token-relation modeling, and how Transformer blocks make that idea trainable at scale.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`13_attention_is_all_you_need.ipynb`</strong> with softmax, attention, and Transformer-structure exercises.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">The path from self-attention to the full Transformer block.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">The core equations, tensor shapes, and module stack can now be explained back through code.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>This article focuses on how attention rewrites sequence modeling. Earlier recurrent approaches passed hidden state step by step through time. Attention allows the model to score token-to-token relevance directly. That shift removes the strict dependence on one temporal chain and provides a uniform interface for later large-model architectures.</p>
+        <p>The learning target is therefore not formula memorization. It is the explanation of three linked questions: what the model compares, why scaling and normalization are necessary, and why multi-head attention plus positional encoding can be stacked into a stable deep structure.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/attention-transformer-stack.svg" alt="A diagram from input tokens and QKV projection through self-attention, multi-head attention, residual paths, and feed-forward layers">
+          <figcaption class="figure-caption">The thread of this note set is not a list of formulas. It moves from token-relation computation to the full Transformer block as one connected object.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The core action of self-attention is straightforward. Each token produces a query, key, and value. Query-key matches define which values should matter. The scaling factor keeps score magnitude under control, and softmax converts relative importance into a weight distribution. In one step, the model learns who should attend to whom.</p>
+        <p>Multi-head attention is not only repeated attention. It gives different heads different projection subspaces so multiple relation patterns can be learned in parallel. Positional encoding, residual connections, and normalization then restore order information, stabilize optimization, and make the architecture stackable rather than shallow.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Relation Modeling</h3>
+            <p>Attention replaces strictly sequential passing with explicit relevance scoring between tokens.</p>
+          </div>
+          <div class="info-card">
+            <h3>Parallel Heads</h3>
+            <p>Different heads can specialize in different relation patterns instead of forcing one path to carry everything.</p>
+          </div>
+          <div class="info-card">
+            <h3>Stable Stacking</h3>
+            <p>Positional encoding, residual paths, and normalization let the mechanism scale into deep Transformer blocks.</p>
+          </div>
         </div>
 
-        <h2>1. What I Focused On</h2>
-        <p>The notebook <strong>`13_attention_is_all_you_need.ipynb`</strong> helped me work through the original attention-based design more systematically: what self-attention computes, why scaling is needed, how multi-head attention helps, and how positional information is preserved without recurrence.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p>The notebook exercises are organized around three levels. The first level is numerically stable softmax and matrix-based attention computation. The second level extends single-head attention into multi-head form and clarifies reshape and concatenation across tensor dimensions. The third level puts attention back into the broader Transformer view together with feed-forward layers, residual paths, and normalization.</p>
+        <p>This practice matters because it forces the theory to survive code-level detail. If tensor dimensions, weight normalization, or residual flow are misunderstood, the implementation exposes the gap immediately. The notebook is therefore both a reading aid and a correctness check on conceptual understanding.</p>
 
-        <h2>2. Core Topics I Studied</h2>
-        <ul>
-          <li>Query, key, and value as the basic language of attention.</li>
-          <li>Scaled dot-product attention and why normalization matters for stability.</li>
-          <li>Multi-head attention as a way to learn different relational patterns in parallel.</li>
-          <li>Positional encoding and how order information is injected into token representations.</li>
-          <li>Encoder-decoder structure and residual-plus-normalization design.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Numerical Stability</h3>
+            <p>The softmax implementation makes clear why attention scores cannot be left as raw unconstrained values.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Shape Discipline</h3>
+            <p>The move from one head to many heads is mostly a projection-and-reshape problem, and code makes that concrete.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Block Reassembly</h3>
+            <p>Reassembling attention into a full Transformer block is the step from formula literacy to architectural understanding.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The most important insight is that attention changes sequence modeling from step-by-step recurrence into relation modeling. Instead of only passing information forward through time, the model can directly score which tokens matter to each other.</p>
-        <p>I also learned that the Transformer is not powerful because of one trick alone. Its strength comes from how attention, feed-forward layers, residual connections, and positional encoding work together as a stack.</p>
+        <h2>4. Current Output</h2>
+        <p>The direct outcome of this study is that attention can now be understood as one structured object instead of a set of disconnected terms. Token relations, weight distributions, multi-head parallelism, positional encoding, and residual flow can all be checked against the same notebook implementation.</p>
+        <p>This foundation also matters for later topics. Embeddings, context windows, retrieval augmentation, and agent memory all depend on the broader question of how representations are reorganized inside context. Attention is the starting point of that line of reasoning.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>My current outcome in this area is a clearer conceptual picture of why modern LLMs are built the way they are. That foundation is useful not only for theory, but also for interpreting later work on embeddings, context windows, retrieval, and agent systems.</p>
+        <h2>5. Conclusion</h2>
+        <p>The importance of attention is not that it swaps one formula for another. It changes the object of sequence modeling. The model no longer has to move information only along time. It can directly learn the relational structure of the context. The Transformer then turns that relational method into a stackable and scalable framework.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">The notebook below is rendered with all code cells, including my softmax implementation, scaled dot-product attention code, and related Transformer experiments.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>Three things to look for before reading the notebook</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with softmax</h3>
+              <p>Without normalization and numerical stability, the attention weights remain opaque.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect QKV shapes</h3>
+              <p>The shift from single-head to multi-head attention is fundamentally about projection and reshape logic.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with block assembly</h3>
+              <p>Putting attention back into residual, normalization, and feed-forward structure is what makes the Transformer understandable.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders the full <strong>`13_attention_is_all_you_need.ipynb`</strong> notebook so formulas, visuals, and implementation can be read together.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -86,7 +154,7 @@
           "path": "13_attention_is_all_you_need.ipynb",
           "type": "notebook",
           "title": "13_attention_is_all_you_need.ipynb",
-          "description": "Notebook notes and code walkthroughs based on Attention Is All You Need."
+          "description": "Notebook exercises on softmax, scaled dot-product attention, multi-head attention, and Transformer structure."
         }
       ]
     }

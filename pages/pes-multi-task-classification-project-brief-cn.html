@@ -7,6 +7,15 @@
   <meta name="article:date" content="2026-03-14">
   <meta name="article:section" content="project-briefing">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     .article-content {
       max-width: 760px;
@@ -65,6 +74,13 @@
       font-weight: normal;
     }
 
+    .brief-body h3 {
+      margin: 1.5rem 0 0.65rem;
+      color: #1a1a1a;
+      font-size: 1.08rem;
+      font-weight: normal;
+    }
+
     .brief-body p {
       margin: 0 0 1rem;
     }
@@ -119,6 +135,14 @@
       line-height: 1.7;
     }
 
+    .formula-block {
+      margin: 1rem 0 1.2rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid #d9d9d9;
+      background: #fafafa;
+      overflow-x: auto;
+    }
+
     @media (max-width: 768px) {
       .article-content {
         padding: 1.2rem 0.95rem 1.6rem;
@@ -141,80 +165,156 @@
 
       <header class="article-header">
         <h1 class="article-title">本科毕业设计：PES 多任务分类框架</h1>
-        <p class="article-subtitle">对我的本科毕业设计做一个整体介绍：从数据构建、模块化建模，到架构消融与 LoRA 微调搜索，逐步形成一个可复用的 PES 自动评估实验框架。</p>
+        <p class="article-subtitle">本文介绍毕业设计中的方法设计、实验设置与主要结果，重点包括共享 7 任务分类主线，以及面向龈缘水平和软组织形态两个困难子项的结构化建模方案。</p>
         <div class="article-meta">March 14, 2026</div>
       </header>
 
       <main class="brief-body">
         <div class="summary-card">
-          <p>这是我的本科毕业设计项目。它围绕 PES 多任务分类，搭建了一个模块化深度学习框架，目标是把种植美学相关评价从“单次模型尝试”推进到“可系统比较、可持续迭代的实验体系”。</p>
+          <p>本文的方法设计分为两条主线。第一条主线是共享的 7 任务多任务分类框架，用于建立 PES 自动评估的统一基线。第二条主线是面向龈缘水平和软组织形态两个困难子项的结构化建模，用于补充纯分类模型在结构关系表达上的不足。</p>
         </div>
 
-        <h2>1. 这个项目是什么</h2>
-        <p>从系统形态上看，这并不是一个固定死的单模型仓库，而是一个可配置的实验框架。整个项目把骨干网络、输入流设计、特征融合模块、分类头、损失函数、数据划分方式和实验配置拆成了可以自由组合的组件。</p>
-        <p>结合任务定义和 ROI 标注方式来看，这个项目面向的是种植相关图像中的 Pink Esthetic Score 自动评估问题。它并不把任务简化成一个单标签输出，而是把问题拆成 7 个子任务：近中牙龈乳头、远中牙龈乳头、龈缘水平、软组织形态、牙槽突缺损、粘膜颜色和黏膜质地。</p>
+        <h2>1. 研究主题</h2>
+        <p>本研究面向上颌前牙种植口内照中的 Pink Esthetic Score 自动评估问题。PES 包含近中牙龈乳头、远中牙龈乳头、龈缘水平、软组织形态、牙槽突缺损、黏膜颜色和黏膜质地 7 个评分子项，因此本文将任务建模为共享视觉表征、任务级独立输出的多任务分类问题。</p>
+        <p>研究方法采用“共享分类主线 + 任务特异结构化补充”的双层设计。共享分类主线用于给出统一的 7 任务基线；结构化补充分别处理龈缘水平的高度关系和软组织形态的轮廓对应关系。</p>
 
-        <h2>2. 它试图解决什么问题</h2>
-        <p>这个项目所面对的核心难点，是美学评价本身并不天然适合被压缩成一个简单分类标签。它同时依赖多个细粒度视觉因素，而且这些因素既存在于种植体附近的局部区域，也依赖更大的整体上下文。因此，我把它建模成多任务学习问题，而不是单输出分类。</p>
-        <p>为了支撑这一点，数据侧会同时读取图像、LabelMe 风格的 ROI 标注 JSON，以及 Excel 标签表，并按 patient 维度构建训练/验证划分。输入侧则设计了两种模式：一种是只看种植位与对侧位的 <strong>two local</strong>，另一种是在此基础上加入整体视角的 <strong>three-stream</strong> 方案。</p>
+        <h2>2. 共享分类主线的原理与实现</h2>
+        <p>共享分类主线建立在统一实验基础之上。数据侧整理了评分标签、感兴趣区域标注和患者级数据划分流程，其中 332 个有效样本具备完整的 7 项 PES 标签与 ROI 信息。输入组织同时保留种植位局部区域、对侧天然牙局部区域和前牙整体区域，用于联合表达局部比较与整体协调。</p>
 
-        <h2>3. 当前已经实现了什么</h2>
+        <h3>2.1 多任务输出形式</h3>
+        <p>共享分类框架采用“共享编码器 + 共享融合模块 + 任务独立分类头”的结构。7 个子任务共享同一套视觉表征，每个任务单独输出三分类结果。对于第 $t$ 个任务，模型输出可写为：</p>
+        <div class="formula-block">
+          $$\hat{\mathbf{p}}_{n,t} = [\hat{p}_{n,t,0}, \hat{p}_{n,t,1}, \hat{p}_{n,t,2}], \qquad \hat y_{n,t}=\arg\max_c \hat p_{n,t,c}$$
+        </div>
+        <p>这一设计的目的，是在有限样本条件下利用共享视觉表征，同时保留每个评分子项的语义边界。</p>
+
+        <h3>2.2 输入流设计</h3>
+        <p>共享分类实验比较两种输入模式。第一种是 <strong>two-local</strong>，使用种植位和对照牙两个局部区域。第二种是 <strong>three-stream</strong>，在两个局部区域之外再加入前牙整体区域。三类感兴趣区域如下图所示。</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/pes_roi_example.png" alt="PES 三类感兴趣区域示意图">
+          <figcaption class="figure-caption">三类感兴趣区域的组织方式。红色框对应种植位局部区域，蓝色框对应对照牙局部区域，绿色框对应前牙整体区域。</figcaption>
+        </figure>
+
+        <p>三流输入不是简单增加一张图，而是把“种植位局部判别”“对照牙镜像参照”和“整体前牙暴露区协调性”同时纳入建模。</p>
+
+        <h3>2.3 架构搜索空间与训练设置</h3>
+        <p>共享分类主线以现有工作的 ResNet50 双局部输入、交叉注意力融合和线性分类头基线为起点，在统一协议下比较四类因素：输入结构、骨干模型、特征融合方式和分类头设计。24 组架构搜索空间可写为：</p>
+        <div class="formula-block">
+          $$2 \times 3 \times 2 \times 2 = 24$$
+        </div>
         <ul>
-          <li>一个统一的数据构建器：可以解析 ROI 标注、读取多任务标签、进行 patient-group 划分，并生成 dataloader。</li>
-          <li>一个统一的模型构建器：按配置组装 backbone、fusion 和多任务分类头。</li>
-          <li>多种 backbone 支持，包括 ResNet50、BioMedCLIP ViT 和 CLIP ViT。</li>
-          <li>多种融合与头部组合支持，包括 concat / cross-attention 和 linear / mlp。</li>
-          <li>一个两阶段实验流程：Stage 1 做 24 组架构搜索，Stage 2 在最优骨架上继续做 11 组 LoRA 组合搜索。</li>
-          <li>完整的训练与结果导出链路，包括 AUC-first 的 checkpoint 选择、history 保存和可视化产物生成。</li>
+          <li>输入模式：双局部输入、三流输入</li>
+          <li>骨干网络：ResNet50、CLIP ViT、BioMedCLIP ViT</li>
+          <li>特征融合：特征拼接、交叉注意力</li>
+          <li>分类头：线性头、多层感知机头</li>
         </ul>
+        <p>全部实验采用统一训练协议：患者级 GroupShuffleSplit 划分，训练集和验证集样本数分别为 264 和 68，训练轮数为 100，优化器为 AdamW，初始学习率为 $1\times10^{-4}$，主选模指标为验证集宏平均 AUC。</p>
 
-        <h2>4. 当前实验说明了什么</h2>
-        <p>对我来说，这个项目最重要的一点是，它已经走过了“模型能不能跑起来”的阶段，而进入了“如何系统比较结构设计”的阶段。现在的实验流程已经比较完整：Stage 1 会对 <strong>24 组模型组合</strong> 做架构消融，这 24 组来自 3 个 backbone、2 种输入模式、2 种融合方式和 2 种 head 设计；随后再把最优 Stage 1 结构带入 Stage 2，继续做 LoRA 组合搜索。</p>
-        <p>与此同时，任务本身也从更早阶段的 4 个任务扩展到了现在的 <strong>7 个 PES 子任务</strong>，训练轮数也延长到 <strong>100 epochs</strong>。这意味着我现在观察到的不只是“哪个模型某一刻冲得高”，而是“哪个结构在完整训练过程中更稳定、更可信”。</p>
+        <h3>2.4 损失函数与选模逻辑</h3>
+        <p>由于 7 个子任务的类别分布并不均衡，共享分类主线采用加权交叉熵损失。对第 $t$ 个任务第 $c$ 类，其权重按训练集逆频率定义：</p>
+        <div class="formula-block">
+          $$w_{t,c}=\frac{N_t}{C\cdot n_{t,c}}$$
+        </div>
+        <p>训练结束后不只看峰值 AUC，还看完整训练过程中的最终收敛质量。这一部分的目标不是寻找瞬时最高点，而是筛选能够在完整训练周期内保持稳定收敛的共享基线。</p>
+
+        <h2>3. 共享分类主线的实验结果</h2>
+        <p>24 组架构实验的训练动态可以分为三类：稳定收敛型、过拟合失稳型和非平滑收敛型。这个划分直接决定了最终的选模标准。</p>
+        <ul>
+          <li>输入组织方式会影响比较信息和整体上下文的表达，三流输入优于仅局部输入。</li>
+          <li>骨干模型的整体表现为 CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50。</li>
+          <li>融合方式与分类头组合比单独更换骨干更能决定训练稳定性。</li>
+          <li>特征拼接与线性头组合在小样本条件下表现出更稳定的收敛行为。</li>
+        </ul>
 
         <figure class="brief-figure">
           <img src="../images/projects/pes/training_curves.png" alt="PES 实验中代表性的训练曲线">
-          <figcaption class="figure-caption">毕业设计汇报中的代表性训练曲线。它很直观地说明：不同架构的失败方式并不一样，有的平稳收敛，有的迅速过拟合，也有的先波动再重新收敛。</figcaption>
+          <figcaption class="figure-caption">共享分类主线中的代表性训练曲线。不同结构的训练行为存在明显差异，稳定收敛、严重过拟合和非平滑收敛三类模式都在实验中出现。</figcaption>
         </figure>
 
-        <h2>5. Stage 1 中观察到的三类收敛模式</h2>
-        <p>结合 3.3 阶段的实验图和 3.6 的总结汇报，我最后把 Stage 1 的主要结果概括成三类收敛模式。这个划分很重要，因为它直接影响了我对“最优模型”的定义。</p>
-        <ul>
-          <li><strong>Case 1：稳定收敛。</strong> 这类情况大多出现在 <strong>concat + linear</strong> 组合中，验证损失和 AUC 变化更平滑，后期不会明显崩掉。</li>
-          <li><strong>Case 2：严重过拟合。</strong> 这类情况在不少非 <strong>concat + linear</strong> 组合里都出现过，尤其是部分 ResNet50 方案。它们可能在前期看起来还不错，但后期验证性能会明显下滑。</li>
-          <li><strong>Case 3：非平滑收敛。</strong> 这类模型可能在中期先达到一个高峰，随后回落，再到后面重新收敛。如果只看峰值，很容易高估它的真实可靠性。</li>
-        </ul>
+        <h3>3.1 三类收敛模式</h3>
+        <p><strong>稳定收敛型</strong> 的曲线后期平滑、峰终差小，主要集中在 <strong>concat + linear</strong> 组合中。<strong>过拟合失稳型</strong> 多出现在 ResNet50 的复杂配置里，表现为验证损失持续抬升、AUC 后期明显回落。<strong>非平滑收敛型</strong> 主要出现在 CLIP 和 BioMedCLIP 的部分复杂结构中，前期峰值较高，但难以稳定保留到训练结束。</p>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="Case 1 稳定收敛曲线">
-          <figcaption class="figure-caption">Case 1 的代表结果。这类曲线是我最终偏向 <strong>concat + linear</strong> 的核心依据之一，因为它在完整训练周期里体现出更可控、更可信的收敛行为。</figcaption>
+          <img src="../images/projects/pes/case1_concat_linear_val_loss_auc.png" alt="稳定收敛曲线">
+          <figcaption class="figure-caption">稳定收敛型代表结果。该类型模型在完整训练周期中保持了较强的性能保持能力。</figcaption>
         </figure>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="Case 2 严重过拟合曲线">
-          <figcaption class="figure-caption">Case 2 的代表结果。它说明有些结构虽然前期指标会迅速变好，但泛化能力并不稳定，后期很容易出现明显退化。</figcaption>
+          <img src="../images/projects/pes/case2_severe_overfit_val_loss_auc.png" alt="严重过拟合曲线">
+          <figcaption class="figure-caption">过拟合失稳型代表结果。该类型模型前期指标较好，但后期退化明显。</figcaption>
         </figure>
 
         <figure class="brief-figure">
-          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="Case 3 非平滑收敛曲线">
-          <figcaption class="figure-caption">Case 3 的代表结果。它提醒我不能只看某个瞬时最优 checkpoint，而要同时关注完整训练过程中的最终收敛质量。</figcaption>
+          <img src="../images/projects/pes/case3_clip_nonsmooth_val_loss_auc.png" alt="非平滑收敛曲线">
+          <figcaption class="figure-caption">非平滑收敛型代表结果。该类型模型能够达到较高峰值，但最终收敛质量不如稳定收敛型。</figcaption>
         </figure>
 
-        <h2>6. 当前为什么选择这条模型路线</h2>
-        <p>如果只看报告中的<strong>最高峰值</strong>，当前最强的组合是 <strong>CLIP + 3 streams + cross-attention + MLP</strong>，AUC 最高大约能到 <strong>0.72</strong>。但如果看<strong>最终稳定收敛</strong>，当前更值得保留的结果是 <strong>CLIP + 3 streams + concat + linear</strong>，它的最终 AUC 大致稳定在 <strong>0.70</strong> 左右。</p>
-        <p>这也是这篇本科毕业设计文章里最关键的判断：我最终并不是单纯选择“瞬时最高分”的模型，而是更倾向选择“在完整训练协议下能稳定收敛”的模型。从整体结果看，backbone 的表现大致可以概括为 <strong>CLIP ViT &gt; BioMedCLIP ViT &gt; ResNet50</strong>；而加入 <strong>global stream</strong> 也不仅仅是增加输入噪声，它确实对最终表征质量和结果上限有帮助。</p>
+        <h3>3.2 最终主线模型</h3>
+        <p>最终入选模型为 <strong>CLIP ViT + three-stream + concat + linear</strong>。该模型的验证集宏平均 AUC 为 <strong>0.7004</strong>，最佳验证宏平均 AUC 为 <strong>0.7009</strong>。如果只看瞬时峰值，更复杂的 CLIP 结构可以达到更高分数；但如果看完整训练周期中的稳定收敛质量，三流拼接线性头模型的综合表现更好。</p>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/pretrained_sota_baseline_val_loss_auc.png" alt="最终主线模型与代表性基线的曲线对比">
+          <figcaption class="figure-caption">最终主线模型与代表性 baseline 的曲线对比。CLIP 三流拼接线性头模型在验证损失和宏平均 AUC 上都保持了更稳定的后期演化趋势。</figcaption>
+        </figure>
+
+        <figure class="brief-figure">
+          <img src="../images/projects/pes/pretrained_sota_baseline_task_auc.png" alt="七个子任务的 AUC 结果">
+          <figcaption class="figure-caption">最终共享分类基线在 7 个 PES 子任务上的 AUC 结果。不同子任务的建模难度差异明显，龈缘水平和软组织形态是其中更困难的两个任务。</figcaption>
+        </figure>
 
         <figure class="brief-figure">
           <img src="../images/projects/pes/confusion_matrices.png" alt="PES 模型的混淆矩阵结果">
-          <figcaption class="figure-caption">实验总结中的混淆矩阵。除了 AUC 这样的整体指标之外，它还能从类别分布层面补充说明当前所选结构的实际判别质量。</figcaption>
+          <figcaption class="figure-caption">共享分类基线的混淆矩阵结果。该结果从类别分布层面补充说明了所选主线模型在 7 个 PES 子任务上的整体判别表现。</figcaption>
         </figure>
 
-        <h2>7. 这个本科毕设项目的意义</h2>
-        <p>这个项目的价值，不只是“某个模型分数更高”，而是它把整个问题组织成了一个真正的研究与工程框架：我不仅能比较不同 backbone，也能系统比较输入流、融合方式、头部设计和参数高效微调策略，并在统一协议下给出结果。</p>
-        <p>从本科毕业设计的角度看，它已经具备了比较完整的研究形态：问题形式化、数据管线构建、模块化实现、消融设计和基于证据的模型选择。也正因为如此，这个项目既是一个能运行的工程系统，也是一个相对完整的研究产物。</p>
+        <h2>4. 面向龈缘水平的结构化建模</h2>
+        <p>龈缘水平任务关注的是种植侧与对照侧龈缘最高点之间的相对高度差。这一任务具有明确的结构属性，因此本文在共享分类基线结果之外，引入了基于感兴趣区域框提示与 SAM 分割的结构化量化流程。</p>
+        <p>该流程包括三个核心步骤：第一，基于全局 ROI 和候选牙定位生成稳定的牙体分割结果；第二，在分割结果上估计中切线和校准参考系；第三，检测种植侧与对照侧龈缘最高点，并计算归一化高度差，将连续量测结果映射为离散评分。</p>
+
+        <h3>4.1 高度差量化公式</h3>
+        <p>设种植侧与对照侧最高点在校准坐标系中的垂直坐标分别为 $z_i^\star$ 和 $z_c^\star$，则绝对高度差定义为：</p>
+        <div class="formula-block">
+          $$\Delta h_{\mathrm{abs}} = |z_i^\star - z_c^\star|$$
+        </div>
+        <p>项目中最终采用的主特征是较小轴高归一化差：</p>
+        <div class="formula-block">
+          $$\delta_h = \frac{\Delta h_{\mathrm{abs}}}{\min(H_i, H_c)}$$
+        </div>
+        <p>随后通过全局阈值搜索把连续特征映射为三分类标签：</p>
+        <div class="formula-block">
+          $$\hat y_h =
+          \begin{cases}
+          2, & \delta_h \le \tau_2,\\
+          1, & \tau_2 < \delta_h \le \tau_1,\\
+          0, & \delta_h > \tau_1.
+          \end{cases}$$
+        </div>
+        <p>在 240 例筛选通过病例上，该结构化量化方法的 Accuracy 为 <strong>0.6042</strong>，Macro-F1 为 <strong>0.5307</strong>；在 196 例人工优质子集上，Accuracy 提升到 <strong>0.6480</strong>，Macro-F1 提升到 <strong>0.5656</strong>。这一结果说明，当参考系和边界质量可控时，显式高度差特征能够提供有效的结构判别依据。</p>
+
+        <h2>5. 面向软组织形态的结构化建模</h2>
+        <p>软组织形态任务比龈缘水平更强调轮廓弧线、局部饱满度和整体外形的一致性。针对这一问题，本文在共享分类基线基础上，进一步构建了面向轮廓比较的结构化分析流程。</p>
+        <p>该流程同样从 ROI 提示和 SAM 分割开始，先快速得到种植侧与对照侧牙体区域，再提取两侧上缘轮廓，并比较多种对齐与量化策略，包括平移校正、局部窗口搜索和窄带 DTW。</p>
+
+        <h3>5.1 轮廓比较与对齐公式</h3>
+        <p>最基础的轮廓比较特征是相关性距离。设种植侧轮廓为 $c_i(t)$，镜像后的对照侧轮廓为 $c_c(1-t)$，则相关性距离定义为：</p>
+        <div class="formula-block">
+          $$d_{\mathrm{corr}} = 1 - \mathrm{corr}(c_i(t), c_c(1-t))$$
+        </div>
+        <p>在对齐优化中，本文进一步比较刚性平移和窄带 DTW。窄带 DTW 的作用，不是任意形变，而是在保持顺序的前提下对局部对应关系做受约束的微调。其路径平滑惩罚可写为：</p>
+        <div class="formula-block">
+          $$\phi_{\mathrm{slope}} =
+          \frac{1}{L-1}\sum_{k=2}^{L}
+          \left|(i_k-j_k)-(i_{k-1}-j_{k-1})\right|$$
+        </div>
+        <p>实验结果表明，共享分类基线在软组织形态任务上的 AUC 仅为 <strong>0.5548</strong>。相比之下，直接轮廓相关性比较的 Accuracy 达到 <strong>0.6144</strong>，刚性平移对齐达到 <strong>0.6208</strong>，窄带 DTW 的最佳 Accuracy 提升到 <strong>0.6375</strong>。这一结果说明，软组织形态任务更依赖轮廓级对齐和量化，而不是一般意义上的 RGB 分类。</p>
+
+        <h2>6. 结果总结</h2>
+        <p>本文的实验结果支持三点判断。第一，共享多任务分类模型适合作为 PES 自动评估的主线框架，其中 CLIP ViT 三流输入、特征拼接和线性分类头组成的结构在性能和稳定性上表现最好。第二，决定共享分类模型训练稳定性的关键因素不是单一骨干，而是融合方式与分类头组合，其中 <strong>concat + linear</strong> 最有利于形成平稳收敛。第三，龈缘水平和软组织形态这两个关键子项仅依赖黑盒分类并不充分，引入分割、参考系校正、最高点检测、轮廓提取与曲线对齐等结构化方法，能够提供更直接的解释路径和补充证据。</p>
+        <p>因此，本文的整体研究方法不是用单一模型覆盖全部问题，而是采用“共享分类主线 + 任务特异结构化补充”的双层设计。这也是本毕业设计最终形成的方法框架。</p>
 
         <div class="link-card">
-          <p><strong>项目状态：</strong> 这个本科毕业设计项目目前还是本地工作区，暂时还没有作为公开 GitHub 仓库发布。</p>
+          <p><strong>项目状态：</strong> 本科毕业设计项目仍在本地工作区中，尚未作为公开 GitHub 仓库发布。</p>
         </div>
       </main>
     </div>
@@ -222,5 +322,6 @@
 
   <script src="../js/config.js?v=20260310-1"></script>
   <script src="../js/language.js?v=20260310-1"></script>
+  <script src="../js/math.js?v=20260310-1"></script>
 </body>
 </html>

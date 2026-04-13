@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.9; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,32 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">Python 基础学习笔记</h1>
-        <p class="article-subtitle">从变量、流程控制、函数、类到 NumPy 的一组基础练习记录，并附上所有 notebook 代码单元。</p>
+        <p class="article-subtitle">本文把变量、流程控制、函数、类与 NumPy 基础整理成一条连续的编程主线，重点说明这些基础能力在后续 AI 工程中分别承担什么角色。</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>这部分是我后续做 RAG、Agent 和 API 脚本之前的基础阶段。虽然内容偏基础，但其实后面几乎所有 AI 工程代码都还是建立在这些基本语法和组织方式之上。</p>
+        <section class="article-hero article-hero--amber">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">Python 基础之所以重要，不是因为语法题本身复杂，而是因为后续所有 RAG、Agent 和 API 脚本都依赖这些基本构件。真正要建立的是一种把逻辑组织清楚的能力。</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">核心材料</div>
+              <div class="fact-label"><strong>`CodingBasis/`</strong> 下的 4 个 notebook，分别覆盖语法、函数、类与 NumPy。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">学习对象</div>
+              <div class="fact-label">从基本语法到可复用程序结构的连续过渡。</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">当前产出</div>
+              <div class="fact-label">已经具备写清晰脚本、拆函数、建类和使用基础数组计算的稳定底座。</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. 学习主题</h2>
+        <p>Python 基础学习的主题不是“记住多少语法点”，而是建立一套能够支撑后续工程的程序组织方式。变量、列表、字典、循环和条件判断解决的是最底层的数据表达与控制流问题；函数、类和 NumPy 则进一步决定逻辑怎样被抽象、复用和扩展。</p>
+        <p>因此，这组学习天然具有层次结构。前面的语法与数据结构提供语言材料，中间的函数和类负责把语言材料组织成可维护程序，NumPy 则把这套基础延伸到后续更常见的数据和数值计算环境。</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/python-foundation-map.svg" alt="从语法、数据结构、控制流、函数、类到 NumPy 的 Python 基础能力地图">
+          <figcaption class="figure-caption">这组基础学习不是若干孤立 notebook，而是一条从“能写”走向“能组织”的编程路径。</figcaption>
+        </figure>
+
+        <h2>2. 核心原理</h2>
+        <p>基础语法解决的是程序表达问题。数据类型和集合结构决定信息如何被保存，条件与循环决定逻辑如何被推进。函数解决的是复用和接口问题，让一段逻辑可以被明确命名、调用和返回。类解决的是状态与行为如何被组织在同一对象中。NumPy 则把单个标量和列表操作扩展成面向数组的计算习惯。</p>
+        <p>这几层能力并不是相互独立的知识点，而是不断向上抽象的关系。没有前两层，后面的类和模块会变得空洞；没有后两层，前面的语法又只会停留在零散练习，难以支撑更复杂项目。</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>语法与数据</h3>
+            <p>变量、列表、字典和控制流负责把最基本的程序材料组织起来。</p>
+          </div>
+          <div class="info-card">
+            <h3>抽象与复用</h3>
+            <p>函数和类把“能跑”的脚本推进成“能维护、能扩展”的结构化程序。</p>
+          </div>
+          <div class="info-card">
+            <h3>数值基础</h3>
+            <p>NumPy 把编程能力进一步连接到后续 AI 场景更常见的数组计算上。</p>
+          </div>
         </div>
 
-        <h2>1. 我主要覆盖了什么</h2>
-        <p>`CodingBasis/` 下面的几个 notebook，分别对应了 Python 的变量与基础语法、函数、类，以及 NumPy 入门。它们组合起来，基本构成了后续写脚本最常用的那一层能力。</p>
+        <h2>3. 练习实现</h2>
+        <p>当前四个 notebook 分别承担不同任务。<strong>`pythonbasis.ipynb`</strong> 用来练习变量、类型、集合与流程控制。<strong>`functions_in_python.ipynb`</strong> 用来练习参数、返回值和函数封装。<strong>`class_in_python.ipynb`</strong> 用来练习初始化、继承与组合。<strong>`numpybasis.ipynb`</strong> 则把基础语法延伸到数组与简单数值计算。</p>
+        <p>这类练习最重要的意义，不是把每个 notebook 做完，而是逐步形成一种结构感。代码什么时候该封装成函数，什么时候该把状态放进类里，什么时候该从 Python 原生容器切到数组操作，这些判断本身就是后续工程能力的一部分。</p>
 
-        <h2>2. 我具体在练什么</h2>
-        <ul>
-          <li>变量类型、字符串、数值、布尔值、集合、字典、列表等基本数据结构。</li>
-          <li>条件判断、循环、类型转换等最常见的控制逻辑。</li>
-          <li>函数定义、参数传递、返回值设计，以及把逻辑封装成可复用片段。</li>
-          <li>类、初始化、继承与组合，让代码不只是“能跑”，还更容易组织。</li>
-          <li>NumPy 数组的基本用法，为后续更偏数据和模型的学习打基础。</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>从语法到逻辑</h3>
+            <p>基础数据结构和控制流练习解决的是代码能否稳定表达需求。</p>
+          </div>
+          <div class="demo-card">
+            <h3>从逻辑到结构</h3>
+            <p>函数和类练习解决的是代码是否能被重用、拆分和维护。</p>
+          </div>
+          <div class="demo-card">
+            <h3>从结构到计算</h3>
+            <p>NumPy 练习让后续更偏数据和模型的代码有了自然的过渡层。</p>
+          </div>
+        </div>
 
-        <h2>3. 我当前的理解</h2>
-        <p>我越来越感受到，基础语法本身不难，但真正重要的是“组织方式”。当函数、类和数据结构用得更顺手时，后面做任何模型应用都会更自然，不会因为脚本本身混乱而影响思路。</p>
+        <h2>4. 当前产出</h2>
+        <p>这组学习已经建立起一套比较稳定的 Python 入门底座。基础语法和数据结构不再只是零散知识点，而是已经可以与函数、类和数组操作组合起来，支撑更完整的小脚本和 notebook 实验。</p>
+        <p>更关键的是，对“代码组织方式”的敏感度已经开始形成。后续即使进入更复杂的 AI 工程，本质上仍然是在这些基本构件上继续堆叠。基础写得越清楚，后面的实验就越不容易因为脚本混乱而失控。</p>
 
-        <h2>4. 完整代码笔记</h2>
-        <p class="source-notice">下面会完整渲染这部分学习中涉及的四个 notebook 的所有代码单元，而不是只摘其中一两段示例。</p>
+        <h2>5. 结论</h2>
+        <p>Python 基础学习真正建立的，不只是语法熟练度，而是程序组织能力。变量、控制流、函数、类和数组计算共同构成了后续所有模型应用脚本的底层语法和结构习惯。</p>
+
+        <h2>6. 完整代码笔记</h2>
+        <div class="code-guide">
+          <h3>阅读这组 notebook 时建议按这个顺序看</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>先看数据与控制流</h3>
+              <p>这是所有后续封装和模块化的最底层材料。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>再看函数与类</h3>
+              <p>这里决定脚本是零散堆叠，还是能逐步长成一个可维护程序。</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>最后看 NumPy</h3>
+              <p>数组运算是通往后续数据处理和模型代码的自然过渡层。</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>代码范围：</strong>完整渲染 <strong>`pythonbasis.ipynb`</strong>、<strong>`functions_in_python.ipynb`</strong>、<strong>`class_in_python.ipynb`</strong> 与 <strong>`numpybasis.ipynb`</strong>。</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -82,19 +154,19 @@
           "path": "CodingBasis/pythonbasis.ipynb",
           "type": "notebook",
           "title": "CodingBasis/pythonbasis.ipynb",
-          "description": "变量、流程控制、基础数据结构与常见语法练习。"
+          "description": "变量、集合、流程控制与基础语法练习。"
         },
         {
           "path": "CodingBasis/functions_in_python.ipynb",
           "type": "notebook",
           "title": "CodingBasis/functions_in_python.ipynb",
-          "description": "函数定义、参数传递、返回值与复用逻辑。"
+          "description": "函数定义、参数、返回值与封装逻辑练习。"
         },
         {
           "path": "CodingBasis/class_in_python.ipynb",
           "type": "notebook",
           "title": "CodingBasis/class_in_python.ipynb",
-          "description": "类、初始化、继承与组合相关练习。"
+          "description": "类、初始化、继承与组合的基础练习。"
         },
         {
           "path": "CodingBasis/numpybasis.ipynb",

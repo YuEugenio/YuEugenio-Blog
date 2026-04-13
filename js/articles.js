@@ -1,6 +1,28 @@
 // 文章数据
 const ARTICLES_DATA = [
     {
+        id: "ai-arts-project-brief",
+        title: {
+            en: "AIGC Art Portfolio",
+            cn: "AIGC 艺术作品集"
+        },
+        date: "2026-04-12",
+        category: "project-briefing",
+        section: "project-briefing",
+        tags: ["aigc", "ai art", "visual creation", "character series", "project showcase"],
+        excerpt: {
+            en: "I want to be an artist too.",
+            cn: "我也想当艺术家呢"
+        },
+        mathPreview: null,
+        content: {
+            file: "articles/AI-Arts-Project-Brief.html",
+            fileEn: "articles/AI-Arts-Project-Brief.html",
+            fileCn: "pages/ai-arts-project-brief-cn.html",
+            hasLaTeX: false
+        }
+    },
+    {
         id: "pes-multi-task-classification-project-brief",
         title: {
             en: "PES Multi-Task Classification: A Project Brief",
@@ -33,8 +55,8 @@ const ARTICLES_DATA = [
         section: "project-briefing",
         tags: ["companion ai", "agent", "cyber world", "fastapi", "world model"],
         excerpt: {
-            en: "A general introduction to Cybersoul, the current CyberWorld demo, and the implementation scope already running today.",
-            cn: "对 Cybersoul 整体产品方向、当前 CyberWorld demo，以及已经落地实现的技术范围做一个整体介绍。"
+            en: "A runtime-focused brief on Cybersoul: a world-driven companion system built to test continuous presence, memory accumulation, and observability.",
+            cn: "一篇围绕运行时对象展开的 Cybersoul 简报，重点说明持续存在、记忆累积与可观察性如何在 CyberWorld demo 中成立。"
         },
         mathPreview: null,
         content: {
@@ -55,8 +77,8 @@ const ARTICLES_DATA = [
         section: "project-briefing",
         tags: ["rag", "langchain", "chroma", "retrieval", "knowledge base"],
         excerpt: {
-            en: "A general introduction to GreenForest_RAG, the current retrieval demo, and the grounded knowledge-recall workflow already implemented.",
-            cn: "对 GreenForest_RAG、当前检索问答 demo，以及已经实现的知识召回链路做一个整体介绍。"
+            en: "A compact brief on GreenForest_RAG, showing how mixed local documents are reorganized into a grounded retrieval-and-answer workflow.",
+            cn: "一篇关于 GreenForest_RAG 的紧凑简报，说明混合本地资料如何被整理成可追溯的检索问答链路。"
         },
         mathPreview: null,
         content: {
@@ -99,8 +121,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["langchain", "langgraph", "workflow", "llm apps"],
         excerpt: {
-            en: "Learning notes on LangChain abstractions, workflow composition, and graph-based orchestration through small code experiments.",
-            cn: "围绕 LangChain 抽象、工作流编排与图式 orchestration 的学习总结。"
+            en: "Workflow-oriented notes on LangChain and LangGraph, with emphasis on explicit nodes, state flow, retrieval, and tool orchestration.",
+            cn: "一篇面向工作流编排的 LangChain 学习笔记，重点讨论节点、状态流、检索与工具连接。"
         },
         mathPreview: null,
         content: {
@@ -121,8 +143,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["python", "functions", "classes", "numpy"],
         excerpt: {
-            en: "A compact summary of my Python fundamentals practice across syntax, functions, classes, and NumPy basics.",
-            cn: "关于 Python 语法、函数、类与 NumPy 基础练习的学习总结。"
+            en: "A structured Python foundation note covering syntax, control flow, functions, classes, and NumPy as the base of later AI scripts.",
+            cn: "一篇结构化的 Python 基础笔记，围绕语法、控制流、函数、类与 NumPy 搭建后续 AI 脚本底座。"
         },
         mathPreview: null,
         content: {
@@ -143,8 +165,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["openai api", "streaming", "multimodal", "async"],
         excerpt: {
-            en: "Notebook-based practice on chat completions, streaming responses, async requests, multimodal inputs, and multi-turn interaction.",
-            cn: "围绕对话补全、流式输出、异步请求、多模态输入与多轮对话的 API 学习总结。"
+            en: "Interface-focused notes on message design, streaming, async requests, multimodal input, and state handling in model applications.",
+            cn: "一篇围绕消息设计、流式输出、异步请求、多模态输入与状态管理展开的接口层学习笔记。"
         },
         mathPreview: null,
         content: {
@@ -165,8 +187,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["semantic search", "embeddings", "vector store", "rag"],
         excerpt: {
-            en: "A study summary on document loading, chunking, embeddings, vector storage, retrieval, and the bridge from search to minimal RAG.",
-            cn: "关于文档加载、切分、向量化、向量存储、检索以及最小 RAG 链路的学习总结。"
+            en: "A pipeline-oriented note on semantic search, from document ingestion and chunking to vector recall and minimal RAG.",
+            cn: "一篇面向检索流水线的语义搜索笔记，从文档导入、切块到向量召回与最小 RAG。"
         },
         mathPreview: null,
         content: {
@@ -187,8 +209,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["agent", "react", "tools", "workflow"],
         excerpt: {
-            en: "Early agent experiments around tool use, multi-step execution, search orchestration, and streamed reasoning-style output.",
-            cn: "围绕工具调用、多步执行、搜索编排与流式推理输出的 Agent 初步实践。"
+            en: "Agent notes centered on explicit execution loops, tool calls, observations, and why control logic matters more than prompt size.",
+            cn: "一篇围绕显式执行回路、工具调用与观察写回展开的 Agent 笔记，重点说明控制逻辑的重要性。"
         },
         mathPreview: null,
         content: {
@@ -209,8 +231,8 @@ const ARTICLES_DATA = [
         section: "studies",
         tags: ["attention", "transformer", "llm", "deep learning"],
         excerpt: {
-            en: "A study summary based on Attention Is All You Need, from self-attention intuition to Transformer architectural blocks.",
-            cn: "基于 Attention Is All You Need，从自注意力直觉到 Transformer 结构模块的学习总结。"
+            en: "A structured note on attention, from token-relation modeling and multi-head attention to the full Transformer block.",
+            cn: "一篇结构化的注意力机制笔记，从 token 关系建模、多头注意力一直推进到完整 Transformer block。"
         },
         mathPreview: null,
         content: {

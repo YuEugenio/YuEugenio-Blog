@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,36 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">OpenAI API Learning Notes</h1>
-        <p class="article-subtitle">A summary of my notebook-based practice with chat completion workflows, streaming responses, async requests, multimodal input, and multi-turn conversation.</p>
+        <p class="article-subtitle">This article places message structure, streaming, asynchronous requests, multi-turn interaction, and multimodal input inside one interface perspective, and explains why the API layer directly shapes application quality.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This study track focuses on learning how model capabilities become usable product features through concrete API calls and structured client-side logic.</p>
+        <section class="article-hero article-hero--ink">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">The object of this note set is not “sending a prompt.” It is turning model capability into a controllable interface. Once work enters the API layer, message design, response handling, streaming, asynchronous concurrency, and state management all become real engineering questions.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`openai_apis.ipynb`</strong> covering basic calls, multi-turn history, streaming, async requests, and multimodal practice.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">How a model interface becomes reusable application behavior instead of a one-off demo call.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">The notebook already exposes how request design and response modes change the product experience.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>The real object of API study is the interface layer that carries model capability into an application. A model may generate text, process multimodal input, or support multi-turn dialogue, but those abilities only become usable features when the request structure and response handling are made explicit.</p>
+        <p>This is why the API should not be treated as a thin gateway. It is the control surface of the model system. How message history is organized, how streaming is presented, how asynchronous calls are scheduled, and how failures are handled all shape the user experience and the maintenance cost of the application.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/openai-api-flow.svg" alt="An interface flow from application code and message structure to model API calls, streaming, async requests, and multimodal handling">
+          <figcaption class="figure-caption">The point of this study is to understand the application layer, request structure, and response modes as one chain rather than focusing only on the final text returned by the model.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The interface layer can be compressed into three objects. The first is the input object: messages, system constraints, user content, and multimodal payloads. The second is the runtime object: model configuration, streaming mode, async concurrency, and conversation state. The third is the output object: how results are parsed, displayed, cached, or fed into later logic.</p>
+        <p>If these three objects are not designed clearly, the application becomes fragile. A single-turn demo may still run, but once real interaction begins, history management, exception handling, and response pacing immediately become visible constraints. Interface design therefore matters as much as the model itself.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Input Design</h3>
+            <p>Messages are not just concatenated text. They are the structured expression of roles, context, and payloads.</p>
+          </div>
+          <div class="info-card">
+            <h3>Runtime Mode</h3>
+            <p>Streaming, asynchronous execution, and state handling determine whether the call behaves like a demo or a usable system.</p>
+          </div>
+          <div class="info-card">
+            <h3>Output Handling</h3>
+            <p>Parsing and displaying results affects usability, debuggability, and the ability to recover from failure.</p>
+          </div>
         </div>
 
-        <h2>1. What I Explored</h2>
-        <p>The notebook <strong>`openai_apis.ipynb`</strong> is my main practice space for understanding how to interact with OpenAI-compatible interfaces in code. Instead of treating the API as a black box, I used it to examine request structure, message formatting, and response handling.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p>The notebook breaks the interface problem into several small experiments. Basic-call sections clarify request structure and message organization. Multi-turn sections show why history must be maintained explicitly. Streaming sections focus on pacing and incremental display. Async sections test concurrent request scenarios. Multimodal sections extend the input beyond plain text into a more general payload design.</p>
+        <p>These experiments may look separate, but together they answer one question: the same model can produce very different product behavior under different interface organization. That is the real value of API study. It translates “what the model can do” into “how the application should call it.”</p>
 
-        <h2>2. What I Practiced</h2>
-        <ul>
-          <li>Basic chat-completion requests and multi-turn message design.</li>
-          <li>Streaming outputs to make interaction feel more real-time.</li>
-          <li>Asynchronous request patterns for handling concurrent calls.</li>
-          <li>Multimodal interaction patterns instead of text-only prompting.</li>
-          <li>How model behavior changes when the surrounding message history changes.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Message Structure</h3>
+            <p>The same question can yield different results under different history layouts, which makes interface context a real control variable.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Streaming and Async</h3>
+            <p>Perceived responsiveness and concurrency do not come from model magic. They come from client-side handling of the call lifecycle.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Multimodal Input</h3>
+            <p>Once input expands beyond text, the importance of careful interface design becomes even more visible.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The main lesson is that API usage is not just send prompt, get answer. A practical application needs decisions about message memory, response streaming, failure handling, and model configuration. The interface layer shapes user experience just as much as the model itself.</p>
-        <p>I also learned to separate sensitive credentials from code and move toward environment-based configuration, which is essential if a learning notebook is later turned into a shareable project.</p>
+        <h2>4. Current Output</h2>
+        <p>This study already yields a fairly complete interface understanding. Request structure, message history, streaming output, concurrent calls, and multimodal input can all be isolated and tested directly. The model is no longer treated as a black-box answer machine, but as an engineered interface.</p>
+        <p>That matters for every later project. In RAG systems, agent workflows, and more general applications, user experience is often determined less by one model score and more by whether the call chain is stable, controllable, and extensible.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>At this point, my OpenAI API learning outcome is a more operational understanding of how to build around models: not only how to get responses, but how to manage interaction flow, structure input, and prepare the path from experimentation to application logic.</p>
+        <h2>5. Conclusion</h2>
+        <p>The API layer is the entry point through which model capability enters product reality. Once a system is built for actual use, message design, state management, and response handling stop being implementation details and become part of the system behavior itself.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">The full notebook code below includes my practice on basic chat completion, multimodal input, asynchronous calling, multi-turn history handling, and streaming output.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>Three content groups to inspect first in the notebook</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with messages</h3>
+              <p>The input structure controls what context the model actually sees and whether multi-turn behavior stays coherent.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect response modes</h3>
+              <p>Streaming and async logic are not extras. They are part of interaction design and concurrency design.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with state handling</h3>
+              <p>If history is not managed explicitly, multi-turn interaction quickly loses continuity.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders the full <strong>`openai_apis.ipynb`</strong> notebook, including basic calls, multi-turn logic, streaming, async, and multimodal experiments.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -86,7 +154,7 @@
           "path": "openai_apis.ipynb",
           "type": "notebook",
           "title": "openai_apis.ipynb",
-          "description": "OpenAI-compatible API experiments for chat, multimodal requests, async calls, multi-turn conversation, and streaming."
+          "description": "Notebook practice around message structure, streaming output, async requests, multimodal input, and multi-turn interaction."
         }
       ]
     }

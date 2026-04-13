@@ -8,6 +8,7 @@
   <meta name="article:section" content="studies">
   <link rel="stylesheet" href="../css/style.css?v=20260310-1">
   <link rel="stylesheet" href="../css/study-notes.css?v=20260313-1">
+  <link rel="stylesheet" href="../css/article-rich.css?v=20260413-1">
   <style>
     .article-content { max-width: 760px; margin: 0 auto; padding: 2rem; line-height: 1.82; color: #2f2f2f; }
     .back-link { display: inline-block; margin-bottom: 1.6rem; color: #666; text-decoration: none; font-size: 0.9rem; }
@@ -20,8 +21,8 @@
     .study-body p { margin: 0 0 1rem; }
     .study-body ul { margin: 0.4rem 0 1rem 1.25rem; padding: 0; }
     .study-body li { margin: 0.34rem 0; }
-    .summary-card, .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    .summary-card p, .link-card p { margin: 0; }
+    .link-card { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid #ececec; border-radius: 12px; background: #fbfbfb; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .link-card p { margin: 0; }
     .link-card a { color: #1a1a1a; word-break: break-all; }
     @media (max-width: 768px) {
       .article-content { padding: 1.2rem 0.95rem 1.6rem; }
@@ -37,36 +38,103 @@
 
       <header class="article-header">
         <h1 class="article-title">LangChain Learning Notes</h1>
-        <p class="article-subtitle">A compact record of how I learned LangChain abstractions, workflow composition, and graph-based orchestration through small experiments.</p>
+        <p class="article-subtitle">This article reorganizes LangChain and LangGraph around the perspective of workflow composition, with an emphasis on how state, nodes, tools, and retrieval are written into a debuggable application flow.</p>
         <div class="article-meta">March 13, 2026</div>
       </header>
 
       <main class="study-body">
-        <div class="summary-card">
-          <p>This study track focuses on understanding how LangChain organizes model calls, prompts, retrieval components, and workflow state into reusable application building blocks.</p>
+        <section class="article-hero article-hero--mint">
+          <p class="article-kicker">Technical Explainer</p>
+          <p class="article-lead">The point of studying LangChain is not simply to “get the model running.” It is to organize prompts, state, tools, retrieval, and external search into a workflow that can be decomposed, read, and extended. Once the object becomes a multi-step application, this orchestration layer becomes essential.</p>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-value">Primary Material</div>
+              <div class="fact-label"><strong>`langgraphdemo.py`</strong> and <strong>`Semantic_Search_langchain/langsmith_test.py`</strong>.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Learning Object</div>
+              <div class="fact-label">The shift from a single prompt to explicit nodes, explicit state, and explicit tool integration.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-value">Current Output</div>
+              <div class="fact-label">A minimal graph-style workflow is already running, and the orchestration layer is clearly connected to retrieval and tools.</div>
+            </div>
+          </div>
+        </section>
+
+        <h2>1. Theme</h2>
+        <p>The theme of this LangChain stage is how an LLM application moves from one large prompt to a staged system. As soon as a task involves query understanding, external search, retrieval, synthesis, or tool use, a one-turn prompt is usually no longer the clearest form. LangChain and LangGraph matter because they make those steps visible components.</p>
+        <p>The object of the article is therefore not a single utility function. It is the workflow itself. How nodes are split, how state flows between them, how tools are attached, and how retrieval cooperates with generation together define the application layer.</p>
+
+        <figure class="diagram-figure">
+          <img src="../images/article-diagrams/langchain-workflow.svg" alt="A LangChain workflow diagram from input state through understanding, retrieval or search, state graph transitions, tool integration, and final output">
+          <figcaption class="figure-caption">The key to this study is to treat the task as a workflow. State flow, node boundaries, and the tool layer all need to be made explicit before the system becomes truly debuggable.</figcaption>
+        </figure>
+
+        <h2>2. Principle</h2>
+        <p>The core principle of LangChain is not “more wrappers.” It is application-layer decomposition. Once prompts, model calls, retrievers, tools, memory, and graph nodes become explicit components, a multi-step task no longer has to be crammed into one opaque prompt. Each part of the system receives a clearer responsibility boundary.</p>
+        <p>LangGraph pushes that idea further into state-graph form. Nodes perform local actions. State carries information between nodes. Edges determine progression. Whenever a task needs staged understanding, retrieval, or synthesis, this style is usually easier to maintain than a monolithic script.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Componentization</h3>
+            <p>When prompts, models, retrievers, and tools are split into explicit objects, the application logic becomes readable.</p>
+          </div>
+          <div class="info-card">
+            <h3>State Flow</h3>
+            <p>Nodes share explicitly maintained state rather than vaguely passing context through one giant prompt.</p>
+          </div>
+          <div class="info-card">
+            <h3>Workflow Boundaries</h3>
+            <p>Once understanding, retrieval, search, and answering are layered apart, debugging becomes much cleaner.</p>
+          </div>
         </div>
 
-        <h2>1. What I Focused On</h2>
-        <p>I used this stage to understand the engineering layer around LLMs: how prompts, model wrappers, retrievers, memory, and tools are composed into a pipeline instead of being written as one large script.</p>
-        <p>The goal was not just to call a model successfully, but to understand how LangChain helps structure multi-step applications that can still be debugged, extended, and reused.</p>
+        <h2>3. Practice and Implementation</h2>
+        <p><strong>`langgraphdemo.py`</strong> implements a minimal graph-style workflow: understand the user question, execute real search, then generate the answer. <strong>`Semantic_Search_langchain/langsmith_test.py`</strong> is used to inspect how a minimal LangChain agent binds models and tools. At the same time, model configuration and API details are moved into environment variables so the scripts behave more like portable engineering artifacts.</p>
+        <p>Together, these scripts show that LangChain is valuable not because it “automates everything,” but because it provides a structure in which application logic can be written explicitly. Once workflow graphs, tool interfaces, and state objects are clear, extending the system becomes much more natural than growing one prompt-only script.</p>
 
-        <h2>2. What I Practiced</h2>
-        <ul>
-          <li>Reading and following LangChain retrieval examples to understand loaders, embeddings, vector stores, and retrievers.</li>
-          <li>Building a graph-style search workflow in <strong>`langgraphdemo.py`</strong> with separate nodes for query understanding, web search, and answer generation.</li>
-          <li>Using environment-variable based model configuration so experiments stay portable across compatible providers.</li>
-          <li>Observing how state flows between nodes instead of relying on a single prompt-only interaction.</li>
-        </ul>
+        <div class="demo-grid">
+          <div class="demo-card">
+            <h3>Graph Workflow</h3>
+            <p><strong>`langgraphdemo.py`</strong> separates understanding, search, and answer generation into three explicit nodes.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Tool Binding</h3>
+            <p><strong>`langsmith_test.py`</strong> shows how a minimal agent connects a model to external tools.</p>
+          </div>
+          <div class="demo-card">
+            <h3>Portable Configuration</h3>
+            <p>Environment-based settings make the scripts look more like transferable engineering code than one-off notebook experiments.</p>
+          </div>
+        </div>
 
-        <h2>3. What I Learned</h2>
-        <p>The most important lesson is that LangChain becomes especially valuable when the application logic has structure. Once a task involves retrieval, tools, branching steps, or state passing, explicit components make the system easier to reason about than a monolithic script.</p>
-        <p>I also learned that orchestration quality matters as much as model quality. Breaking a task into understand, retrieve, and synthesize often produces a cleaner result than asking one prompt to do everything at once.</p>
+        <h2>4. Current Output</h2>
+        <p>This study already supports a clear result. Once tasks become multi-step, the componentized and stateful organization offered by LangChain and LangGraph is more useful than a monolithic script. As soon as the flow is explicit, debugging, diagnosis, and extension all become clearer.</p>
+        <p>More importantly, the study separates model capability from application structure. The model handles understanding and generation. The workflow places those abilities into the correct sequence. Both matter, but they are no longer collapsed into one giant prompt.</p>
 
-        <h2>4. Current Outcome</h2>
-        <p>At this stage, my LangChain learning outcome is not one single product, but a working foundation: I can already organize multi-step LLM workflows, express them as reusable nodes, and connect model calls with retrieval or external search in a more systematic way.</p>
+        <h2>5. Conclusion</h2>
+        <p>The real value of LangChain is not syntactic convenience. It is workflow composition. Whenever an application is more than one-turn question answering, explicit nodes, explicit state, and explicit tool integration make the system behave more like an engineering object and less like a one-shot demo script.</p>
 
-        <h2>5. Full Code Notes</h2>
-        <p class="source-notice">The section below renders the complete source files behind this study topic, not only selected examples. For LangChain learning, I keep both the graph-style workflow demo and the minimal agent experiment together.</p>
+        <h2>6. Full Code Notes</h2>
+        <div class="code-guide">
+          <h3>Three layers to inspect first in the source</h3>
+          <div class="code-focus-grid">
+            <div class="code-focus-card">
+              <h3>Start with the state object</h3>
+              <p>If state boundaries are unclear, the graph workflow becomes only a formal split.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>Then inspect node responsibilities</h3>
+              <p>Understanding, search, and answer generation need clear roles or the flow collapses back into one large prompt.</p>
+            </div>
+            <div class="code-focus-card">
+              <h3>End with tool interfaces</h3>
+              <p>The way tools and retrievers are connected determines whether the workflow can actually use external capability.</p>
+            </div>
+          </div>
+          <p class="resource-list"><strong>Code scope.</strong> The page renders <strong>`langgraphdemo.py`</strong> and <strong>`Semantic_Search_langchain/langsmith_test.py`</strong> in full, with emphasis on workflow nodes and minimal tool binding.</p>
+        </div>
         <div id="study-sources"></div>
 
         <div class="link-card">
@@ -86,13 +154,13 @@
           "path": "langgraphdemo.py",
           "type": "script",
           "title": "langgraphdemo.py",
-          "description": "LangGraph-style search workflow with understanding, search, and answer-generation nodes."
+          "description": "A LangGraph-style workflow demo with question understanding, live search, and answer-generation nodes."
         },
         {
           "path": "Semantic_Search_langchain/langsmith_test.py",
           "type": "script",
           "title": "Semantic_Search_langchain/langsmith_test.py",
-          "description": "A minimal LangChain agent example used to understand model-tool orchestration."
+          "description": "A minimal LangChain agent example for understanding model-tool binding."
         }
       ]
     }
