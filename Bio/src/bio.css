@@ -101,3 +101,4 @@
   .affiliation-logo img { transition: none; }
 }
 #flow-canvas[data-renderer="fallback"] { filter: brightness(var(--fallback-brightness, 1)); }
+.local-file .personal-bio .reveal { opacity: 1; filter: none; transform: none; transition: none; }
