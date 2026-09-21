@@ -75,7 +75,7 @@ export async function startFluid(canvas) {
   const image = new Image();
   await new Promise((resolve, reject) => {
     image.onload = resolve; image.onerror = () => reject(new Error('Background texture failed to load.'));
-    image.src = new URL('../assets/bg.png', import.meta.url).href;
+    image.src = new URL('../assets/bg.png?v=20260922-1', import.meta.url).href;
   });
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);

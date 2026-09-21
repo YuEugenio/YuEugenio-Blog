@@ -1,6 +1,7 @@
-import { cp, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 const root = new URL('../', import.meta.url);
+await rm(new URL('dist/', root), { recursive: true, force: true });
 await mkdir(new URL('dist/', root), { recursive: true });
 for (const [from, to] of [['index.html','index.html'],['src','src'],['public/assets','assets']]) {
   await cp(new URL(from, root), new URL('dist/' + to, root), { recursive: true });

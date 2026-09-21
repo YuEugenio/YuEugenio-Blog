@@ -1,7 +1,9 @@
-import { startFluid } from './fluid.js';
+import { startFluid } from './fluid.js?v=20260922-1';
 
+const pageAddress = location.pathname + location.search;
 const nav = document.querySelector('.site-nav');
 const canvas = document.getElementById('flow-canvas');
+const backToTop = document.querySelector('.back-to-top');
 const links = [...nav.querySelectorAll('a[href^="#"]')];
 const sections = links.map(link => document.querySelector(link.getAttribute('href')));
 let navFrame = 0;
@@ -25,8 +27,35 @@ const queueNavUpdate = () => {
 };
 window.addEventListener('scroll', queueNavUpdate, { passive: true });
 window.addEventListener('resize', queueNavUpdate);
-window.addEventListener('pageshow', queueNavUpdate);
 updateNav();
+
+const clearFragment = () => {
+  if (location.hash) history.replaceState(null, '', pageAddress);
+};
+const scrollToTarget = target => {
+  clearFragment();
+  target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+};
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', event => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    event.preventDefault();
+    scrollToTarget(target);
+  });
+});
+backToTop.addEventListener('click', () => {
+  clearFragment();
+  window.scrollTo({ top: 0, left: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+});
+const resetToTop = () => {
+  clearFragment();
+  window.scrollTo(0, 0);
+  queueNavUpdate();
+};
+window.addEventListener('pageshow', () => requestAnimationFrame(resetToTop));
+window.addEventListener('pagehide', () => window.scrollTo(0, 0));
+requestAnimationFrame(resetToTop);
 
 const observer = new IntersectionObserver(entries => {
   for (const entry of entries) {

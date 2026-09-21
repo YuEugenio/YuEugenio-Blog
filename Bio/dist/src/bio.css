@@ -75,8 +75,10 @@
 .interest-card h3 { font-family: var(--serif-en); font-size: clamp(1.4rem, 2.15vw, 1.95rem); font-weight: 400; line-height: 1.4; }
 .projects-note { color: var(--fg-dim); border-top: 1px solid #ffffff26; border-bottom: 1px solid #ffffff1c; padding: 2.2rem 0; font-size: 1rem; font-weight: 300; }
 .bio-footer { padding: 3rem 8vw 2.5rem; }
-.bio-footer-bottom { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.8rem; border-top: 1px solid #ffffff26; color: var(--fg-faint); font-size: .8125rem; }
-.bio-footer-bottom a:hover { color: var(--accent); }
+.bio-footer-bottom { display: flex; gap: 1rem; padding-top: 1.8rem; border-top: 1px solid #ffffff26; color: var(--fg-faint); font-size: .8125rem; }
+.back-to-top { position: fixed; z-index: 40; right: clamp(1rem, 3vw, 2rem); bottom: calc(clamp(1rem, 3vw, 2rem) + env(safe-area-inset-bottom)); display: grid; place-items: center; width: 3.25rem; height: 3.25rem; padding: 0; border: 1px solid #ffffff52; border-radius: 50%; background: #08080fb8; color: #fff; font-family: var(--sans-en); font-size: 1.25rem; line-height: 1; cursor: pointer; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 8px 30px #0006; transition: background .25s, border-color .25s, transform .25s; }
+.back-to-top:hover { background: #ffffff1a; border-color: #fff; transform: translateY(-2px); }
+.back-to-top:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @media (max-width: 768px) {
   .personal-bio .site-nav, .personal-bio .site-nav.scrolled { justify-content: space-between; gap: 1.1rem; padding: .9rem 6vw; }
   .personal-bio .site-nav a { font-size: .75rem; letter-spacing: .05em; }
@@ -99,6 +101,7 @@
 @media (prefers-reduced-motion: reduce) {
   .personal-bio .reveal { opacity: 1; filter: none; transform: none; transition: none; }
   .affiliation-logo img { transition: none; }
+  .back-to-top { transition: none; }
 }
 #flow-canvas[data-renderer="fallback"] { filter: brightness(var(--fallback-brightness, 1)); }
 .local-file .personal-bio .reveal { opacity: 1; filter: none; transform: none; transition: none; }

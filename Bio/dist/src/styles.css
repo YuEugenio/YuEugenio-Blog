@@ -613,7 +613,7 @@ to{transform:translate(-50%)}
 @property --tw-drop-shadow-size{syntax:"*";inherits:false}
 
 /* A static first frame remains available before WebGL initializes. */
-#flow-canvas { background: #050505 url(../assets/bg.png) center / cover no-repeat; }
+#flow-canvas { background: #050505 url(../assets/bg.png?v=20260922-1) center / cover no-repeat; }
 
 @media (prefers-reduced-motion: reduce) { html {scroll-behavior:auto}
  .reveal {opacity:1;transform:none}
