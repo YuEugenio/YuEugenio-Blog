@@ -1,0 +1,14 @@
+{
+  "name": "bioyu",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Jun's personal bio with education, experiences, research interests, projects, and an interactive WebGL background",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs --dist"
+  },
+  "engines": { "node": ">=20" }
+}

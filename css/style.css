@@ -222,6 +222,12 @@ body[data-page-type="section"] .section-top {
     text-align: center;
 }
 
+.nav-title-only {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
 .nav-title-only .article-title {
     margin-bottom: 0;
 }

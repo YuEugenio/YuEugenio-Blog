@@ -209,10 +209,12 @@ class BlogApp {
     }
 
     createNavigationElement(item) {
-        const articleElement = document.createElement('article');
+        const articleElement = document.createElement('a');
+        const href = this.buildInternalHref(item.href || '#');
         articleElement.className = 'article-item nav-title-only';
+        articleElement.href = href;
         articleElement.setAttribute('data-item-type', 'navigation');
-        articleElement.setAttribute('data-target-href', this.buildInternalHref(item.href || '#'));
+        articleElement.setAttribute('data-target-href', href);
 
         const title = this.pickByLang(item.title, item.id || '');
 

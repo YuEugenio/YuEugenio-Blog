@@ -65,6 +65,15 @@ const SITE_CONFIG = {
                 cn: "学科学习入口：用于整理课程学习与知识体系化笔记。"
             },
             href: "pages/studies.html"
+        },
+        {
+            id: "bio",
+            title: { en: "Bio", cn: "Bio" },
+            excerpt: {
+                en: "Jun's personal bio, research interests, education, and experiences.",
+                cn: "Jun 的个人简介、研究兴趣、教育与经历。"
+            },
+            href: "Bio/index.html"
         }
     ],
 
