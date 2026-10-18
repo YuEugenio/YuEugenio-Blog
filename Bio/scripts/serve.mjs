@@ -9,9 +9,9 @@ const port = Number(process.env.PORT || 5173);
 createServer(async (request, response) => {
   try {
     let pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    if (pathname === '/') pathname = '/index.html';
+    if (pathname.endsWith('/')) pathname += 'index.html';
     if (root === project && pathname.startsWith('/assets/')) pathname = '/public' + pathname;
-    if (pathname !== '/index.html' && !pathname.startsWith('/src/') && !pathname.startsWith(root === project ? '/public/assets/' : '/assets/')) {
+    if (pathname !== '/index.html' && !pathname.startsWith('/src/') && !pathname.startsWith('/hydrolenia/') && !pathname.startsWith(root === project ? '/public/assets/' : '/assets/')) {
       response.writeHead(404).end('Not found'); return;
     }
     const path = resolve(root, '.' + pathname);

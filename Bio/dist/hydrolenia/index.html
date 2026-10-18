@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>HydroLenia</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="gpu"></canvas>
+
+<!-- left: tools. A glass orb showing the current tool; press and hold to open, slide to a choice and release
+     (or tap it). Picking a species means placing it. -->
+<nav class="morph" id="tools" aria-label="Tools (press and hold)">
+  <div class="orb-face" id="tools-face"></div>
+  <div class="menu">
+    <button class="item" data-tool="interact">
+      <svg viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11.5V4a1.5 1.5 0 0 1 3 0v8M14 11.5V6a1.5 1.5 0 0 1 3 0v7.5M8 13l-1.6-1.6a1.6 1.6 0 0 0-2.3 2.2L8 18c1.2 1.6 2.6 3 5 3h1a6 6 0 0 0 6-6v-4.5a1.5 1.5 0 0 0-3 0"/></svg>
+      <span>Stir</span>
+    </button>
+    <button class="item" data-tool="erase">
+      <svg viewBox="0 0 24 24"><path d="M7 21h10M5.5 13.5l7-7a2 2 0 0 1 2.8 0l3.2 3.2a2 2 0 0 1 0 2.8L12 19H8.5l-3-3a1.8 1.8 0 0 1 0-2.5z"/></svg>
+      <span>Erase</span>
+    </button>
+    <div class="divider"></div>
+    <div id="species-items"></div>
+  </div>
+</nav>
+
+<!-- right: parameters. Same behaviour: a glass orb that opens into a sheet on press and hold. -->
+<aside class="morph" id="panel" aria-label="Parameters (press and hold)">
+  <div class="orb-face">
+    <svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+  </div>
+  <div class="sheet">
+    <header><span>Parameters</span><button class="close" id="panel-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></header>
+    <section>
+      <h4>Lenia</h4>
+      <div class="ctl"><label title="Show and run the Lenia layer">Layer</label><input type="checkbox" id="l-on" class="toggle"></div>
+      <div class="ctl stack"><label title="Colour scheme of the Lenia layer">Colours</label>
+        <div class="seg" id="l-pal"><button data-v="0">Aurora</button><button data-v="1">Dream</button><button data-v="2">Prism</button></div></div>
+      <div class="ctl"><label title="Body size: the kernel radius R in lattice cells is the species' R times this. The whole tank shares one rule, so this also changes creatures already in the water — set it before placing them.">Size</label><input type="range" id="l-scale" min="0.75" max="2.5" step="0.05"><output></output></div>
+      <div class="ctl"><label title="How strongly the water carries Lenia (1 = moves exactly with the fluid velocity)">Water carries</label><input type="range" id="l-coupling" min="0" max="2" step="0.05"><output></output></div>
+      <div class="ctl"><label title="The active motion of Lenia matter pushes the water (force dipole, zero net force)">Pushes water</label><input type="range" id="l-push" min="0" max="4" step="0.05"><output></output></div>
+      <div class="ctl"><label title="Physics steps per Lenia generation — fewer steps = Lenia lives faster relative to the water">Steps / gen</label><input type="range" id="l-spg" min="1" max="32" step="1"><output></output></div>
+      <div class="ctl"><label title="How long a placed creature takes to bloom out of its drop point (it is already alive and moving meanwhile; 0 = appear instantly)">Reveal time</label><input type="range" id="l-reveal" min="0" max="1.5" step="0.05"><output></output></div>
+      <div class="row buttons"><button id="l-clear">Clear Lenia</button></div>
+
+      <h4>Fluid</h4>
+      <div class="ctl"><label title="Kinematic viscosity in lattice units. Low = watery and turbulent, high = syrupy">Viscosity</label><input type="range" id="p-visc" min="-3" max="0.5" step="0.01"><output></output></div>
+      <div class="ctl"><label title="Velocity clamp that keeps the lattice Boltzmann solver stable">Max flow speed</label><input type="range" id="p-maxv" min="0.02" max="0.3" step="0.005"><output></output></div>
+      <div class="row buttons"><button id="btn-fluid-reset">Reset fluid</button></div>
+
+      <h4>Display</h4>
+      <div class="ctl stack"><label>Water shows</label>
+        <div class="seg" id="v-mode"><button data-v="1">Speed</button><button data-v="2">Vorticity</button><button data-v="0">Off</button></div></div>
+      <div class="ctl stack"><label>Water palette</label>
+        <div class="seg" id="v-theme"><button data-v="2">Neon</button><button data-v="0">Ocean</button><button data-v="1">Magma</button></div></div>
+      <div class="ctl"><label>Intensity</label><input type="range" id="v-gain" min="0.2" max="4" step="0.05"><output></output></div>
+      <div class="ctl"><label title="Passive particles carried by the flow">Flow particles</label><input type="checkbox" id="v-tracers" class="toggle"></div>
+      <div class="ctl"><label>Particle count</label><input type="range" id="v-tcount" min="1000" max="65000" step="1000"><output></output></div>
+
+    </section>
+  </div>
+</aside>
+
+<div class="glass toast" id="toast"></div>
+
+<div class="modal hidden" id="fatal">
+  <div class="glass card">
+    <h2>WebGPU is not available</h2>
+    <p id="fatal-msg"></p>
+    <p id="fatal-hint"></p>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

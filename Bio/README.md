@@ -2,7 +2,15 @@
 
 Jun / 于珺的单页个人主页，邮箱 yujunsysu@gmail.com。沿用参考站的设计语言与 WebGL 背景效果。
 
-导航仅包含 Education、Experiences、Researches、Projects，全部滚动定位到当前页面对应区块；当前阅读区块会在导航中高亮。Projects 目前收录 HydroLenia（桌面 `HydroLenia2` 项目）：左侧为编号、标题、日期、简介与标签（Artificial Life、Lattice Boltzmann、Lenia、Fluids），右侧为运行截图 `public/assets/projects/hydrolenia.jpg`，默认灰度，悬停或键盘聚焦时与机构 logo 相同地淡入彩色；768px 以下截图移到文字下方。
+导航仅包含 Education、Experiences、Researches、Projects，全部滚动定位到当前页面对应区块；当前阅读区块会在导航中高亮。Projects 目前收录 HydroLenia（桌面 `HydroLenia2` 项目）：左侧为编号、标题、日期、简介与标签（Artificial Life、Lattice Boltzmann、Lenia、Fluids），右侧为运行截图 `public/assets/projects/hydrolenia.jpg`，默认灰度，悬停或键盘聚焦时与机构 logo 相同地淡入彩色；768px 以下截图移到文字下方。整张卡片可点击，在新标签页打开 `hydrolenia/`。
+
+`hydrolenia/` 是桌面 `HydroLenia2` 中网页部分（`index.html`、`css/`、`js/`）的副本，构建时复制到 `dist/hydrolenia/`，发布后通过 GitHub Pages 的 HTTPS 运行（WebGPU 需要 HTTPS）。`dev/`、`serve.py` 和启动脚本只在本地使用，不复制。HydroLenia2 更新后，在本目录运行：
+
+```sh
+rsync -a --delete --exclude=.DS_Store ~/Desktop/HydroLenia2/index.html ~/Desktop/HydroLenia2/css ~/Desktop/HydroLenia2/js hydrolenia/
+```
+
+然后重新 `npm run build`。
 
 Experiences 合并展示所有经历，按最近经历优先排列：当前进行中的港大研究助理在前，其后为已结束的数美工作经历，不再区分 Research 和 Industry 分组。
 

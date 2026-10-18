@@ -74,7 +74,7 @@
 .interest-number { display: block; font-family: var(--serif-en); font-size: 1.125rem; color: var(--accent); letter-spacing: .1em; margin-bottom: 2.6rem; }
 .interest-card h3 { font-family: var(--serif-en); font-size: clamp(1.4rem, 2.15vw, 1.95rem); font-weight: 400; line-height: 1.4; }
 .project-list { border-top: 1px solid #ffffff26; }
-.project-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(2rem, 4.5vw, 4.5rem); align-items: center; padding: 2.4rem 0; border-bottom: 1px solid #ffffff1c; }
+.project-entry { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(2rem, 4.5vw, 4.5rem); align-items: center; padding: 2.4rem 0; border-bottom: 1px solid #ffffff1c; }
 .project-entry .interest-number { margin-bottom: 1.6rem; }
 .project-copy h3 { font-family: var(--serif-en); font-size: clamp(1.5rem, 2.3vw, 2rem); font-weight: 400; line-height: 1.35; margin-bottom: .65rem; text-wrap: balance; }
 .project-summary { color: #d1d0ca; font-size: 1rem; font-weight: 300; line-height: 1.85; margin-bottom: .8rem; max-width: 58ch; }
@@ -85,9 +85,14 @@
 .project-media img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: plus-lighter; will-change: opacity; transition: opacity .4s cubic-bezier(.4, 0, .2, 1); }
 .project-media .media-gray { opacity: .6; filter: grayscale(1) brightness(1.15); }
 .project-media .media-color { opacity: 0; }
-.project-entry:is(:hover, :focus-visible, :has(:focus-visible)) .media-gray { opacity: 0; }
-.project-entry:is(:hover, :focus-visible, :has(:focus-visible)) .media-color { opacity: .95; }
-.project-entry:focus-visible { outline: 1px solid var(--accent); outline-offset: 8px; }
+.project-entry:is(:hover, :has(:focus-visible)) .media-gray { opacity: 0; }
+.project-entry:is(:hover, :has(:focus-visible)) .media-color { opacity: .95; }
+/* The title link stretches over the whole card, so clicking anywhere on it opens the project. */
+.project-link { color: inherit; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: .2em; transition: text-decoration-color .3s; }
+.project-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.project-arrow { display: inline-block; margin-left: .4em; font-size: .7em; color: var(--fg-dim); transition: transform .3s, color .3s; }
+.project-entry:is(:hover, :has(:focus-visible)) .project-link { text-decoration-color: #ffffff55; }
+.project-entry:is(:hover, :has(:focus-visible)) .project-arrow { color: #fff; transform: translate(.12em, -.12em); }
 /* Touch screens cannot hover, so they get the colour rendering straight away. */
 @media (hover: none) {
   .project-media .media-gray { opacity: 0; }
@@ -120,7 +125,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .personal-bio .reveal { opacity: 1; filter: none; transform: none; transition: none; }
-  .affiliation-logo img, .project-media img { transition: none; }
+  .affiliation-logo img, .project-media img, .project-arrow { transition: none; }
   .back-to-top { transition: none; }
 }
 #flow-canvas[data-renderer="fallback"] { filter: brightness(var(--fallback-brightness, 1)); }
