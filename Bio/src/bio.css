@@ -73,7 +73,26 @@
 .interest-card:hover { background: #ffffff0a; }
 .interest-number { display: block; font-family: var(--serif-en); font-size: 1.125rem; color: var(--accent); letter-spacing: .1em; margin-bottom: 2.6rem; }
 .interest-card h3 { font-family: var(--serif-en); font-size: clamp(1.4rem, 2.15vw, 1.95rem); font-weight: 400; line-height: 1.4; }
-.projects-note { color: var(--fg-dim); border-top: 1px solid #ffffff26; border-bottom: 1px solid #ffffff1c; padding: 2.2rem 0; font-size: 1rem; font-weight: 300; }
+.project-list { border-top: 1px solid #ffffff26; }
+.project-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(2rem, 4.5vw, 4.5rem); align-items: center; padding: 2.4rem 0; border-bottom: 1px solid #ffffff1c; }
+.project-entry .interest-number { margin-bottom: 1.6rem; }
+.project-copy h3 { font-family: var(--serif-en); font-size: clamp(1.5rem, 2.3vw, 2rem); font-weight: 400; line-height: 1.35; margin-bottom: .65rem; text-wrap: balance; }
+.project-summary { color: #d1d0ca; font-size: 1rem; font-weight: 300; line-height: 1.85; margin-bottom: .8rem; max-width: 58ch; }
+.project-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.4rem; list-style: none; padding: 0; }
+.project-tags li { border: 1px solid #ffffff50; padding: .05rem .5rem; color: var(--accent); font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; }
+/* Same crossfade as the institution marks: a fixed greyscale rendering fades into the colour one on hover/focus. */
+.project-media { position: relative; isolation: isolate; margin: 0; aspect-ratio: 1536 / 959; overflow: hidden; border: 1px solid #ffffff1c; background: #000; }
+.project-media img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: plus-lighter; will-change: opacity; transition: opacity .4s cubic-bezier(.4, 0, .2, 1); }
+.project-media .media-gray { opacity: .6; filter: grayscale(1) brightness(1.15); }
+.project-media .media-color { opacity: 0; }
+.project-entry:is(:hover, :focus-visible, :has(:focus-visible)) .media-gray { opacity: 0; }
+.project-entry:is(:hover, :focus-visible, :has(:focus-visible)) .media-color { opacity: .95; }
+.project-entry:focus-visible { outline: 1px solid var(--accent); outline-offset: 8px; }
+/* Touch screens cannot hover, so they get the colour rendering straight away. */
+@media (hover: none) {
+  .project-media .media-gray { opacity: 0; }
+  .project-media .media-color { opacity: .95; }
+}
 .bio-footer { padding: 3rem 8vw 2.5rem; }
 .bio-footer-bottom { display: flex; gap: 1rem; padding-top: 1.8rem; border-top: 1px solid #ffffff26; color: var(--fg-faint); font-size: .8125rem; }
 .back-to-top { position: fixed; z-index: 40; right: clamp(1rem, 3vw, 2rem); bottom: calc(clamp(1rem, 3vw, 2rem) + env(safe-area-inset-bottom)); display: grid; place-items: center; width: 3.25rem; height: 3.25rem; padding: 0; border: 1px solid #ffffff52; border-radius: 50%; background: #08080fb8; color: #fff; font-family: var(--sans-en); font-size: 1.25rem; line-height: 1; cursor: pointer; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 8px 30px #0006; transition: background .25s, border-color .25s, transform .25s; }
@@ -86,6 +105,7 @@
   .bio-hero .hero-affiliation { font-size: .625rem; letter-spacing: .13em; }
   .interest-grid { grid-template-columns: 1fr; }
   .interest-number { margin-bottom: 1.4rem; }
+  .project-entry { grid-template-columns: 1fr; gap: 1.8rem; }
   .bio-footer { padding-inline: 6vw; }
 }
 @media (max-width: 600px) {
@@ -100,7 +120,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .personal-bio .reveal { opacity: 1; filter: none; transform: none; transition: none; }
-  .affiliation-logo img { transition: none; }
+  .affiliation-logo img, .project-media img { transition: none; }
   .back-to-top { transition: none; }
 }
 #flow-canvas[data-renderer="fallback"] { filter: brightness(var(--fallback-brightness, 1)); }

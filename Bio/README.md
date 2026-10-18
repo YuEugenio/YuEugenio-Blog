@@ -2,7 +2,7 @@
 
 Jun / 于珺的单页个人主页，邮箱 yujunsysu@gmail.com。沿用参考站的设计语言与 WebGL 背景效果。
 
-导航仅包含 Education、Experiences、Researches、Projects，全部滚动定位到当前页面对应区块；当前阅读区块会在导航中高亮。Projects 暂为待补充区域，未添加虚构成果。JAIST 入学时间为 2026 年 10 月，目前标记为 Incoming。
+导航仅包含 Education、Experiences、Researches、Projects，全部滚动定位到当前页面对应区块；当前阅读区块会在导航中高亮。Projects 目前收录 HydroLenia（桌面 `HydroLenia2` 项目）：左侧为编号、标题、日期、简介与标签（Artificial Life、Lattice Boltzmann、Lenia、Fluids），右侧为运行截图 `public/assets/projects/hydrolenia.jpg`，默认灰度，悬停或键盘聚焦时与机构 logo 相同地淡入彩色；768px 以下截图移到文字下方。
 
 Experiences 合并展示所有经历，按最近经历优先排列：当前进行中的港大研究助理在前，其后为已结束的数美工作经历，不再区分 Research 和 Industry 分组。
 
