@@ -300,7 +300,6 @@ function makeStamp(cells, cx, cy, scale, angle) {
 export class LeniaLayer {
   constructor(engine) {
     this.e = engine;
-    this.on = true;
     this.species = SPECIES[0];
     this.scale = 1.5;          // kernel radius R = species R x scale lattice cells
     this.coupling = 1;         // how strongly the water carries Lenia (1 = moves with the fluid)

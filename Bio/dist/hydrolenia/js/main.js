@@ -183,9 +183,7 @@ function updateBrush() {
 }
 
 function place(x, y, angle) {
-  const L = S.engine.lenia;
-  if (!L.on) setLeniaOn(true);
-  L.place(S.species, x, y, angle);
+  S.engine.lenia.place(S.species, x, y, angle);
   S.placedAt = performance.now();
   $('#hint').classList.remove('show');   // start fading out right away, while the creature blooms
 }
@@ -196,7 +194,7 @@ const hintText = () => (S.tool === 'spawn' ? 'Touch the water to bring Lenia to 
 async function updateHint() {
   const L = S.engine.lenia;
   let empty = false;
-  if (L.on && !L.nurse.some((n) => n.active) && performance.now() - S.placedAt > 1500) {
+  if (!L.nurse.some((n) => n.active) && performance.now() - S.placedAt > 1500) {
     const m = await L.readMass();
     if (m === null) return;
     empty = m < EMPTY_MASS;
@@ -241,16 +239,8 @@ function toggle(sel, get, set) {
 }
 const syncControls = () => controls.forEach((c) => c.sync());
 
-function setLeniaOn(on) {
-  const L = S.engine.lenia;
-  L.on = on;
-  if (!on) L.clearForce();
-  syncControls();
-}
-
 function bindPanel() {
   const e = S.engine, L = e.lenia, v = e.view;
-  toggle('#l-on', () => L.on, setLeniaOn);
   seg('#l-pal', () => v.leniaPal, (x) => { v.leniaPal = x; });
   range('#l-scale', 'x', () => L.scale, (x) => L.setRule(L.species, x));
   range('#l-coupling', 'f2', () => L.coupling, (x) => { L.coupling = x; });

@@ -8,6 +8,7 @@ import { GlassLayer } from './glass.js';
 export const FLUID_DEFAULTS = { viscosity: 0.1, maxV: 0.2 };
 const LAMBDA_TRT = 0.25;     // TRT "magic" parameter
 const MAX_TRACERS = 65536;
+const PAL_FADE_MS = 800;     // Lenia palette cross-fade
 
 // omega+ = 1 / (3 nu + 1/2) clipped to [0, 1.9]; omega- from the TRT magic parameter
 function omegas(viscosity) {
@@ -145,6 +146,7 @@ export class Engine {
     this.brush = { on: false, x: 0, y: 0, fx: 0, fy: 0, r: 8 };
     // mode: 0 off, 1 speed, 2 vorticity; theme: 0 Ocean, 1 Magma, 2 Neon; leniaPal: 0 Aurora, 1 Dream, 2 Prism
     this.view = { mode: 1, theme: 2, gain: 0.6, leniaPal: 0 };
+    this.pal = { from: 0, to: 0, t0: -1e9 };   // palette cross-fade state (target: view.leniaPal)
     this.glassShapes = [];   // liquid-glass UI shapes in canvas px, set by the UI every frame (see glass.js)
     this.b = {
       params: this._buf(64, GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST),
@@ -216,7 +218,7 @@ export class Engine {
   encodeSteps(enc, steps) {
     const L = this.lenia;
     this._writeParams(steps);
-    if (L.on) L.writeParams(); else if (L.forceDirty) L.clearForce();
+    L.writeParams();
     const cells = [Math.ceil(this.W / 16), Math.ceil(this.H / 16)];
     const pass = enc.beginComputePass();
     const run = (name, bg, x, y = 1) => { pass.setPipeline(this.pipes[name]); pass.setBindGroup(0, bg); pass.dispatchWorkgroups(x, y); };
@@ -224,7 +226,7 @@ export class Engine {
       run('macro', this.bg.macro[this.parity], ...cells);
       run('collide', this.bg.collide[this.parity], ...cells);
       this.parity ^= 1;
-      if (L.on) L.afterStep(pass);
+      L.afterStep(pass);
     }
     if (this.showTracers && this.nTracers) run('tracers', this.bg.tracers, Math.ceil(this.nTracers / WG));
     pass.end();
@@ -278,11 +280,25 @@ export class Engine {
     return [((px / this.canvas.width) * 2 - 1 - t.ox) / t.sx, ((py / this.canvas.height) * 2 - 1 - t.oy) / t.sy];
   }
 
+  // progress (0..1) of the Lenia palette cross-fade toward view.leniaPal; a change back to the palette being
+  // left reverses the fade from where it is, any other change starts a new one from the dominant palette
+  palProgress() {
+    const pal = this.pal, now = performance.now(), target = this.view.leniaPal;
+    let t = Math.min(1, (now - pal.t0) / PAL_FADE_MS);
+    if (target !== pal.to) {
+      if (target === pal.from && t < 1) { pal.from = pal.to; pal.t0 = now - (1 - t) * PAL_FADE_MS; t = 1 - t; }
+      else { pal.from = t < 0.5 ? pal.from : pal.to; pal.t0 = now; t = 0; }
+      pal.to = target;
+    }
+    return t * t * (3 - 2 * t);   // ease in-out
+  }
+
   render(enc) {
     const t = this.viewTransform(), v = this.view;
     const buf = new ArrayBuffer(48), f = new Float32Array(buf), u = new Uint32Array(buf);
     f[0] = t.sx; f[1] = t.sy; f[2] = t.ox; f[3] = t.oy;
-    u[4] = v.mode; f[5] = v.gain; u[6] = v.theme; u[7] = this.lenia.on ? 1 : 0; f[8] = v.leniaPal;
+    const k = this.palProgress();   // first: it may update pal.from / pal.to
+    u[4] = v.mode; f[5] = v.gain; u[6] = v.theme; u[7] = this.pal.from; u[8] = this.pal.to; f[9] = k;
     this.device.queue.writeBuffer(this.b.view, 0, buf);
     // the scene goes into a texture, then the glass pass puts it on screen and refracts it inside the UI shapes
     const scene = this.glass.sceneView(this.canvas.width, this.canvas.height);
@@ -300,7 +316,7 @@ export class Engine {
     const enc = this.device.createCommandEncoder();
     this.lenia.gensPerFrame = steps / this.lenia.stepsPerGen;
     this.encodeSteps(enc, steps);
-    if (this.lenia.on) this.lenia.encodeDisplay(enc);
+    this.lenia.encodeDisplay(enc);
     this.render(enc);
     this.device.queue.submit([enc.finish()]);
   }

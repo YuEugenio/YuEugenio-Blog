@@ -3,8 +3,9 @@
 import { HEADER } from './gpu.js';
 
 const RENDER_HEADER = HEADER + /* wgsl */`
-// mode: 0 off, 1 speed, 2 vorticity; theme: 0 Ocean, 1 Magma, 2 Neon; pal: 0 Aurora, 1 Dream, 2 Prism
-struct View { scale: vec2f, offset: vec2f, mode: u32, gain: f32, theme: u32, lenia: u32, pal: f32 };
+// mode: 0 off, 1 speed, 2 vorticity; theme: 0 Ocean, 1 Magma, 2 Neon; Lenia palettes: 0 Aurora, 1 Dream, 2 Prism.
+// A palette change cross-fades: the Lenia layer is shaded with palA and palB and mixed by palT (0 = all palA).
+struct View { scale: vec2f, offset: vec2f, mode: u32, gain: f32, theme: u32, palA: u32, palB: u32, palT: f32 };
 @group(0) @binding(1) var<uniform> V: View;
 `;
 
@@ -70,7 +71,6 @@ fn lenAt(p: vec2f) -> f32 {
 }
 fn lenN(p: vec2f) -> f32 { return clamp(lenAt(p), 0.0, 1.5); }
 fn lenNear(p: vec2f) -> f32 { return clamp(len[cell(i32(floor(p.x)), i32(floor(p.y)))], 0.0, 1.5); }
-fn palMode() -> u32 { return u32(V.pal + 0.5); }
 fn spectral(h: f32) -> vec3f { return 0.5 + 0.5 * cos(6.2831853 * (h + vec3f(0.0, 0.33, 0.67))); }
 // Aurora: ultraviolet -> blue-violet -> electric blue -> cyan -> aurora green, mirrored so the hue never jumps
 fn auroraPal(h: f32) -> vec3f {
@@ -80,15 +80,15 @@ fn auroraPal(h: f32) -> vec3f {
   c = mix(c, vec3f(0.05, 0.88, 1.0), smoothstep(0.5, 0.75, t));
   return mix(c, vec3f(0.22, 1.0, 0.68), smoothstep(0.75, 1.0, t));
 }
-fn dreamPal(h: f32) -> vec3f {
-  if (palMode() == 2u) { return mix(vec3f(0.86, 0.9, 1.0), spectral(h), 0.12); }   // Prism: pearl white
-  if (palMode() == 1u) {   // Dream: coral pink -> magenta -> violet -> electric blue -> cyan -> pale gold
+fn dreamPal(h: f32, pm: u32) -> vec3f {
+  if (pm == 2u) { return mix(vec3f(0.86, 0.9, 1.0), spectral(h), 0.12); }   // Prism: pearl white
+  if (pm == 1u) {   // Dream: coral pink -> magenta -> violet -> electric blue -> cyan -> pale gold
     return clamp(vec3f(0.6, 0.45, 0.7) + vec3f(0.45, 0.4, 0.35) * cos(6.2831853 * (h + vec3f(0.0, 0.25, 0.45))), vec3f(0.0), vec3f(1.0));
   }
   return auroraPal(h);
 }
 // colour of the Lenia "liquid" at one point: marbled iridescent body, specular, Fresnel rim, white-hot core
-fn dreamBody(x: vec2f) -> vec3f {
+fn dreamBody(x: vec2f, pm: u32) -> vec3f {
   let c = lenN(x);
   if (c < 0.002) { return vec3f(0.0); }
   let e = 1.25;
@@ -102,7 +102,7 @@ fn dreamBody(x: vec2f) -> vec3f {
   let s2 = pow(max(dot(N, normalize(vec3f(-0.45, 0.3, 1.9))), 0.0), 40.0);
   let fres = pow(1.0 - max(N.z, 0.0), 2.5);
   let core = pow(clamp((c - 0.55) / 0.6, 0.0, 1.0), 1.5);
-  if (palMode() == 2u) {   // Prism: white-hot dense matter, thin matter and hollows sink into deep blue
+  if (pm == 2u) {   // Prism: white-hot dense matter, thin matter and hollows sink into deep blue
     var pc = mix(vec3f(0.06, 0.16, 1.0) * 0.9, vec3f(0.42, 0.55, 1.0), smoothstep(0.04, 0.16, c));
     pc = mix(pc, vec3f(1.0, 0.98, 1.0), smoothstep(0.12, 0.45, c));
     pc *= inten * (1.0 + 0.6 * smoothstep(0.5, 1.0, c));
@@ -110,14 +110,14 @@ fn dreamBody(x: vec2f) -> vec3f {
     pc += vec3f(0.35, 0.5, 1.0) * fres * 0.6 * smoothstep(0.0, 0.2, c);
     return pc;
   }
-  var col = pow(dreamPal(hue), vec3f(1.15)) * 1.25 * inten * (0.55 + 0.6 * min(c, 1.0));
-  let warm = palMode() == 1u;
+  var col = pow(dreamPal(hue, pm), vec3f(1.15)) * 1.25 * inten * (0.55 + 0.6 * min(c, 1.0));
+  let warm = pm == 1u;
   col += (select(vec3f(0.85, 0.95, 1.0), vec3f(1.0, 0.97, 0.92), warm) * s1 * 1.1 + select(vec3f(0.7, 0.8, 1.0), vec3f(0.8, 0.9, 1.0), warm) * s2 * 0.55) * inten;
-  col += dreamPal(hue * 1.7 + 0.3) * fres * 1.4 * smoothstep(0.0, 0.2, c);
+  col += dreamPal(hue * 1.7 + 0.3, pm) * fres * 1.4 * smoothstep(0.0, 0.2, c);
   return col * (1.0 - core * 0.6) + select(vec3f(0.85, 0.93, 1.0), vec3f(1.0, 0.97, 1.0), warm) * core * 0.75;
 }
 // liquid shading + RGB dispersion along the gradient (rainbow fringes) + double soft halo; static
-fn leniaDream(p0: vec2f, water: vec3f) -> vec3f {
+fn leniaDream(p0: vec2f, water: vec3f, pm: u32) -> vec3f {
   var probe = lenNear(p0);   // cheap early-out: nothing within ~12 cells
   for (var k = 0; k < 8; k++) {
     let a = f32(k) * 0.785398;
@@ -129,11 +129,11 @@ fn leniaDream(p0: vec2f, water: vec3f) -> vec3f {
   let c = lenN(p);
   let e = 1.25;
   let gr = vec2f(lenN(p + vec2f(e, 0.0)) - lenN(p - vec2f(e, 0.0)), lenN(p + vec2f(0.0, e)) - lenN(p - vec2f(0.0, e))) / (2.0 * e);
-  let dir = gr / (length(gr) + 1e-4) * select(0.65, 0.8, palMode() == 2u);
-  let mid = dreamBody(p); let outer = dreamBody(p + dir); let inner = dreamBody(p - dir);
+  let dir = gr / (length(gr) + 1e-4) * select(0.65, 0.8, pm == 2u);
+  let mid = dreamBody(p, pm); let outer = dreamBody(p + dir, pm); let inner = dreamBody(p - dir, pm);
   // Aurora: green out / blue in (fringes stay cyan-violet); Dream: red out / blue in; Prism: thin magenta / cyan rims
-  var col = select(vec3f(mid.r, outer.g, inner.b), vec3f(outer.r, mid.g, inner.b), palMode() >= 1u);
-  if (palMode() == 2u) { col = vec3f(mix(mid.r, outer.r, 0.4), mix(mid.g, inner.g, 0.3), mix(mid.b, outer.b, 0.2)); }
+  var col = select(vec3f(mid.r, outer.g, inner.b), vec3f(outer.r, mid.g, inner.b), pm >= 1u);
+  if (pm == 2u) { col = vec3f(mix(mid.r, outer.r, 0.4), mix(mid.g, inner.g, 0.3), mix(mid.b, outer.b, 0.2)); }
   var h1 = 0.0; var h2 = 0.0;
   for (var k = 0; k < 8; k++) {
     let a = f32(k) * 0.785398;
@@ -141,8 +141,8 @@ fn leniaDream(p0: vec2f, water: vec3f) -> vec3f {
     h2 += lenN(p + 10.0 * vec2f(cos(a + 0.39), sin(a + 0.39)));
   }
   let glow = (smoothstep(0.0, 0.5, h1 / 8.0) * 0.42 + smoothstep(0.0, 0.5, h2 / 8.0) * 0.2) * 1.5;
-  var gcol = pow(dreamPal(1.4 * vnoise(p * 0.008) + 0.7 * vnoise(p * 0.03) + 0.15), vec3f(1.3));
-  if (palMode() == 2u) { gcol = vec3f(0.22, 0.42, 1.0) * 1.2; }
+  var gcol = pow(dreamPal(1.4 * vnoise(p * 0.008) + 0.7 * vnoise(p * 0.03) + 0.15, pm), vec3f(1.3));
+  if (pm == 2u) { gcol = vec3f(0.22, 0.42, 1.0) * 1.2; }
   col += gcol * glow * (1.0 - 0.6 * smoothstep(0.0, 0.35, c));
   // on the brighter Ocean / Magma water, darken the water under and around the creature so the neon reads
   var base = water;
@@ -163,7 +163,10 @@ fn leniaDream(p0: vec2f, water: vec3f) -> vec3f {
     let w = 0.5 * (dx.y - dy.x) / max(P.maxV, 1e-6) * 6.0 * V.gain;
     col = select(diverge(w), neonDiverge(w), neon);
   }
-  if (V.lenia != 0u) { col = leniaDream(p, col); }
+  // Lenia; during a palette change both palettes are shaded and mixed
+  if (V.palT <= 0.0) { col = leniaDream(p, col, V.palA); }
+  else if (V.palT >= 1.0) { col = leniaDream(p, col, V.palB); }
+  else { col = mix(leniaDream(p, col, V.palA), leniaDream(p, col, V.palB), V.palT); }
   return vec4f(col, 1.0);
 }`;
 
