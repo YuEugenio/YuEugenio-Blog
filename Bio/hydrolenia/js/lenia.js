@@ -450,6 +450,21 @@ export class LeniaLayer {
     this.e.device.queue.submit([enc.finish()]);
   }
 
+  // total mass in the tank, as summed by the last generation (async; null while a read is already in flight)
+  async readMass() {
+    if (this.massPending) return null;
+    this.massPending = true;
+    const d = this.e.device;
+    this.massBuf ||= d.createBuffer({ size: 16, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST });
+    const enc = d.createCommandEncoder(); enc.copyBufferToBuffer(this.b.tot, 0, this.massBuf, 0, 16); d.queue.submit([enc.finish()]);
+    try {
+      await this.massBuf.mapAsync(GPUMapMode.READ);
+      const m = new Float32Array(this.massBuf.getMappedRange())[1];
+      this.massBuf.unmap();
+      return m;
+    } catch { return null; } finally { this.massPending = false; }
+  }
+
   clearForce() {
     this.e.device.queue.writeBuffer(this.e.b.lf, 0, new Float32Array(this.e.W * this.e.H * 2));
     this.forceDirty = false;

@@ -14,7 +14,7 @@ const MIN_CELLS = 48000;
 const FRAME_BUDGET_MS = 18;   // a frame slower than this at start-up shrinks the tank (an M-series Mac needs ~13-16 ms)
 const TRACERS = 12000;
 
-const S = { engine: null, tool: 'spawn', species: SPECIES[0], pointer: null, cells: GRID_CELLS };
+const S = { engine: null, tool: 'spawn', species: SPECIES[0], pointer: null, cells: GRID_CELLS, placedAt: -1e9 };
 
 async function boot() {
   resizeCanvas();
@@ -41,6 +41,7 @@ async function boot() {
   await calibrate();
   new ResizeObserver(onResize).observe(document.body);
   requestAnimationFrame(loop);
+  setInterval(updateHint, 400);
 }
 
 // what to tell people whose browser cannot run WebGPU
@@ -185,6 +186,24 @@ function place(x, y, angle) {
   const L = S.engine.lenia;
   if (!L.on) setLeniaOn(true);
   L.place(S.species, x, y, angle);
+  S.placedAt = performance.now();
+  $('#hint').classList.remove('show');   // start fading out right away, while the creature blooms
+}
+
+// ------------------------------------------------------------------ empty-tank hint
+const EMPTY_MASS = 2;   // below this total mass the tank counts as empty
+const hintText = () => (S.tool === 'spawn' ? 'Touch the water to bring Lenia to life' : 'Hold the button on the left to pick a Lenia');
+async function updateHint() {
+  const L = S.engine.lenia;
+  let empty = false;
+  if (L.on && !L.nurse.some((n) => n.active) && performance.now() - S.placedAt > 1500) {
+    const m = await L.readMass();
+    if (m === null) return;
+    empty = m < EMPTY_MASS;
+  }
+  const h = $('#hint');
+  if (empty) h.textContent = hintText();
+  h.classList.toggle('show', empty);
 }
 
 function eraseAt(x, y) {
@@ -384,6 +403,7 @@ function setTool(tool, species) {
     b.dataset.tool === tool && (tool !== 'spawn' || b.dataset.code === S.species.code)));
   canvas.classList.toggle('spawn', tool === 'spawn');
   canvas.classList.toggle('erase', tool === 'erase');
+  if ($('#hint').classList.contains('show')) $('#hint').textContent = hintText();
   const face = $('#tools-face'), cur = $('#tools .item.active');
   face.replaceChildren();
   if (tool === 'spawn') {
