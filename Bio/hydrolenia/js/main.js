@@ -8,13 +8,15 @@ const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const canvas = $('#gpu');
 
-const STEPS_PER_FRAME = 8;   // physics steps per rendered frame
+const SPEEDS = [1, 2, 4, 8, 16, 24, 32, 64];   // physics steps per rendered frame, chosen in the panel
+const DEFAULT_SPEED = 3;     // 8x
 const GRID_CELLS = 512 * 432; // lattice cells in the tank (its shape follows the window); fewer on slow GPUs
 const MIN_CELLS = 48000;
 const FRAME_BUDGET_MS = 18;   // a frame slower than this at start-up shrinks the tank (an M-series Mac needs ~13-16 ms)
 const TRACERS = 12000;
 
-const S = { engine: null, tool: 'spawn', species: SPECIES[0], pointer: null, cells: GRID_CELLS, placedAt: -1e9 };
+const S = { engine: null, tool: 'spawn', species: SPECIES[0], pointer: null, cells: GRID_CELLS, placedAt: -1e9, speed: DEFAULT_SPEED };
+const steps = () => SPEEDS[S.speed];
 
 async function boot() {
   resizeCanvas();
@@ -59,7 +61,7 @@ function unsupportedHint() {
 // Slow GPUs get a smaller tank: time a few frames at full size and scale the cell count to the frame budget.
 async function calibrate() {
   const e = S.engine;
-  const frame = async () => { e.frame(STEPS_PER_FRAME); await e.device.queue.onSubmittedWorkDone(); };
+  const frame = async () => { e.frame(SPEEDS[DEFAULT_SPEED]); await e.device.queue.onSubmittedWorkDone(); };   // at the default speed
   for (let i = 0; i < 4; i++) await frame();   // warm-up: pipeline compilation, caches
   const t0 = performance.now();
   for (let i = 0; i < 8; i++) await frame();
@@ -117,7 +119,7 @@ function loop(t) {
   adaptRenderScale(t);
   updateBrush();
   updateGlass();
-  S.engine.frame(STEPS_PER_FRAME);
+  S.engine.frame(steps());
   requestAnimationFrame(loop);
 }
 
@@ -176,7 +178,7 @@ function updateBrush() {
   let dx = p.x - p.px, dy = p.y - p.py;
   dx -= W * Math.round(dx / W); dy -= H * Math.round(dy / H);
   p.px = p.x; p.py = p.y;
-  let fx = dx / STEPS_PER_FRAME * 0.06, fy = dy / STEPS_PER_FRAME * 0.06;
+  let fx = dx / steps() * 0.06, fy = dy / steps() * 0.06;
   const m = Math.hypot(fx, fy), lim = 0.004;
   if (m > lim) { fx *= lim / m; fy *= lim / m; }
   Object.assign(b, { on: true, x: p.x, y: p.y, fx, fy, r: Math.max(4, screenCells(40)) });
@@ -211,7 +213,7 @@ function eraseAt(x, y) {
 // ------------------------------------------------------------------ panel
 const FMT = {
   visc: (v) => (10 ** v).toPrecision(2), x: (v) => v.toFixed(2) + '×', f2: (v) => v.toFixed(2), f3: (v) => v.toFixed(3),
-  int: (v) => v.toFixed(0), k: (v) => (v / 1000).toFixed(0) + 'k', sec: (v) => v.toFixed(2) + 's',
+  speed: (v) => SPEEDS[v] + '×', int: (v) => v.toFixed(0), k: (v) => (v / 1000).toFixed(0) + 'k', sec: (v) => v.toFixed(2) + 's',
 };
 function paintRange(el) {
   el.style.setProperty('--fill-pct', (el.value - el.min) / (el.max - el.min) * 100 + '%');
@@ -247,6 +249,7 @@ function bindPanel() {
   range('#l-reveal', 'sec', () => L.revealSeconds, (x) => { L.revealSeconds = x; });
   range('#l-spg', 'int', () => L.stepsPerGen, (x) => { L.stepsPerGen = x; });
   range('#l-push', 'f2', () => L.push, (x) => { L.push = x; });
+  range('#p-speed', 'speed', () => S.speed, (x) => { S.speed = x; });
   range('#p-visc', 'visc', () => Math.log10(e.fluid.viscosity), (x) => { e.fluid.viscosity = 10 ** x; });
   range('#p-maxv', 'f3', () => e.fluid.maxV, (x) => { e.fluid.maxV = x; });
   seg('#v-mode', () => v.mode, (x) => { v.mode = x; });

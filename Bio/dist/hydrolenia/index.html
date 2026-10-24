@@ -36,6 +36,9 @@
     <header><span>Parameters</span><button class="close" id="panel-close" aria-label="Close">
       <svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></header>
     <section>
+      <h4>Simulation</h4>
+      <div class="ctl"><label title="Physics steps per rendered frame. Lower it on fast GPUs or high-refresh screens if everything moves too quickly; raise it if it feels slow.">Speed</label><input type="range" id="p-speed" min="0" max="7" step="1"><output></output></div>
+
       <h4>Lenia</h4>
       <div class="ctl stack"><label title="Colour scheme of the Lenia layer">Colours</label>
         <div class="seg" id="l-pal"><button data-v="0">Aurora</button><button data-v="1">Dream</button><button data-v="2">Prism</button></div></div>
