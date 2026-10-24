@@ -33,7 +33,7 @@ npm run dev
 ## 背景与交互
 
 - `public/assets/bg.png`：当前背景图片，可替换。WebGL 上传时显式校正 Y 轴，因此源文件与页面显示方向一致；资源 URL 带版本号，避免 Safari 混用旧脚本和新图片。
-- `public/assets/favicon.png`：由用户提供的 `YU.jpeg` 转换得到的 128×128 浏览器标签页图标。
+- `public/assets/favicon.png`：由用户提供的头像插画（灰发猫耳角色，蓝色渐变背景）缩放得到的 128×128 浏览器标签页图标。
 - `src/fluid.js`：WebGL 管线、浮点双缓冲流场、指针及触屏输入、窗口尺寸与滚动同步。
 - `src/shaders/fluid.frag`：对流、扩散、鼠标速度注入以及拖尾衰减。
 - `src/shaders/light.frag`：四层分形噪声、呼吸、折射位移、RGB 色散、双光源镜面高光、菲涅耳虹彩、暗角及颗粒。
